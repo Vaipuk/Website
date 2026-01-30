@@ -1,0 +1,46 @@
+.locationTile {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    border: 1px solid var(--tile-border);
+    transition: transform var(--transition-fast), border-color var(--transition-fast);
+    aspect-ratio: 4 / 3;
+    /* Landscape */
+}
+
+.locationTile:hover {
+    transform: var(--hover-lift);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: var(--spacing-md);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.content {
+    color: var(--text-primary);
+}
+
+.name {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    margin: 0 0 4px 0;
+    font-weight: 500;
+}
+
+.count {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    opacity: 0.8;
+    letter-spacing: 0.02em;
+}

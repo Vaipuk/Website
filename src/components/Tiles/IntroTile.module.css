@@ -1,0 +1,148 @@
+.introTile {
+    background: linear-gradient(145deg, #1f1f1f 0%, #171717 100%);
+    color: var(--text-primary);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    padding: 0.5rem;
+}
+
+/* Top Row - Avatar and Status */
+.topRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.avatar {
+    /* No extra margin needed */
+}
+
+.avatarPlaceholder {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #888;
+    border: 2px solid rgba(255, 255, 255, 0.08);
+}
+
+.avatarImage {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    color: #4ade80;
+    background: rgba(74, 222, 128, 0.1);
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(74, 222, 128, 0.2);
+}
+
+.indicator {
+    width: 6px;
+    height: 6px;
+    background-color: currentColor;
+    border-radius: 50%;
+    box-shadow: 0 0 6px currentColor;
+    animation: pulse 2s infinite;
+}
+
+/* Main Content - Centered */
+.mainContent {
+    text-align: center;
+    padding: 0 0.5rem;
+}
+
+.heading {
+    margin: 0 0 0.75rem 0;
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--text-primary);
+}
+
+.name {
+    color: #fff;
+}
+
+.bio {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+    max-width: 100%;
+}
+
+.highlight {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* Bottom Row - Tags and Location */
+.bottomRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.tag {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.06);
+    padding: 4px 10px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    font-weight: 500;
+}
+
+.location {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.locationIcon {
+    font-size: 0.8rem;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}

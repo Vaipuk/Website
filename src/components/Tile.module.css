@@ -1,0 +1,86 @@
+.tile {
+    background-color: var(--tile-bg);
+    border: 1px solid var(--tile-border);
+    border-radius: var(--border-radius);
+    position: relative;
+    overflow: hidden;
+    transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+    cursor: default;
+    min-width: 0;
+    /* Prevents grid blowout */
+}
+
+.tile:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: var(--hover-lift);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    z-index: 10;
+}
+
+.content {
+    padding: var(--spacing-lg);
+    height: 100%;
+    width: 100%;
+}
+
+/* Responsive Grid Spans using Data Attributes */
+/* These selectors work by chaining attributes to the local .tile class */
+
+/* Mobile First: Default to span 1 */
+.tile[data-colspan="1"] {
+    grid-column: span 1;
+}
+
+.tile[data-colspan="2"] {
+    grid-column: span 1;
+}
+
+.tile[data-colspan="3"] {
+    grid-column: span 1;
+}
+
+.tile[data-colspan="4"] {
+    grid-column: span 1;
+}
+
+.tile[data-rowspan="1"] {
+    grid-row: span 1;
+}
+
+.tile[data-rowspan="2"] {
+    grid-row: span 2;
+}
+
+.tile[data-rowspan="3"] {
+    grid-row: span 3;
+}
+
+.tile[data-rowspan="4"] {
+    grid-row: span 4;
+}
+
+/* Tablet (2 columns) */
+@media (min-width: 640px) {
+    .tile[data-colspan="2"] {
+        grid-column: span 2;
+    }
+
+    .tile[data-colspan="3"] {
+        grid-column: span 2;
+    }
+
+    .tile[data-colspan="4"] {
+        grid-column: span 2;
+    }
+}
+
+/* Desktop (4 columns) */
+@media (min-width: 1024px) {
+    .tile[data-colspan="3"] {
+        grid-column: span 3;
+    }
+
+    .tile[data-colspan="4"] {
+        grid-column: span 4;
+    }
+}
