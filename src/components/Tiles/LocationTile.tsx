@@ -1,11 +1,15 @@
 import React from 'react';
 import { Tile } from '../Tile';
-import type { GalleryImage } from '../../data/gallery';
 import styles from './LocationTile.module.css';
+
+interface CoverImage {
+    src: string;
+    orientation: 'landscape' | 'portrait';
+}
 
 interface LocationTileProps {
     name: string;
-    coverImage: GalleryImage;
+    coverImage: CoverImage;
     photoCount: number;
     onClick: () => void;
     colSpan?: 1 | 2 | 3 | 4;
