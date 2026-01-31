@@ -6,10 +6,11 @@ const BlogPage: React.FC = () => {
     const navigate = useNavigate();
 
     return (
-        <div className={styles.container}>
-            <button className={styles.backButton} onClick={() => navigate('/')}>
-                ← Back
-            </button>
+        <div className={styles.page}>
+            <header className={styles.header}>
+                <button onClick={() => navigate('/')} className={styles.backButton}>← Back to Home</button>
+                <h1>Blog</h1>
+            </header>
             <div className={styles.content}>
                 <p className={styles.message}>Thoughts are still forming....</p>
             </div>

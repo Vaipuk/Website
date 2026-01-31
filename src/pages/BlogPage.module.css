@@ -1,29 +1,40 @@
-.container {
-    height: 100vh;
+.page {
+    padding: var(--spacing-xl);
+    min-height: 100vh;
     background-color: var(--bg-color);
+    color: var(--text-primary);
+    max-width: 1400px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    padding: 2rem;
-    overflow: hidden;
+}
+
+.header {
+    margin-bottom: var(--spacing-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.header h1 {
+    font-size: 3rem;
+    margin: 0;
 }
 
 .backButton {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: none;
+    border: none;
     color: var(--text-secondary);
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    cursor: pointer;
     font-family: var(--font-body);
     font-size: 1rem;
-    transition: all 0.2s ease;
+    padding: 0;
+    cursor: pointer;
     width: fit-content;
-    margin-bottom: 3rem;
+    transition: color 0.2s;
 }
 
 .backButton:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--text-primary);
+    color: var(--accent-color);
 }
 
 .content {
@@ -46,5 +57,9 @@
 @media (max-width: 768px) {
     .message {
         font-size: 36px;
+    }
+    
+    .header h1 {
+        font-size: 2rem;
     }
 }
