@@ -10,16 +10,29 @@ import { ProjectOverlay } from './components/ProjectOverlay'
 import { fetchTrips, getRandomImages, type GalleryImage } from './data/galleryConfig'
 import './App.css'
 
+// Fallback images if R2 fetch fails
+const FALLBACK_IMAGES: GalleryImage[] = [
+  { src: '/trips/Italy-2024/cover.JPG', location: 'Italy 2024', date: '' },
+  { src: '/trips/France-2025/cover.JPG', location: 'France 2025', date: '' },
+  { src: '/trips/New York-2025/cover.JPG', location: 'New York 2025', date: '' },
+];
+
 function App() {
   const [selectedProject, setSelectedProject] = useState<{ title: string, description: string, gradient: string } | null>(null);
-  const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
+  const [galleryImages, setGalleryImages] = useState<GalleryImage[]>(FALLBACK_IMAGES);
 
-  // Fetch gallery images from R2 manifest on mount
+  // Try to fetch gallery images from R2 manifest
   useEffect(() => {
-    fetchTrips().then(trips => {
-      const images = getRandomImages(trips, 5);
-      setGalleryImages(images);
-    });
+    fetchTrips()
+      .then(trips => {
+        if (trips.length > 0) {
+          const images = getRandomImages(trips, 5);
+          setGalleryImages(images);
+        }
+      })
+      .catch(err => {
+        console.warn('Using local fallback images:', err);
+      });
   }, []);
 
   const handleProjectClick = () => {
