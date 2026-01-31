@@ -39,8 +39,15 @@ export interface GalleryImage {
     date: string;
 }
 
-// Format folder name for display: "Chicago-2026" -> "Chicago 2026"
+// Format folder name for display: "Italy-2024" -> "Italy · 2024"
 const formatTripName = (folder: string): string => {
+    // Split on last hyphen (to handle "New York-2025" correctly)
+    const lastHyphen = folder.lastIndexOf('-');
+    if (lastHyphen > 0) {
+        const name = folder.substring(0, lastHyphen).replace(/-/g, ' ');
+        const year = folder.substring(lastHyphen + 1);
+        return `${name} · ${year}`;
+    }
     return folder.replace(/-/g, ' ');
 };
 

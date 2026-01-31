@@ -12,9 +12,9 @@ import './App.css'
 
 // Fallback images if R2 fetch fails
 const FALLBACK_IMAGES: GalleryImage[] = [
-  { src: '/trips/Italy-2024/cover.JPG', location: 'Italy 2024', date: '' },
-  { src: '/trips/France-2025/cover.JPG', location: 'France 2025', date: '' },
-  { src: '/trips/New York-2025/cover.JPG', location: 'New York 2025', date: '' },
+  { src: '/trips/Italy-2024/cover.JPG', location: 'Italy · 2024', date: '' },
+  { src: '/trips/France-2025/cover.JPG', location: 'France · 2025', date: '' },
+  { src: '/trips/New%20York-2025/cover.JPG', location: 'New York · 2025', date: '' },
 ];
 
 function App() {
