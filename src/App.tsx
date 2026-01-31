@@ -6,7 +6,6 @@ import { LinkTile } from './components/Tiles/LinkTile'
 import { ProjectTile } from './components/Tiles/ProjectTile'
 import { PhotoTile } from './components/Tiles/PhotoTile'
 import { ContactTile } from './components/Tiles/ContactTile'
-import { ProjectOverlay } from './components/ProjectOverlay'
 import { fetchTrips, getRandomImages, type GalleryImage } from './data/galleryConfig'
 import './App.css'
 
@@ -18,7 +17,6 @@ const FALLBACK_IMAGES: GalleryImage[] = [
 ];
 
 function App() {
-  const [selectedProject, setSelectedProject] = useState<{ title: string, description: string, gradient: string } | null>(null);
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>(FALLBACK_IMAGES);
 
   // Try to fetch gallery images from R2 manifest
@@ -35,22 +33,8 @@ function App() {
       });
   }, []);
 
-  const handleProjectClick = () => {
-    setSelectedProject({
-      title: "Tensor Aurora",
-      description: "A blazing fast inference engine for edge devices.",
-      gradient: "linear-gradient(45deg, #4f46e5, #9333ea)"
-    });
-  };
-
   return (
     <>
-      <ProjectOverlay
-        isOpen={!!selectedProject}
-        onClose={() => setSelectedProject(null)}
-        project={selectedProject}
-      />
-
       <GridContainer>
         {/* Intro Tile */}
         <IntroTile />
@@ -66,11 +50,11 @@ function App() {
 
         {/* Projects */}
         <ProjectTile
-          title="Tensor Aurora"
-          description="A blazing fast inference engine for edge devices."
+          title="Projects"
+          description="View my work and experiments."
           imageSrc="/photos/tensor_aurora.png"
           gradient="linear-gradient(45deg, #4f46e5, #9333ea)"
-          onClick={handleProjectClick}
+          linkTo="/projects"
         />
 
         {/* Social Links */}
