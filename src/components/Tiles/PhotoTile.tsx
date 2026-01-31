@@ -58,7 +58,7 @@ export const PhotoTile: React.FC<PhotoTileProps> = ({
 
             <div className={styles.controls} onClick={e => e.stopPropagation()}>
                 <div className={styles.info}>
-                    <span>{currentImage.location} &bull; {currentImage.date}</span>
+                    <span>{currentImage.location}</span>
                 </div>
                 <div className={styles.dots}>
                     {images.map((_, idx) => (

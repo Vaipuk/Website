@@ -46,7 +46,7 @@ const formatTripName = (folder: string): string => {
     if (lastHyphen > 0) {
         const name = folder.substring(0, lastHyphen).replace(/-/g, ' ');
         const year = folder.substring(lastHyphen + 1);
-        return `${name} · ${year}`;
+        return `${name} • ${year}`;
     }
     return folder.replace(/-/g, ' ');
 };

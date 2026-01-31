@@ -10,7 +10,7 @@ import styles from './GalleryPage.module.css';
 const FALLBACK_LOCATIONS: LocationAlbum[] = [
     {
         id: 'italy-2024',
-        name: 'Italy · 2024',
+        name: 'Italy • 2024',
         folder: 'Italy-2024',
         coverImage: '/trips/Italy-2024/cover.JPG',
         images: [
@@ -21,7 +21,7 @@ const FALLBACK_LOCATIONS: LocationAlbum[] = [
     },
     {
         id: 'france-2025',
-        name: 'France · 2025',
+        name: 'France • 2025',
         folder: 'France-2025',
         coverImage: '/trips/France-2025/cover.JPG',
         images: [
@@ -32,7 +32,7 @@ const FALLBACK_LOCATIONS: LocationAlbum[] = [
     },
     {
         id: 'new-york-2025',
-        name: 'New York · 2025',
+        name: 'New York • 2025',
         folder: 'New York-2025',
         coverImage: '/trips/New%20York-2025/cover.JPG',
         images: [
