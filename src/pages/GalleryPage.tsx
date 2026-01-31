@@ -1,23 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GridContainer } from '../components/Layout/GridContainer';
 import { PhotoTile } from '../components/Tiles/PhotoTile';
 import { LocationTile } from '../components/Tiles/LocationTile';
-import { GALLERY_DATA, getAllPhotosWithTripName, type LocationAlbum } from '../data/gallery';
+import { fetchGalleryData, getAllPhotosWithTripName, type LocationAlbum } from '../data/gallery';
 import styles from './GalleryPage.module.css';
 
 export const GalleryPage: React.FC = () => {
     const navigate = useNavigate();
+    const [locations, setLocations] = useState<LocationAlbum[]>([]);
     const [selectedLocation, setSelectedLocation] = useState<LocationAlbum | null>(null);
+    const [loading, setLoading] = useState(true);
 
-    // Get all images with trip name as location description
-    const allImages = getAllPhotosWithTripName();
-    // Pick first 5 for hero carousel
-    const heroImages = allImages.slice(0, 5);
+    // Fetch gallery data from R2 manifest
+    useEffect(() => {
+        fetchGalleryData().then(data => {
+            setLocations(data);
+            setLoading(false);
+        });
+    }, []);
+
+    // Get images for hero carousel
+    const heroImages = getAllPhotosWithTripName(locations).slice(0, 5);
 
     const handleLocationClick = (location: LocationAlbum) => {
         setSelectedLocation(location);
     };
+
+    if (loading) {
+        return (
+            <div className={styles.page}>
+                <header className={styles.header}>
+                    <button onClick={() => navigate('/')} className={styles.backButton}>← Back to Home</button>
+                    <h1>Photography</h1>
+                </header>
+                <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--text-secondary)' }}>
+                    Loading gallery...
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className={styles.page}>
@@ -28,10 +50,12 @@ export const GalleryPage: React.FC = () => {
 
             <GridContainer>
                 {/* Hero Carousel - Full Width */}
-                <PhotoTile images={heroImages} colSpan={4} rowSpan={2} />
+                {heroImages.length > 0 && (
+                    <PhotoTile images={heroImages} colSpan={4} rowSpan={2} />
+                )}
 
                 {/* Location Grid */}
-                {GALLERY_DATA.map(location => (
+                {locations.map(location => (
                     <LocationTile
                         key={location.id}
                         name={location.name}

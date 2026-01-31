@@ -1,9 +1,9 @@
 // src/data/gallery.ts
-// Gallery data for GalleryPage - uses same R2 structure
+// Gallery data for GalleryPage - fetches from R2 manifest
 
 const R2_BASE_URL = 'https://images.vaipuk.com';
 
-// Helper to format folder name for display
+// Format folder name: "Chicago-2026" -> "Chicago 2026"
 const formatTripName = (folder: string): string => {
     return folder.replace(/-/g, ' ');
 };
@@ -22,47 +22,47 @@ export interface LocationAlbum {
     images: GalleryImage[];
 }
 
-// Define trips here - folder name determines display name
-// Cover is always cover.jpg in each folder
-export const GALLERY_DATA: LocationAlbum[] = [
-    {
-        id: 'italy-2024',
-        folder: 'Italy-2024',
-        name: formatTripName('Italy-2024'),
-        coverImage: `${R2_BASE_URL}/trips/Italy-2024/cover.jpg`,
-        images: [
-            { id: 'it-1', src: `${R2_BASE_URL}/trips/Italy-2024/lake-como.jpg`, orientation: 'landscape' },
-            { id: 'it-2', src: `${R2_BASE_URL}/trips/Italy-2024/varenna.jpg`, orientation: 'portrait' },
-            { id: 'it-3', src: `${R2_BASE_URL}/trips/Italy-2024/view.jpg`, orientation: 'landscape' },
-        ]
-    },
-    {
-        id: 'nyc-2023',
-        folder: 'NYC-2023',
-        name: formatTripName('NYC-2023'),
-        coverImage: `${R2_BASE_URL}/trips/NYC-2023/cover.jpg`,
-        images: [
-            { id: 'ny-1', src: `${R2_BASE_URL}/trips/NYC-2023/brooklyn-bridge.jpg`, orientation: 'landscape' },
-            { id: 'ny-2', src: `${R2_BASE_URL}/trips/NYC-2023/skyline.jpg`, orientation: 'portrait' },
-        ]
-    },
-    {
-        id: 'sf-2024',
-        folder: 'SF-2024',
-        name: formatTripName('SF-2024'),
-        coverImage: `${R2_BASE_URL}/trips/SF-2024/cover.jpg`,
-        images: [
-            { id: 'sf-1', src: `${R2_BASE_URL}/trips/SF-2024/golden-gate.jpg`, orientation: 'landscape' },
-        ]
-    },
-];
+// Build location from manifest entry
+const buildLocation = (entry: { folder: string; photos: string[] }): LocationAlbum => ({
+    id: entry.folder.toLowerCase(),
+    name: formatTripName(entry.folder),
+    folder: entry.folder,
+    coverImage: `${R2_BASE_URL}/trips/${entry.folder}/cover.JPG`,
+    images: entry.photos.map((photo, idx) => ({
+        id: `${entry.folder}-${idx}`,
+        src: `${R2_BASE_URL}/trips/${entry.folder}/${photo}`,
+        orientation: 'landscape' as const // Default, can be detected client-side if needed
+    }))
+});
 
-// Helper to get all photos with trip name as description
-export const getAllPhotosWithTripName = () => {
-    return GALLERY_DATA.flatMap(trip =>
-        trip.images.map(img => ({
+// Fetch gallery data from R2 manifest
+export const fetchGalleryData = async (): Promise<LocationAlbum[]> => {
+    try {
+        const response = await fetch(`${R2_BASE_URL}/manifest.json`);
+        const manifest = await response.json();
+        return manifest.trips.map(buildLocation);
+    } catch (error) {
+        console.error('Failed to load gallery:', error);
+        return [];
+    }
+};
+
+// For static/SSR fallback - empty by default, populated by fetch
+export let GALLERY_DATA: LocationAlbum[] = [];
+
+// Initialize on module load (for client-side)
+if (typeof window !== 'undefined') {
+    fetchGalleryData().then(data => {
+        GALLERY_DATA = data;
+    });
+}
+
+// Get all photos with trip name as location
+export const getAllPhotosWithTripName = (locations: LocationAlbum[]) => {
+    return locations.flatMap(loc =>
+        loc.images.map(img => ({
             src: img.src,
-            location: trip.name,
+            location: loc.name,
             date: ''
         }))
     );

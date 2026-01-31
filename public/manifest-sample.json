@@ -1,0 +1,27 @@
+{
+    "trips": [
+        {
+            "folder": "Italy-2024",
+            "photos": [
+                "lake-como.jpg",
+                "varenna.jpg",
+                "view.jpg"
+            ]
+        },
+        {
+            "folder": "NYC-2023",
+            "photos": [
+                "brooklyn-bridge.jpg",
+                "skyline.jpg",
+                "times-square.jpg"
+            ]
+        },
+        {
+            "folder": "SF-2024",
+            "photos": [
+                "golden-gate.jpg",
+                "downtown.jpg"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,28 @@
+{
+    "trips": [
+        {
+            "folder": "Italy-2024",
+            "photos": [
+                "DSC00458.JPG",
+                "DSC00474.JPG",
+                "DSC00494.JPG"
+            ]
+        },
+        {
+            "folder": "France-2025",
+            "photos": [
+                "DSC00458.JPG",
+                "DSC00474.JPG",
+                "DSC00487.JPG"
+            ]
+        },
+        {
+            "folder": "New York-2025",
+            "photos": [
+                "DSC00458.JPG",
+                "DSC00487.JPG",
+                "DSC00494.JPG"
+            ]
+        }
+    ]
+}

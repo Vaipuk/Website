@@ -1,6 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { GridContainer } from './components/Layout/GridContainer'
-// Tile import removed as we are using specific tiles now
 import { SpotifyTile } from './components/Tiles/SpotifyTile'
 import { IntroTile } from './components/Tiles/IntroTile'
 import { LinkTile } from './components/Tiles/LinkTile'
@@ -8,11 +7,20 @@ import { ProjectTile } from './components/Tiles/ProjectTile'
 import { PhotoTile } from './components/Tiles/PhotoTile'
 import { ContactTile } from './components/Tiles/ContactTile'
 import { ProjectOverlay } from './components/ProjectOverlay'
-import { galleryImages } from './data/galleryConfig'
+import { fetchTrips, getRandomImages, type GalleryImage } from './data/galleryConfig'
 import './App.css'
 
 function App() {
   const [selectedProject, setSelectedProject] = useState<{ title: string, description: string, gradient: string } | null>(null);
+  const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
+
+  // Fetch gallery images from R2 manifest on mount
+  useEffect(() => {
+    fetchTrips().then(trips => {
+      const images = getRandomImages(trips, 5);
+      setGalleryImages(images);
+    });
+  }, []);
 
   const handleProjectClick = () => {
     setSelectedProject({
@@ -34,7 +42,7 @@ function App() {
         {/* Intro Tile */}
         <IntroTile />
 
-        {/* Photo Tile (New) */}
+        {/* Photo Tile */}
         <PhotoTile
           linkTo="/gallery"
           images={galleryImages}
