@@ -8,6 +8,7 @@ import { ProjectTile } from './components/Tiles/ProjectTile'
 import { PhotoTile } from './components/Tiles/PhotoTile'
 import { ContactTile } from './components/Tiles/ContactTile'
 import { ProjectOverlay } from './components/ProjectOverlay'
+import { galleryImages } from './data/galleryConfig'
 import './App.css'
 
 function App() {
@@ -36,11 +37,7 @@ function App() {
         {/* Photo Tile (New) */}
         <PhotoTile
           linkTo="/gallery"
-          images={[
-            { src: "/gallery-1.png", location: "Mountain Summit", date: "Sunset 2025" },
-            { src: "/gallery-2.png", location: "Home Studio", date: "Winter 2024" },
-            { src: "/gallery-3.png", location: "City Lights", date: "Night 2024" }
-          ]}
+          images={galleryImages}
         />
 
         {/* Spotify Tile */}

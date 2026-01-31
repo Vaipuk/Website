@@ -19,10 +19,9 @@ export const IntroTile: React.FC = () => {
 
                 {/* Main content - centered */}
                 <div className={styles.mainContent}>
-                    <h1 className={styles.heading}>Hello, I'm <span className={styles.name}>Bhard</span>.</h1>
+                    <h1 className={styles.heading}>Hello, I'm <span className={styles.name}>Vaibhav (V)</span>.</h1>
                     <p className={styles.bio}>
-                        Software engineer & designer based in San Francisco.
-                        I build digital products with a focus on <span className={styles.highlight}>simplicity</span> and <span className={styles.highlight}>performance</span>.
+                        Computer Science & Data Science senior at Arizona State University, building <span className={styles.highlight}>data-driven systems</span> to understand human behavior and <span className={styles.highlight}>generative models</span>.
                     </p>
                 </div>
 
@@ -36,7 +35,7 @@ export const IntroTile: React.FC = () => {
                     </div>
                     <div className={styles.location}>
                         <span className={styles.locationIcon}>📍</span>
-                        <span>San Francisco, CA</span>
+                        <span>Tempe, AZ</span>
                     </div>
                 </div>
             </div>
