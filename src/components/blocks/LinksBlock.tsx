@@ -31,6 +31,13 @@ const LINKS = [
     variant: 'blog',
     icon: '✍️',
   },
+  {
+    platform: 'Gallery',
+    handle: 'Photos & travels',
+    url: '/gallery',
+    variant: 'gallery',
+    icon: '🖼️',
+  },
 ]
 
 const GithubIcon = () => (
@@ -54,7 +61,8 @@ export const LinksBlock: React.FC = () => {
   const labelRef = useReveal()
   const c0 = useReveal(50);  const c1 = useReveal(100)
   const c2 = useReveal(150); const c3 = useReveal(200)
-  const cardRefs = [c0, c1, c2, c3]
+  const c4 = useReveal(250)
+  const cardRefs = [c0, c1, c2, c3, c4]
 
   return (
     <section className={styles.links}>
