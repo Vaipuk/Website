@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './ThemeToggle.module.css'
 
 type Theme = 'dark' | 'light'
