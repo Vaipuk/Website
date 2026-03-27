@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
 import { GalleryPage } from './pages/GalleryPage.tsx'
-import BlogPage from './pages/BlogPage.tsx'
+import { BlogPage } from './pages/BlogPage.tsx'
 import { ProjectsPage } from './pages/ProjectsPage.tsx'
 
 createRoot(document.getElementById('root')!).render(
