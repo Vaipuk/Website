@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { GridContainer } from '../components/Layout/GridContainer';
-import { ProjectTile } from '../components/Tiles/ProjectTile';
 import { ProjectOverlay } from '../components/ProjectOverlay';
 import styles from './ProjectsPage.module.css';
 
@@ -62,6 +60,34 @@ export const ProjectsPage: React.FC = () => {
 
     return (
         <div className={styles.page}>
+            <button className={styles.back} onClick={() => navigate('/')}>
+                ← Home
+            </button>
+            <h1 className={styles.pageTitle}><em>Projects</em></h1>
+            <div className={styles.projectList}>
+                {PROJECTS.map(p => (
+                    <div
+                        key={p.id}
+                        className={styles.projectRow}
+                        onClick={() => handleProjectClick(p)}
+                    >
+                        <div
+                            className={styles.projectVisual}
+                            style={{ background: p.gradient }}
+                        />
+                        <div className={styles.projectMeta}>
+                            <h2 className={styles.projectTitle}>{p.title}</h2>
+                            <p className={styles.projectDesc}>{p.description}</p>
+                            <div className={styles.projectTags}>
+                                {p.tags?.map(t => (
+                                    <span key={t} className={styles.tag}>{t}</span>
+                                ))}
+                            </div>
+                        </div>
+                        <span className={styles.projectArrow}>→</span>
+                    </div>
+                ))}
+            </div>
             <ProjectOverlay
                 isOpen={!!selectedProject}
                 onClose={() => setSelectedProject(null)}
@@ -71,24 +97,6 @@ export const ProjectsPage: React.FC = () => {
                     gradient: selectedProject.gradient
                 } : null}
             />
-
-            <header className={styles.header}>
-                <button onClick={() => navigate('/')} className={styles.backButton}>← Back to Home</button>
-                <h1>Projects</h1>
-            </header>
-
-            <GridContainer>
-                {PROJECTS.map(project => (
-                    <ProjectTile
-                        key={project.id}
-                        title={project.title}
-                        description={project.description}
-                        gradient={project.gradient}
-                        imageSrc={project.imageSrc}
-                        onClick={() => handleProjectClick(project)}
-                    />
-                ))}
-            </GridContainer>
         </div>
     );
 };
