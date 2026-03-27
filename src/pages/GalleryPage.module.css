@@ -1,9 +1,13 @@
 .page {
   min-height: 100vh;
   background: var(--bg-color);
-  padding: 3rem 2rem 5rem;
+  padding-bottom: 6rem;
+}
+
+.header {
   max-width: var(--container-max);
   margin: 0 auto;
+  padding: 3rem 2rem 2rem;
 }
 
 .back {
@@ -16,7 +20,7 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
-  margin-bottom: 3rem;
+  margin-bottom: 2.5rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -27,19 +31,134 @@
 
 .pageTitle {
   font-family: var(--font-display);
-  font-size: clamp(3rem, 8vw, 7rem);
+  font-size: clamp(3.5rem, 9vw, 8rem);
   line-height: 0.95;
   letter-spacing: -0.02em;
-  margin-bottom: 4rem;
+  margin-bottom: 1rem;
 }
 
 .pageTitle em { font-style: italic; color: var(--accent-color); }
 
+.subtitle {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+  margin-bottom: 0;
+}
+
+/* Hero carousel */
+.heroCarousel {
+  position: relative;
+  width: 100%;
+  height: clamp(340px, 55vh, 620px);
+  overflow: hidden;
+  background: var(--tile-bg);
+  margin-bottom: 5rem;
+}
+
+.heroSlide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.heroSlide.active { opacity: 1; }
+
+.heroImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 45%);
+  pointer-events: none;
+}
+
+.heroLabel {
+  position: absolute;
+  bottom: 3rem;
+  left: 2rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  font-style: italic;
+  color: rgba(255,255,255,0.9);
+  text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+  pointer-events: none;
+}
+
+.navBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition);
+  z-index: 2;
+  line-height: 1;
+}
+
+.navBtn:hover { background: rgba(0,0,0,0.6); }
+
+.navPrev { left: 1.25rem; }
+.navNext { right: 1.25rem; }
+
+.heroDots {
+  position: absolute;
+  bottom: 1rem;
+  right: 1.5rem;
+  display: flex;
+  gap: 0.4rem;
+  z-index: 2;
+}
+
+.heroDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.activeDot { background: rgba(255,255,255,0.9); }
+
+/* Trips section */
+.tripsSection {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.tripsLabel {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
 .locGrid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.25rem;
-  margin-bottom: 4rem;
 }
 
 .locCard {
@@ -79,7 +198,7 @@
 .locName {
   display: block;
   font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-style: italic;
   color: #fff;
   margin-bottom: 0.15rem;
@@ -150,7 +269,11 @@
 
 .modalImg.landscape { grid-column: span 2; aspect-ratio: 2; }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
+  .locGrid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
   .locGrid { grid-template-columns: 1fr; }
   .modalGrid { grid-template-columns: 1fr; }
   .modalImg.landscape { grid-column: span 1; aspect-ratio: 4/3; }

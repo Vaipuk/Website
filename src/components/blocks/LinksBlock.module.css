@@ -5,7 +5,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
 }
 
@@ -38,6 +38,7 @@
 .instagram::before { background: linear-gradient(135deg, rgba(240,148,51,0.15), rgba(205,52,122,0.15)); }
 .github::before    { background: linear-gradient(135deg, rgba(88,96,105,0.2), rgba(36,41,47,0.2)); }
 .linkedin::before  { background: linear-gradient(135deg, rgba(0,119,181,0.2), rgba(0,64,96,0.2)); }
+.blog::before      { background: linear-gradient(135deg, rgba(217,119,87,0.15), rgba(180,80,50,0.15)); }
 
 .cardIcon {
   width: 40px;
@@ -53,6 +54,7 @@
 .instagram .cardIcon { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
 .github    .cardIcon { background: #24292e; }
 .linkedin  .cardIcon { background: #0077b5; }
+.blog      .cardIcon { background: #D97757; font-size: 1.1rem; }
 
 .cardBottom {
   display: flex;
@@ -87,6 +89,6 @@
 
 .card:hover .arrow { opacity: 1; transform: translate(0, 0); color: var(--accent-color); }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .grid { grid-template-columns: 1fr 1fr; }
 }

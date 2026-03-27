@@ -24,6 +24,13 @@ const LINKS = [
     variant: 'linkedin',
     icon: null,
   },
+  {
+    platform: 'Blog',
+    handle: 'thoughts & writing',
+    url: '/blog',
+    variant: 'blog',
+    icon: '✍️',
+  },
 ]
 
 const GithubIcon = () => (
@@ -48,7 +55,8 @@ export const LinksBlock: React.FC = () => {
   const c0 = useReveal(50)
   const c1 = useReveal(100)
   const c2 = useReveal(150)
-  const cardRefs = [c0, c1, c2]
+  const c3 = useReveal(200)
+  const cardRefs = [c0, c1, c2, c3]
 
   return (
     <section className={styles.links}>

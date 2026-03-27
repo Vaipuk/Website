@@ -2,9 +2,9 @@ import { ThemeToggle } from './components/ThemeToggle'
 import { HeroBlock }   from './components/blocks/HeroBlock'
 import { AboutBlock }  from './components/blocks/AboutBlock'
 import { WorkBlock }   from './components/blocks/WorkBlock'
+import { GalleryBlock } from './components/blocks/GalleryBlock'
 import { MusicBlock }  from './components/blocks/MusicBlock'
 import { LinksBlock }  from './components/blocks/LinksBlock'
-import { PagesBlock }  from './components/blocks/PagesBlock'
 import { ContactBlock } from './components/blocks/ContactBlock'
 import { FooterBlock } from './components/blocks/FooterBlock'
 
@@ -16,9 +16,9 @@ function App() {
         <HeroBlock />
         <AboutBlock />
         <WorkBlock />
+        <GalleryBlock />
         <MusicBlock />
         <LinksBlock />
-        <PagesBlock />
         <ContactBlock />
       </main>
       <FooterBlock />
