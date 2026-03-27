@@ -1,0 +1,94 @@
+.links {
+  padding: var(--section-padding);
+  border-bottom: 1px solid var(--tile-border);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.card {
+  border-radius: var(--border-radius);
+  border: 1px solid var(--tile-border);
+  background: var(--tile-bg);
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.25rem;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--transition), border-color var(--transition);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.card:hover { transform: translateY(-4px); }
+.card:hover::before { opacity: 1; }
+
+.instagram::before { background: linear-gradient(135deg, rgba(240,148,51,0.15), rgba(205,52,122,0.15)); }
+.github::before    { background: linear-gradient(135deg, rgba(88,96,105,0.2), rgba(36,41,47,0.2)); }
+.linkedin::before  { background: linear-gradient(135deg, rgba(0,119,181,0.2), rgba(0,64,96,0.2)); }
+.blog::before      { background: linear-gradient(135deg, rgba(217,119,87,0.15), rgba(180,80,40,0.15)); }
+
+.cardIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  position: relative;
+}
+
+.instagram .cardIcon { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+.github    .cardIcon { background: #24292e; }
+.linkedin  .cardIcon { background: #0077b5; }
+.blog      .cardIcon { background: var(--accent-color); }
+
+.cardBottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  position: relative;
+}
+
+.cardName {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 0.2rem;
+}
+
+.cardHandle {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
+}
+
+.arrow {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  opacity: 0;
+  transform: translate(-3px, 3px);
+  transition: all var(--transition);
+}
+
+.card:hover .arrow { opacity: 1; transform: translate(0, 0); color: var(--accent-color); }
+
+@media (max-width: 768px) {
+  .grid { grid-template-columns: 1fr 1fr; }
+}
