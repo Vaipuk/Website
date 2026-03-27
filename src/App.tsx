@@ -7,7 +7,6 @@ import { ProjectTile } from './components/Tiles/ProjectTile'
 import { PhotoTile } from './components/Tiles/PhotoTile'
 import { ContactTile } from './components/Tiles/ContactTile'
 import { fetchTrips, getRandomImages, type GalleryImage } from './data/galleryConfig'
-import './App.css'
 
 // Fallback images if R2 fetch fails
 const FALLBACK_IMAGES: GalleryImage[] = [
