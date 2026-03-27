@@ -4,13 +4,21 @@ import { useReveal } from '../../hooks/useReveal'
 import { fetchGalleryData, type LocationAlbum } from '../../data/gallery'
 import styles from './GalleryBlock.module.css'
 
-export const GalleryBlock: React.FC = () => {
-  const labelRef   = useReveal()
-  const textRef    = useReveal(100)
-  const carouselRef = useReveal(200)
-  const navigate = useNavigate()
+const R2 = 'https://images.vaipuk.com'
 
-  const [albums, setAlbums] = useState<LocationAlbum[]>([])
+const FALLBACK_ALBUMS: LocationAlbum[] = [
+  { id: 'italy-2024',    name: 'Italy 2024',    folder: 'Italy-2024',     coverImage: `${R2}/trips/Italy-2024/cover.JPG`,         images: [] },
+  { id: 'france-2025',   name: 'France 2025',   folder: 'France-2025',    coverImage: `${R2}/trips/France-2025/cover.JPG`,        images: [] },
+  { id: 'new-york-2025', name: 'New York 2025', folder: 'New York-2025',  coverImage: `${R2}/trips/New%20York-2025/cover.JPG`,    images: [] },
+]
+
+export const GalleryBlock: React.FC = () => {
+  const labelRef    = useReveal()
+  const textRef     = useReveal(100)
+  const carouselRef = useReveal(200)
+  const navigate    = useNavigate()
+
+  const [albums, setAlbums] = useState<LocationAlbum[]>(FALLBACK_ALBUMS)
   const [currentIndex, setCurrentIndex] = useState(0)
 
   useEffect(() => {
@@ -48,18 +56,14 @@ export const GalleryBlock: React.FC = () => {
             className={styles.carousel}
             onClick={() => navigate('/gallery')}
           >
-            {albums.length === 0 ? (
-              <div className={styles.placeholder} />
-            ) : (
-              albums.map((album, i) => (
-                <div
-                  key={album.id}
-                  className={`${styles.slide} ${i === currentIndex ? styles.active : ''}`}
-                >
-                  <img src={album.coverImage} alt={album.name} className={styles.slideImg} />
-                </div>
-              ))
-            )}
+            {albums.map((album, i) => (
+              <div
+                key={album.id}
+                className={`${styles.slide} ${i === currentIndex ? styles.active : ''}`}
+              >
+                <img src={album.coverImage} alt={album.name} className={styles.slideImg} />
+              </div>
+            ))}
             {currentAlbum && (
               <span className={styles.carouselLabel}>{currentAlbum.name}</span>
             )}

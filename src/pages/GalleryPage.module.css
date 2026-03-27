@@ -43,16 +43,15 @@
   font-size: 1rem;
   color: var(--text-secondary);
   font-weight: 300;
-  margin-bottom: 0;
 }
 
-/* Hero carousel */
+/* ── Hero carousel ─────────────────────────────────────────── */
 .heroCarousel {
   position: relative;
   width: 100%;
   height: clamp(340px, 55vh, 620px);
   overflow: hidden;
-  background: var(--tile-bg);
+  background: #0a0a0a;
   margin-bottom: 5rem;
 }
 
@@ -68,14 +67,14 @@
 .heroImg {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
 
 .heroOverlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 45%);
+  background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 40%);
   pointer-events: none;
 }
 
@@ -95,24 +94,22 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0,0,0,0.35);
+  background: rgba(0,0,0,0.4);
   border: 1px solid rgba(255,255,255,0.15);
   color: #fff;
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: background var(--transition);
   z-index: 2;
-  line-height: 1;
 }
 
-.navBtn:hover { background: rgba(0,0,0,0.6); }
-
+.navBtn:hover { background: rgba(0,0,0,0.7); }
 .navPrev { left: 1.25rem; }
 .navNext { right: 1.25rem; }
 
@@ -138,7 +135,7 @@
 
 .activeDot { background: rgba(255,255,255,0.9); }
 
-/* Trips section */
+/* ── Trips grid ────────────────────────────────────────────── */
 .tripsSection {
   max-width: var(--container-max);
   margin: 0 auto;
@@ -212,27 +209,43 @@
   letter-spacing: 0.06em;
 }
 
-/* Modal */
-.modalBackdrop {
+/* ── Trip detail backdrop ──────────────────────────────────── */
+.tripBackdrop {
   position: fixed;
   inset: 0;
-  background: var(--bg-color);
-  z-index: 50;
-  overflow-y: auto;
-  padding: 3rem 2rem 5rem;
+  background: rgba(0,0,0,0.6);
+  z-index: 40;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+  backdrop-filter: blur(4px);
 }
 
-.modalHeader {
+.tripModal {
+  background: var(--bg-color);
+  width: 100%;
+  max-height: 92vh;
+  border-radius: 20px 20px 0 0;
+  overflow-y: auto;
+  padding: 0 0 3rem;
+}
+
+.tripModalHeader {
+  position: sticky;
+  top: 0;
+  background: var(--bg-color);
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: var(--container-max);
-  margin: 0 auto 3rem;
+  padding: 1.5rem 1.5rem 1rem;
+  border-bottom: 1px solid var(--tile-border);
 }
 
-.modalTitle {
+.tripModalTitle {
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
   font-style: italic;
 }
 
@@ -240,41 +253,153 @@
   background: var(--tile-bg);
   border: 1px solid var(--tile-border);
   border-radius: var(--border-radius-pill);
-  padding: 0.5rem 1.1rem;
+  padding: 0.45rem 1rem;
   color: var(--text-secondary);
   font-family: var(--font-mono);
   font-size: 0.68rem;
   letter-spacing: 0.06em;
   cursor: pointer;
   transition: all var(--transition);
+  flex-shrink: 0;
 }
 
 .modalClose:hover { border-color: var(--accent-color); color: var(--accent-color); }
 
-.modalGrid {
+/* ── iCloud-style photo grid ───────────────────────────────── */
+.photoGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.75rem;
-  max-width: var(--container-max);
-  margin: 0 auto;
+  gap: 3px;
+  padding: 3px;
 }
 
-.modalImg {
-  width: 100%;
-  border-radius: var(--border-radius-sm);
-  object-fit: cover;
-  aspect-ratio: 1;
+.photoThumb {
   display: block;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
 }
 
-.modalImg.landscape { grid-column: span 2; aspect-ratio: 2; }
+/* Default: square thumbnail (iPhone gallery style) */
+.photoThumb {
+  aspect-ratio: 1;
+}
 
+/* Landscape images span 2 columns for rhythm */
+.photoThumb.landscape:nth-child(4n+1) {
+  grid-column: span 2;
+  aspect-ratio: 2 / 1;
+}
+
+.photoThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.photoThumb:hover img {
+  transform: scale(1.04);
+}
+
+/* ── Lightbox ──────────────────────────────────────────────── */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lbImgWrap {
+  max-width: 90vw;
+  max-height: 88vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lbImg {
+  max-width: 100%;
+  max-height: 88vh;
+  object-fit: contain;
+  display: block;
+  border-radius: 4px;
+  user-select: none;
+}
+
+.lbClose {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.5rem;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: background var(--transition);
+  z-index: 101;
+}
+
+.lbClose:hover { background: rgba(255,255,255,0.2); }
+
+.lbNav {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  font-size: 1.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition);
+  z-index: 101;
+  line-height: 1;
+}
+
+.lbNav:hover { background: rgba(255,255,255,0.18); }
+.lbPrev { left: 1.25rem; }
+.lbNext { right: 1.25rem; }
+
+.lbCount {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.5);
+  pointer-events: none;
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .locGrid { grid-template-columns: repeat(2, 1fr); }
+  .photoGrid { grid-template-columns: repeat(3, 1fr); }
+  .photoThumb.landscape:nth-child(4n+1) { grid-column: span 2; }
 }
 
 @media (max-width: 480px) {
   .locGrid { grid-template-columns: 1fr; }
-  .modalGrid { grid-template-columns: 1fr; }
-  .modalImg.landscape { grid-column: span 1; aspect-ratio: 4/3; }
+  .lbNav { display: none; }
 }

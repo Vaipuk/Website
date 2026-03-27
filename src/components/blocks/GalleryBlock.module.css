@@ -57,7 +57,7 @@
   border-radius: var(--border-radius);
   overflow: hidden;
   cursor: pointer;
-  background: var(--tile-bg);
+  background: #0a0a0a;
 }
 
 .slide {
@@ -75,7 +75,7 @@
 .slideImg {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
 
