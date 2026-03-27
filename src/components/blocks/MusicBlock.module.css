@@ -1,0 +1,113 @@
+.music {
+  padding: var(--section-padding);
+  background: var(--tile-bg);
+  border-top: 1px solid var(--tile-border);
+  border-bottom: 1px solid var(--tile-border);
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.75rem;
+}
+
+.heading em {
+  font-style: italic;
+  color: var(--accent-color);
+}
+
+.sub {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 300;
+}
+
+.trackList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--border-radius-sm);
+  background: var(--tile-bg-2);
+  border: 1px solid var(--tile-border);
+  transition: border-color var(--transition), transform var(--transition);
+  cursor: default;
+}
+
+.track:hover {
+  border-color: var(--accent-color);
+  transform: translateX(4px);
+}
+
+.trackArt {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.trackInfo { flex: 1; min-width: 0; }
+
+.trackName {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trackArtist {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+}
+
+.eq {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.eqBar {
+  display: block;
+  width: 3px;
+  background: var(--accent-color);
+  border-radius: 2px;
+  animation: eqBounce 0.8s ease-in-out infinite alternate;
+}
+
+.eqBar:nth-child(1) { animation-delay: 0s; }
+.eqBar:nth-child(2) { animation-delay: 0.15s; }
+.eqBar:nth-child(3) { animation-delay: 0.3s; }
+.eqBar:nth-child(4) { animation-delay: 0.45s; }
+
+@keyframes eqBounce {
+  from { height: 4px; }
+  to   { height: 16px; }
+}
+
+@media (max-width: 768px) {
+  .inner { grid-template-columns: 1fr; gap: 2.5rem; }
+}
