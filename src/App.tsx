@@ -1,91 +1,27 @@
-import { useState, useEffect } from 'react'
-import { GridContainer } from './components/Layout/GridContainer'
-import { SpotifyTile } from './components/Tiles/SpotifyTile'
-import { IntroTile } from './components/Tiles/IntroTile'
-import { LinkTile } from './components/Tiles/LinkTile'
-import { ProjectTile } from './components/Tiles/ProjectTile'
-import { PhotoTile } from './components/Tiles/PhotoTile'
-import { ContactTile } from './components/Tiles/ContactTile'
-import { fetchTrips, getRandomImages, type GalleryImage } from './data/galleryConfig'
-import './App.css'
-
-// Fallback images if R2 fetch fails
-const FALLBACK_IMAGES: GalleryImage[] = [
-  { src: '/trips/Italy-2024/cover.JPG', location: 'Italy • 2024', date: '' },
-  { src: '/trips/France-2025/cover.JPG', location: 'France • 2025', date: '' },
-  { src: '/trips/New%20York-2025/cover.JPG', location: 'New York • 2025', date: '' },
-];
+import { ThemeToggle } from './components/ThemeToggle'
+import { HeroBlock }   from './components/blocks/HeroBlock'
+import { AboutBlock }  from './components/blocks/AboutBlock'
+import { WorkBlock }   from './components/blocks/WorkBlock'
+import { GalleryBlock } from './components/blocks/GalleryBlock'
+import { MusicBlock }  from './components/blocks/MusicBlock'
+import { LinksBlock }  from './components/blocks/LinksBlock'
+import { ContactBlock } from './components/blocks/ContactBlock'
+import { FooterBlock } from './components/blocks/FooterBlock'
 
 function App() {
-  const [galleryImages, setGalleryImages] = useState<GalleryImage[]>(FALLBACK_IMAGES);
-
-  // Try to fetch gallery images from R2 manifest
-  useEffect(() => {
-    fetchTrips()
-      .then(trips => {
-        if (trips.length > 0) {
-          const images = getRandomImages(trips, 5);
-          setGalleryImages(images);
-        }
-      })
-      .catch(err => {
-        console.warn('Using local fallback images:', err);
-      });
-  }, []);
-
   return (
     <>
-      <GridContainer>
-        {/* Intro Tile */}
-        <IntroTile />
-
-        {/* Photo Tile */}
-        <PhotoTile
-          linkTo="/gallery"
-          images={galleryImages}
-        />
-
-        {/* Spotify Tile */}
-        <SpotifyTile />
-
-        {/* Projects */}
-        <ProjectTile
-          title="Projects"
-          description="View my work and experiments."
-          imageSrc="/photos/tensor_aurora.png"
-          gradient="linear-gradient(45deg, #4f46e5, #9333ea)"
-          linkTo="/projects"
-        />
-
-        {/* Social Links */}
-        <LinkTile
-          platform="Instagram"
-          url="https://instagram.com"
-          username="@bhard"
-        />
-        <LinkTile
-          platform="GitHub"
-          url="https://github.com/Vaipuk"
-          username="@Vaipuk"
-        />
-
-        {/* More Links / Content */}
-        <LinkTile
-          platform="Blog"
-          url="/blog"
-          username="Still Thinking"
-          isInternalLink={true}
-        />
-        <LinkTile
-          platform="LinkedIn"
-          url="https://www.linkedin.com/in/vaipuk/"
-          username="@vaipuk"
-        />
-
-        {/* Contact / Reach Out Tile */}
-        <ContactTile />
-
-      </GridContainer>
+      <ThemeToggle />
+      <main>
+        <HeroBlock />
+        <AboutBlock />
+        <WorkBlock />
+        <GalleryBlock />
+        <MusicBlock />
+        <LinksBlock />
+        <ContactBlock />
+      </main>
+      <FooterBlock />
     </>
   )
 }

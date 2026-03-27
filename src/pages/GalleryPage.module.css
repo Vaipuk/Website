@@ -1,144 +1,405 @@
 .page {
-    padding: var(--spacing-xl);
-    min-height: 100vh;
-    background-color: var(--bg-color);
-    color: var(--text-primary);
-    max-width: 1400px;
-    margin: 0 auto;
+  min-height: 100vh;
+  background: var(--bg-color);
+  padding-bottom: 6rem;
 }
 
 .header {
-    margin-bottom: var(--spacing-xl);
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 3rem 2rem 2rem;
 }
 
-.header h1 {
-    font-size: 3rem;
-    margin: 0;
+.back {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-bottom: 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color var(--transition);
 }
 
-.backButton {
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    font-family: var(--font-body);
-    font-size: 1rem;
-    padding: 0;
-    cursor: pointer;
-    width: fit-content;
-    transition: color 0.2s;
+.back:hover { color: var(--accent-color); }
+
+.pageTitle {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 9vw, 8rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
 }
 
-.backButton:hover {
-    color: var(--accent-color);
+.pageTitle em { font-style: italic; color: var(--accent-color); }
+
+.subtitle {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  font-weight: 300;
 }
 
-/* Modal Implementation */
-.modalOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.85);
-    /* Dark matte overlay */
-    backdrop-filter: blur(8px);
-    z-index: 1000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: var(--spacing-xl);
-    animation: fadeIn 0.3s ease-out;
+/* ── Hero carousel ─────────────────────────────────────────── */
+.heroCarousel {
+  position: relative;
+  width: 100%;
+  height: clamp(340px, 55vh, 620px);
+  overflow: hidden;
+  background: #0a0a0a;
+  margin-bottom: 5rem;
 }
 
-.modalContent {
-    background-color: var(--bg-color);
-    width: 100%;
-    max-width: 1200px;
-    height: 90vh;
-    border-radius: var(--border-radius);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    border: 1px solid var(--tile-border);
+.heroSlide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1s ease;
 }
 
-.modalHeader {
-    padding: var(--spacing-lg);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--tile-border);
+.heroSlide.active { opacity: 1; }
+
+.heroImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
-.modalHeader h2 {
-    margin: 0;
-    font-family: var(--font-heading);
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 40%);
+  pointer-events: none;
 }
 
-.closeButton {
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    font-size: 2rem;
-    cursor: pointer;
-    line-height: 1;
+.heroLabel {
+  position: absolute;
+  bottom: 3rem;
+  left: 2rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  font-style: italic;
+  color: rgba(255,255,255,0.9);
+  text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+  pointer-events: none;
 }
 
-.masonryGrid {
-    padding: var(--spacing-lg);
-    overflow-y: auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: var(--spacing-md);
-    align-items: start;
+.navBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition);
+  z-index: 2;
 }
 
-.masonryItem img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    /* Slightly softer corners inside generic views */
-    display: block;
+.navBtn:hover { background: rgba(0,0,0,0.7); }
+.navPrev { left: 1.25rem; }
+.navNext { right: 1.25rem; }
+
+.heroDots {
+  position: absolute;
+  bottom: 1rem;
+  right: 1.5rem;
+  display: flex;
+  gap: 0.4rem;
+  z-index: 2;
 }
 
-.masonryItem.landscape {
-    grid-column: span 2;
+.heroDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background var(--transition);
 }
 
-.masonryItem.portrait {
-    grid-column: span 1;
+.activeDot { background: rgba(255,255,255,0.9); }
+
+/* ── Trips grid ────────────────────────────────────────────── */
+.tripsSection {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 2rem;
 }
 
-.caption {
-    padding-top: 8px;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    font-style: italic;
+.tripsLabel {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+.locGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
 }
 
-@keyframes slideUp {
-    from {
-        transform: translateY(20px);
-        opacity: 0;
-    }
+.locCard {
+  position: relative;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  cursor: pointer;
+  transition: transform var(--transition);
+}
 
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+.locCard:hover { transform: translateY(-4px); }
+
+.locImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.locCard:hover .locImg { transform: scale(1.05); }
+
+.locOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%);
+}
+
+.locContent {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 1.25rem;
+}
+
+.locName {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-style: italic;
+  color: #fff;
+  margin-bottom: 0.15rem;
+}
+
+.locCount {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.06em;
+}
+
+/* ── Trip detail backdrop ──────────────────────────────────── */
+.tripBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 40;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+  backdrop-filter: blur(4px);
+}
+
+.tripModal {
+  background: var(--bg-color);
+  width: 100%;
+  max-height: 92vh;
+  border-radius: 20px 20px 0 0;
+  overflow-y: auto;
+  padding: 0 0 3rem;
+}
+
+.tripModalHeader {
+  position: sticky;
+  top: 0;
+  background: var(--bg-color);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 1.5rem 1rem;
+  border-bottom: 1px solid var(--tile-border);
+}
+
+.tripModalTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-style: italic;
+}
+
+.modalClose {
+  background: var(--tile-bg);
+  border: 1px solid var(--tile-border);
+  border-radius: var(--border-radius-pill);
+  padding: 0.45rem 1rem;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all var(--transition);
+  flex-shrink: 0;
+}
+
+.modalClose:hover { border-color: var(--accent-color); color: var(--accent-color); }
+
+/* ── iCloud-style photo grid ───────────────────────────────── */
+.photoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  padding: 3px;
+}
+
+.photoThumb {
+  display: block;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Default: square thumbnail (iPhone gallery style) */
+.photoThumb {
+  aspect-ratio: 1;
+}
+
+/* Landscape images span 2 columns for rhythm */
+.photoThumb.landscape:nth-child(4n+1) {
+  grid-column: span 2;
+  aspect-ratio: 2 / 1;
+}
+
+.photoThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.photoThumb:hover img {
+  transform: scale(1.04);
+}
+
+/* ── Lightbox ──────────────────────────────────────────────── */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lbImgWrap {
+  max-width: 90vw;
+  max-height: 88vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lbImg {
+  max-width: 100%;
+  max-height: 88vh;
+  object-fit: contain;
+  display: block;
+  border-radius: 4px;
+  user-select: none;
+}
+
+.lbClose {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.5rem;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: background var(--transition);
+  z-index: 101;
+}
+
+.lbClose:hover { background: rgba(255,255,255,0.2); }
+
+.lbNav {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  font-size: 1.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition);
+  z-index: 101;
+  line-height: 1;
+}
+
+.lbNav:hover { background: rgba(255,255,255,0.18); }
+.lbPrev { left: 1.25rem; }
+.lbNext { right: 1.25rem; }
+
+.lbCount {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.5);
+  pointer-events: none;
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .locGrid { grid-template-columns: repeat(2, 1fr); }
+  .photoGrid { grid-template-columns: repeat(3, 1fr); }
+  .photoThumb.landscape:nth-child(4n+1) { grid-column: span 2; }
+}
+
+@media (max-width: 480px) {
+  .locGrid { grid-template-columns: 1fr; }
+  .lbNav { display: none; }
 }
