@@ -25,11 +25,9 @@ test('returns a ref object', () => {
   expect(result.current).toHaveProperty('current')
 })
 
-test('adds reveal class to element on mount', () => {
-  const div = document.createElement('div')
+test('returns a ref with null current before DOM attachment', () => {
   const { result } = renderHook(() => useReveal())
-  Object.defineProperty(result.current, 'current', { value: div, writable: false })
-  expect(mockObserve).not.toHaveBeenCalledWith(div) // el not yet attached
+  expect(result.current.current).toBeNull()
 })
 
 test('adds visible class when element intersects', () => {
