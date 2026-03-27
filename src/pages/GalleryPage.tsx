@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { GridContainer } from '../components/Layout/GridContainer';
-import { PhotoTile } from '../components/Tiles/PhotoTile';
-import { LocationTile } from '../components/Tiles/LocationTile';
-import { fetchGalleryData, getAllPhotosWithTripName, type LocationAlbum } from '../data/gallery';
+import { fetchGalleryData, type LocationAlbum } from '../data/gallery';
 import styles from './GalleryPage.module.css';
 
 // Fallback locations if R2 fetch fails
@@ -61,58 +58,48 @@ export const GalleryPage: React.FC = () => {
             });
     }, []);
 
-    // Get images for hero carousel
-    const heroImages = getAllPhotosWithTripName(locations).slice(0, 5);
-
-    const handleLocationClick = (location: LocationAlbum) => {
-        setSelectedLocation(location);
-    };
-
     return (
         <div className={styles.page}>
-            <header className={styles.header}>
-                <button onClick={() => navigate('/')} className={styles.backButton}>← Back to Home</button>
-                <h1>Photography</h1>
-            </header>
+            <button className={styles.back} onClick={() => navigate('/')}>
+                ← Home
+            </button>
 
-            <GridContainer>
-                {/* Hero Carousel - Full Width */}
-                {heroImages.length > 0 && (
-                    <PhotoTile images={heroImages} colSpan={4} rowSpan={2} />
-                )}
+            <h1 className={styles.pageTitle}><em>Gallery</em></h1>
 
-                {/* Location Grid */}
-                {locations.map(location => (
-                    <LocationTile
-                        key={location.id}
-                        name={location.name}
-                        coverImage={{ src: location.coverImage, orientation: 'landscape' }}
-                        photoCount={location.images.length}
-                        colSpan={2}
-                        rowSpan={2}
-                        onClick={() => handleLocationClick(location)}
-                    />
+            <div className={styles.locGrid}>
+                {locations.map(loc => (
+                    <div
+                        key={loc.id}
+                        className={styles.locCard}
+                        onClick={() => setSelectedLocation(loc)}
+                    >
+                        <img src={loc.coverImage} alt={loc.name} className={styles.locImg} />
+                        <div className={styles.locOverlay} />
+                        <div className={styles.locContent}>
+                            <span className={styles.locName}>{loc.name}</span>
+                            <span className={styles.locCount}>{loc.images.length} photos</span>
+                        </div>
+                    </div>
                 ))}
-            </GridContainer>
+            </div>
 
             {/* Location Detail Overlay */}
             {selectedLocation && (
-                <div className={styles.modalOverlay} onClick={() => setSelectedLocation(null)}>
-                    <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
-                        <div className={styles.modalHeader}>
-                            <h2>{selectedLocation.name}</h2>
-                            <button onClick={() => setSelectedLocation(null)} className={styles.closeButton}>×</button>
-                        </div>
-                        <div className={styles.masonryGrid}>
-                            {selectedLocation.images.map(img => (
-                                <div
-                                    key={img.id}
-                                    className={`${styles.masonryItem} ${img.orientation === 'landscape' ? styles.landscape : styles.portrait}`}
-                                >
-                                    <img src={img.src} alt={selectedLocation.name} loading="lazy" />
-                                </div>
-                            ))}
-                        </div>
+                <div className={styles.modalBackdrop}>
+                    <div className={styles.modalHeader}>
+                        <span className={styles.modalTitle}>{selectedLocation.name}</span>
+                        <button onClick={() => setSelectedLocation(null)} className={styles.modalClose}>Close</button>
+                    </div>
+                    <div className={styles.modalGrid}>
+                        {selectedLocation.images.map(img => (
+                            <img
+                                key={img.id}
+                                src={img.src}
+                                alt={selectedLocation.name}
+                                loading="lazy"
+                                className={`${styles.modalImg} ${img.orientation === 'landscape' ? styles.landscape : ''}`}
+                            />
+                        ))}
                     </div>
                 </div>
             )}

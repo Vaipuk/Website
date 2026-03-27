@@ -1,144 +1,157 @@
 .page {
-    padding: var(--spacing-xl);
-    min-height: 100vh;
-    background-color: var(--bg-color);
-    color: var(--text-primary);
-    max-width: 1400px;
-    margin: 0 auto;
+  min-height: 100vh;
+  background: var(--bg-color);
+  padding: 3rem 2rem 5rem;
+  max-width: var(--container-max);
+  margin: 0 auto;
 }
 
-.header {
-    margin-bottom: var(--spacing-xl);
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
+.back {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-bottom: 3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color var(--transition);
 }
 
-.header h1 {
-    font-size: 3rem;
-    margin: 0;
+.back:hover { color: var(--accent-color); }
+
+.pageTitle {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 8vw, 7rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin-bottom: 4rem;
 }
 
-.backButton {
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    font-family: var(--font-body);
-    font-size: 1rem;
-    padding: 0;
-    cursor: pointer;
-    width: fit-content;
-    transition: color 0.2s;
+.pageTitle em { font-style: italic; color: var(--accent-color); }
+
+.locGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 4rem;
 }
 
-.backButton:hover {
-    color: var(--accent-color);
+.locCard {
+  position: relative;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  cursor: pointer;
+  transition: transform var(--transition);
 }
 
-/* Modal Implementation */
-.modalOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.85);
-    /* Dark matte overlay */
-    backdrop-filter: blur(8px);
-    z-index: 1000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: var(--spacing-xl);
-    animation: fadeIn 0.3s ease-out;
+.locCard:hover { transform: translateY(-4px); }
+
+.locImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
 }
 
-.modalContent {
-    background-color: var(--bg-color);
-    width: 100%;
-    max-width: 1200px;
-    height: 90vh;
-    border-radius: var(--border-radius);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    border: 1px solid var(--tile-border);
+.locCard:hover .locImg { transform: scale(1.05); }
+
+.locOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%);
+}
+
+.locContent {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 1.25rem;
+}
+
+.locName {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-style: italic;
+  color: #fff;
+  margin-bottom: 0.15rem;
+}
+
+.locCount {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.06em;
+}
+
+/* Modal */
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-color);
+  z-index: 50;
+  overflow-y: auto;
+  padding: 3rem 2rem 5rem;
 }
 
 .modalHeader {
-    padding: var(--spacing-lg);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--tile-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: var(--container-max);
+  margin: 0 auto 3rem;
 }
 
-.modalHeader h2 {
-    margin: 0;
-    font-family: var(--font-heading);
+.modalTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-style: italic;
 }
 
-.closeButton {
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    font-size: 2rem;
-    cursor: pointer;
-    line-height: 1;
+.modalClose {
+  background: var(--tile-bg);
+  border: 1px solid var(--tile-border);
+  border-radius: var(--border-radius-pill);
+  padding: 0.5rem 1.1rem;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all var(--transition);
 }
 
-.masonryGrid {
-    padding: var(--spacing-lg);
-    overflow-y: auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: var(--spacing-md);
-    align-items: start;
+.modalClose:hover { border-color: var(--accent-color); color: var(--accent-color); }
+
+.modalGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  max-width: var(--container-max);
+  margin: 0 auto;
 }
 
-.masonryItem img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    /* Slightly softer corners inside generic views */
-    display: block;
+.modalImg {
+  width: 100%;
+  border-radius: var(--border-radius-sm);
+  object-fit: cover;
+  aspect-ratio: 1;
+  display: block;
 }
 
-.masonryItem.landscape {
-    grid-column: span 2;
-}
+.modalImg.landscape { grid-column: span 2; aspect-ratio: 2; }
 
-.masonryItem.portrait {
-    grid-column: span 1;
-}
-
-.caption {
-    padding-top: 8px;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    font-style: italic;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes slideUp {
-    from {
-        transform: translateY(20px);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+@media (max-width: 640px) {
+  .locGrid { grid-template-columns: 1fr; }
+  .modalGrid { grid-template-columns: 1fr; }
+  .modalImg.landscape { grid-column: span 1; aspect-ratio: 4/3; }
 }
