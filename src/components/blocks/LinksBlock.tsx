@@ -24,20 +24,6 @@ const LINKS = [
     variant: 'linkedin',
     icon: null,
   },
-  {
-    platform: 'Blog',
-    handle: 'Thoughts & writing',
-    url: '/blog',
-    variant: 'blog',
-    icon: '✍️',
-  },
-  {
-    platform: 'Gallery',
-    handle: 'Photos & travels',
-    url: '/gallery',
-    variant: 'gallery',
-    icon: '🖼️',
-  },
 ]
 
 const GithubIcon = () => (
@@ -59,10 +45,10 @@ const iconMap: Record<string, React.ReactNode> = {
 
 export const LinksBlock: React.FC = () => {
   const labelRef = useReveal()
-  const c0 = useReveal(50);  const c1 = useReveal(100)
-  const c2 = useReveal(150); const c3 = useReveal(200)
-  const c4 = useReveal(250)
-  const cardRefs = [c0, c1, c2, c3, c4]
+  const c0 = useReveal(50)
+  const c1 = useReveal(100)
+  const c2 = useReveal(150)
+  const cardRefs = [c0, c1, c2]
 
   return (
     <section className={styles.links}>
