@@ -1,0 +1,21 @@
+/* V4 design tokens — scoped to [data-theme="v4"] so they don't bleed into other pages */
+[data-theme="v4"] {
+  --v4-bg: #0a0806;
+  --v4-ink: #f4ece0;
+  --v4-muted: rgba(244, 236, 224, 0.5);
+  --v4-line: rgba(244, 236, 224, 0.1);
+  --v4-accent: #f0855a;
+  --v4-mono: "JetBrains Mono", ui-monospace, monospace;
+  --v4-display: "Fraunces", Georgia, serif;
+}
+
+/* Global keyframe used by Equalizer bars and the footer pulse dot */
+@keyframes v4bar {
+  from { transform: scaleY(0.4); }
+  to   { transform: scaleY(1); }
+}
+
+/* Smooth scroll only when V4 is active */
+html:has([data-theme="v4"]) {
+  scroll-behavior: smooth;
+}
