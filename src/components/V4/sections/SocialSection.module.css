@@ -1,0 +1,126 @@
+/* =========================================================
+   SocialSection — V4 redesign
+   ========================================================= */
+
+.section {
+  padding: 60px 72px 100px;
+}
+
+/* ----------------------------------------------------------
+   Header row
+   ---------------------------------------------------------- */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 32px;
+}
+
+.headline {
+  font-family: var(--v4-display);
+  font-size: 64px;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  font-weight: 300;
+  color: var(--v4-ink);
+  margin: 16px 0 0;
+}
+
+.headlineEm {
+  color: var(--v4-accent);
+  font-style: italic;
+}
+
+.channelCount {
+  font-family: var(--v4-mono);
+  font-size: 11px;
+  color: var(--v4-muted);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+/* ----------------------------------------------------------
+   Cards grid
+   ---------------------------------------------------------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+/* ----------------------------------------------------------
+   Individual card
+   ---------------------------------------------------------- */
+
+.card {
+  border-radius: 12px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+}
+
+/* ----------------------------------------------------------
+   Icon chip
+   ---------------------------------------------------------- */
+
+.chip {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  flex-shrink: 0;
+}
+
+/* ----------------------------------------------------------
+   Text block
+   ---------------------------------------------------------- */
+
+.textBlock {
+  flex: 1;
+  min-width: 0;
+}
+
+.platform {
+  font-family: var(--v4-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.handle {
+  font-family: var(--v4-display);
+  font-size: 17px;
+  line-height: 1.1;
+  font-style: italic;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ----------------------------------------------------------
+   Arrow glyph
+   ---------------------------------------------------------- */
+
+.arrow {
+  font-family: var(--v4-mono);
+  font-size: 14px;
+  opacity: 0.8;
+  flex-shrink: 0;
+}

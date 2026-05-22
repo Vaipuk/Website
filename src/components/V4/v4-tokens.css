@@ -7,6 +7,12 @@
   --v4-accent: #f0855a;
   --v4-mono: "JetBrains Mono", ui-monospace, monospace;
   --v4-display: "Fraunces", Georgia, serif;
+  --v4-sans: "DM Sans", system-ui, sans-serif;
+  --v4-tile: #16130f;
+  --v4-tile-2: #1f1b16;
+  --v4-radius: 18px;
+  --v4-gap: 12px;
+  --v4-trans: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 /* Global keyframe used by Equalizer bars and the footer pulse dot */
