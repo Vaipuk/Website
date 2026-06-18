@@ -15,6 +15,7 @@ export function ContactSection() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const [botcheck, setBotcheck] = useState(false);
   const [status, setStatus] = useState<FormStatus>('idle');
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -62,7 +63,7 @@ export function ContactSection() {
           message,
           subject: `Website contact from ${name}`,
           from_name: name,
-          botcheck: '',
+          botcheck: botcheck ? 'true' : '',
         }),
       });
       const data = (await res.json()) as { success?: boolean; message?: string };
@@ -71,6 +72,7 @@ export function ContactSection() {
         setName('');
         setEmail('');
         setMessage('');
+        setBotcheck(false);
       } else {
         setStatus('error');
         setErrorMsg(data.message || 'Something went wrong. Please try again.');
@@ -187,7 +189,8 @@ export function ContactSection() {
               disabled={status === 'sending'}
             />
 
-            {/* Honeypot — must stay empty; bots fill it, Web3Forms drops them */}
+            {/* Honeypot — must stay unchecked; bots tick all checkboxes,
+                and we forward the value to Web3Forms which drops them. */}
             <input
               type="checkbox"
               name="botcheck"
@@ -195,6 +198,8 @@ export function ContactSection() {
               tabIndex={-1}
               autoComplete="off"
               aria-hidden="true"
+              checked={botcheck}
+              onChange={(e) => setBotcheck(e.target.checked)}
             />
 
             <button
@@ -209,17 +214,18 @@ export function ContactSection() {
               )}
             </button>
 
-            {(status === 'sent' || status === 'error') && (
-              <p
-                className={styles.statusLine}
-                data-state={status === 'error' ? 'error' : 'sent'}
-                aria-live="polite"
-              >
-                {status === 'sent'
-                  ? "Thanks — I'll get back to you soon."
-                  : errorMsg}
-              </p>
-            )}
+            <p
+              className={styles.statusLine}
+              data-state={status === 'error' ? 'error' : 'sent'}
+              role="status"
+              aria-live="polite"
+            >
+              {status === 'sent'
+                ? "Thanks — I'll get back to you soon."
+                : status === 'error'
+                  ? errorMsg
+                  : ''}
+            </p>
           </form>
         </div>
       </div>
