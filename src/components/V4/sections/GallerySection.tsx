@@ -1,23 +1,35 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { fetchGalleryData, type LocationAlbum } from '../../../data/gallery';
+import { fetchGalleryData, getAllPhotosWithTripName } from '../../../data/gallery';
 import { Frame } from '../Frame';
 import { SectionEyebrow } from '../SectionEyebrow';
 import styles from './GallerySection.module.css';
 
+type GalleryPhoto = { src: string; location: string };
+
 export function GallerySection() {
-  const [albums, setAlbums] = useState<LocationAlbum[]>([]);
+  const [photos, setPhotos] = useState<GalleryPhoto[]>([]);
 
   useEffect(() => {
     fetchGalleryData()
-      .then((data) => setAlbums(data.slice(0, 3)))
-      .catch(() => setAlbums([]));
+      .then((albums) => {
+        const all = getAllPhotosWithTripName(albums);
+        // Fisher-Yates shuffle
+        for (let i = all.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [all[i], all[j]] = [all[j], all[i]];
+        }
+        setPhotos(
+          all.slice(0, 3).map((p) => ({ src: p.src, location: p.location })),
+        );
+      })
+      .catch(() => setPhotos([]));
   }, []);
 
-  const albumLabel = (album: LocationAlbum | undefined): string | undefined => {
-    if (!album) return undefined;
-    // "Chicago 2026" -> "Chicago"
-    return album.name.split(' ')[0];
+  const photoLabel = (photo: GalleryPhoto | undefined): string | undefined => {
+    if (!photo) return undefined;
+    // "Italy 2024" -> "Italy"
+    return photo.location.split(' ')[0];
   };
 
   return (
@@ -43,27 +55,27 @@ export function GallerySection() {
         <div className={styles.frameGrid}>
           {/* Frame 1 — spans both rows */}
           <Frame
-            src={albums[0]?.coverImage}
+            src={photos[0]?.src}
             hue={20}
             tag="01"
-            label={albumLabel(albums[0])}
+            label={photoLabel(photos[0])}
             className={styles.frameSpan}
           />
 
           {/* Frame 2 — row 1 */}
           <Frame
-            src={albums[1]?.coverImage}
+            src={photos[1]?.src}
             hue={240}
             tag="02"
-            label={albumLabel(albums[1])}
+            label={photoLabel(photos[1])}
           />
 
           {/* Frame 3 — row 2 */}
           <Frame
-            src={albums[2]?.coverImage}
+            src={photos[2]?.src}
             hue={40}
             tag="03"
-            label={albumLabel(albums[2])}
+            label={photoLabel(photos[2])}
           />
         </div>
       </div>
