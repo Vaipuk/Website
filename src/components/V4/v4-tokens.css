@@ -13,6 +13,7 @@
   --v4-radius: 18px;
   --v4-gap: 12px;
   --v4-trans: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --v4-error: #c8553d;
 }
 
 /* Global keyframe used by Equalizer bars and the footer pulse dot */

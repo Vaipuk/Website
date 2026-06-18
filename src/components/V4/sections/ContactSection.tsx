@@ -1,14 +1,95 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './ContactSection.module.css';
 import { Frame } from '../Frame';
 import { SectionEyebrow } from '../SectionEyebrow';
 import { Equalizer } from '../Equalizer';
 
+type FormStatus = 'idle' | 'sending' | 'sent' | 'error';
+
 /* ------------------------------------------------------------------ */
 /* Contact Section                                                       */
 /* ------------------------------------------------------------------ */
 
 export function ContactSection() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [status, setStatus] = useState<FormStatus>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY as
+    | string
+    | undefined;
+
+  // When the user starts editing after a success, reset to idle so the
+  // button label flips back to "Send message →" predictably.
+  const resetIfSent = () => {
+    if (status === 'sent') {
+      setStatus('idle');
+      setErrorMsg('');
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (status === 'sending') return;
+
+    if (!accessKey) {
+      console.warn(
+        '[ContactSection] VITE_WEB3FORMS_ACCESS_KEY is not set. ' +
+          'See .env.example for setup.',
+      );
+      setStatus('error');
+      setErrorMsg('Form not configured.');
+      return;
+    }
+
+    setStatus('sending');
+    setErrorMsg('');
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: accessKey,
+          name,
+          email,
+          message,
+          subject: `Website contact from ${name}`,
+          from_name: name,
+          botcheck: '',
+        }),
+      });
+      const data = (await res.json()) as { success?: boolean; message?: string };
+      if (data.success) {
+        setStatus('sent');
+        setName('');
+        setEmail('');
+        setMessage('');
+      } else {
+        setStatus('error');
+        setErrorMsg(data.message || 'Something went wrong. Please try again.');
+      }
+    } catch {
+      setStatus('error');
+      setErrorMsg('Network error. Please try again.');
+    }
+  };
+
+  const buttonLabel =
+    status === 'sending'
+      ? 'Sending…'
+      : status === 'sent'
+        ? 'Sent ✓'
+        : status === 'error'
+          ? 'Try again'
+          : null;
+
   return (
     <section id="contact" className={styles.section}>
       {/* Background Frame */}
@@ -66,27 +147,79 @@ export function ContactSection() {
 
         {/* Right column — glass form card */}
         <div className={styles.formCard}>
-          <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
+          <form className={styles.form} onSubmit={handleSubmit}>
             <input
               type="text"
               placeholder="Name"
               className={styles.input}
               autoComplete="name"
+              required
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+                resetIfSent();
+              }}
+              disabled={status === 'sending'}
             />
             <input
               type="email"
               placeholder="Email address"
               className={styles.input}
               autoComplete="email"
+              required
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                resetIfSent();
+              }}
+              disabled={status === 'sending'}
             />
             <textarea
               placeholder="What's on your mind?"
               rows={5}
               className={styles.textarea}
+              required
+              value={message}
+              onChange={(e) => {
+                setMessage(e.target.value);
+                resetIfSent();
+              }}
+              disabled={status === 'sending'}
             />
-            <button type="button" className={styles.submitBtn}>
-              Send message <span aria-hidden="true">→</span>
+
+            {/* Honeypot — must stay empty; bots fill it, Web3Forms drops them */}
+            <input
+              type="checkbox"
+              name="botcheck"
+              style={{ display: 'none' }}
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+            />
+
+            <button
+              type="submit"
+              className={styles.submitBtn}
+              disabled={status === 'sending' || status === 'sent'}
+            >
+              {buttonLabel ?? (
+                <>
+                  Send message <span aria-hidden="true">→</span>
+                </>
+              )}
             </button>
+
+            {(status === 'sent' || status === 'error') && (
+              <p
+                className={styles.statusLine}
+                data-state={status === 'error' ? 'error' : 'sent'}
+                aria-live="polite"
+              >
+                {status === 'sent'
+                  ? "Thanks — I'll get back to you soon."
+                  : errorMsg}
+              </p>
+            )}
           </form>
         </div>
       </div>
