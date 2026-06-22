@@ -41,7 +41,11 @@ const STATIC_FALLBACK: SpotifyData = {
 
 interface SpotifyTokenResponse {
   access_token: string;
+  expires_in: number;
 }
+
+/** How often to re-poll Spotify for fresh now-playing / recently-played data. */
+const POLL_INTERVAL_MS = 25_000;
 
 interface SpotifyCurrentlyPlayingResponse {
   item?: {
@@ -73,11 +77,21 @@ interface SpotifyRecentlyPlayedResponse {
   }[];
 }
 
-async function fetchAccessToken(
+// Module-level token cache, shared across remounts and poll cycles.
+// Spotify access tokens last ~1 hour; with 25s polling we must avoid minting
+// a new one on every fetch (wasteful + risks rate-limiting).
+let cachedToken: { value: string; expiresAt: number } | null = null;
+
+async function getAccessToken(
   clientId: string,
   clientSecret: string,
   refreshToken: string,
 ): Promise<string> {
+  // Reuse cached token until within 60s of expiry.
+  if (cachedToken && cachedToken.expiresAt - 60_000 > Date.now()) {
+    return cachedToken.value;
+  }
+
   const credentials = btoa(`${clientId}:${clientSecret}`);
   const body = new URLSearchParams({
     grant_type: 'refresh_token',
@@ -98,7 +112,11 @@ async function fetchAccessToken(
   }
 
   const data = (await res.json()) as SpotifyTokenResponse;
-  return data.access_token;
+  cachedToken = {
+    value: data.access_token,
+    expiresAt: Date.now() + (data.expires_in ?? 3600) * 1000,
+  };
+  return cachedToken.value;
 }
 
 async function fetchNowPlaying(token: string): Promise<SpotifyTrack | null> {
@@ -110,7 +128,9 @@ async function fetchNowPlaying(token: string): Promise<SpotifyTrack | null> {
   if (!res.ok) throw new Error(`Now playing fetch failed: ${res.status}`);
 
   const data = (await res.json()) as SpotifyCurrentlyPlayingResponse;
-  if (!data.item) return null;
+  // Treat only an actively-playing track as "now playing". A paused track
+  // falls through to the recently-played display, same as an idle player.
+  if (!data.item || !data.is_playing) return null;
 
   return {
     id: data.item.id,
@@ -125,7 +145,7 @@ async function fetchNowPlaying(token: string): Promise<SpotifyTrack | null> {
 }
 
 async function fetchRecentTracks(token: string): Promise<SpotifyTrack[]> {
-  const res = await fetch('https://api.spotify.com/v1/me/player/recently-played?limit=4', {
+  const res = await fetch('https://api.spotify.com/v1/me/player/recently-played?limit=5', {
     headers: { Authorization: `Bearer ${token}` },
   });
 
@@ -164,9 +184,9 @@ export function useSpotify(): SpotifyData {
 
     let cancelled = false;
 
-    (async () => {
+    const load = async () => {
       try {
-        const token = await fetchAccessToken(clientId, clientSecret, refreshToken);
+        const token = await getAccessToken(clientId, clientSecret, refreshToken);
         if (cancelled) return;
 
         const [nowPlaying, recentTracks] = await Promise.all([
@@ -181,10 +201,14 @@ export function useSpotify(): SpotifyData {
         console.warn('[useSpotify] Failed to fetch Spotify data:', err);
         setData({ ...STATIC_FALLBACK, error: String(err) });
       }
-    })();
+    };
+
+    load();
+    const intervalId = setInterval(load, POLL_INTERVAL_MS);
 
     return () => {
       cancelled = true;
+      clearInterval(intervalId);
     };
   }, []);
 

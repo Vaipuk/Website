@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import styles from './MusicSection.module.css';
 import { Frame } from '../Frame';
 import { SectionEyebrow } from '../SectionEyebrow';
@@ -36,32 +37,39 @@ function Backdrop() {
 }
 
 interface NowPlayingCardProps {
-  nowPlaying: SpotifyTrack | null;
+  track: SpotifyTrack | null;
+  isLive: boolean;
+  progressMs: number;
 }
 
-function NowPlayingCard({ nowPlaying }: NowPlayingCardProps) {
-  const progressPct = nowPlaying?.progressMs != null && nowPlaying.durationMs > 0
-    ? clamp((nowPlaying.progressMs / nowPlaying.durationMs) * 100, 0, 100)
-    : 42;
+function NowPlayingCard({ track, isLive, progressMs }: NowPlayingCardProps) {
+  const durationMs = track?.durationMs ?? 0;
+  // Live: use the locally-ticking progress. Recently-played: show a full bar.
+  const effectiveProgress = isLive ? progressMs : durationMs;
+  const progressPct = durationMs > 0
+    ? clamp((effectiveProgress / durationMs) * 100, 0, 100)
+    : 0;
 
-  const progressDisplay = nowPlaying?.progressMs != null ? formatMs(nowPlaying.progressMs) : '1:24';
-  const durationDisplay = nowPlaying?.durationMs != null ? formatMs(nowPlaying.durationMs) : '3:20';
+  const progressDisplay = formatMs(effectiveProgress);
+  const durationDisplay = formatMs(durationMs);
 
   return (
     <div className={styles.nowPlayingCard}>
       {/* Header row */}
       <div className={styles.nowPlayingHeader}>
         <div className={styles.spotifyDot} aria-label="Spotify">♪</div>
-        <span className={styles.nowPlayingLabel}>Now Playing on Spotify</span>
-        <Equalizer className={styles.equalizerRight} />
+        <span className={styles.nowPlayingLabel}>
+          {isLive ? 'Now Playing on Spotify' : 'Recently played on Spotify'}
+        </span>
+        {isLive && <Equalizer className={styles.equalizerRight} />}
       </div>
 
       {/* Body row */}
       <div className={styles.nowPlayingBody}>
         {/* Album art */}
         <div className={styles.albumArt}>
-          {nowPlaying?.albumArtUrl ? (
-            <Frame src={nowPlaying.albumArtUrl} alt={nowPlaying.album} style={{ width: '100%', height: '100%' }} />
+          {track?.albumArtUrl ? (
+            <Frame src={track.albumArtUrl} alt={track.album} style={{ width: '100%', height: '100%' }} />
           ) : (
             <Frame hue={340} style={{ width: '100%', height: '100%' }} />
           )}
@@ -70,11 +78,11 @@ function NowPlayingCard({ nowPlaying }: NowPlayingCardProps) {
         {/* Track info */}
         <div className={styles.trackInfo}>
           <div className={styles.trackTitle}>
-            {nowPlaying?.name ?? 'Not playing'}
+            {track?.name ?? 'Not playing'}
           </div>
-          {nowPlaying && (
+          {track && (
             <div className={styles.trackMeta}>
-              {nowPlaying.artist} · {nowPlaying.album}
+              {track.artist} · {track.album}
             </div>
           )}
 
@@ -142,6 +150,32 @@ function TrackRow({ track, index }: TrackRowProps) {
 
 export function MusicSection() {
   const { nowPlaying, recentTracks } = useSpotify();
+  const isLive = nowPlaying != null;
+
+  // The card never shows an empty state: fall back to the most recent track.
+  const displayTrack = nowPlaying ?? recentTracks[0] ?? null;
+
+  // Avoid showing the most-recent track twice: when idle it occupies the card,
+  // so the right-hand list starts one further down.
+  const listTracks = isLive ? recentTracks.slice(0, 4) : recentTracks.slice(1, 5);
+
+  // Local live-ticking progress so the bar advances between 25s polls.
+  const [progressMs, setProgressMs] = useState(0);
+
+  // Re-sync to Spotify's reported progress whenever the track or poll updates.
+  useEffect(() => {
+    setProgressMs(nowPlaying?.progressMs ?? 0);
+  }, [nowPlaying?.id, nowPlaying?.progressMs]);
+
+  // Advance one second at a time while a track is actively playing.
+  useEffect(() => {
+    if (!isLive || !nowPlaying) return;
+    const duration = nowPlaying.durationMs;
+    const id = setInterval(() => {
+      setProgressMs((p) => Math.min(p + 1000, duration));
+    }, 1000);
+    return () => clearInterval(id);
+  }, [isLive, nowPlaying?.id, nowPlaying?.durationMs]);
 
   return (
     <section id="music" className={styles.section}>
@@ -155,7 +189,7 @@ export function MusicSection() {
             What I've been<br />
             <em className={styles.headlineEm}>listening to.</em>
           </h2>
-          <NowPlayingCard nowPlaying={nowPlaying} />
+          <NowPlayingCard track={displayTrack} isLive={isLive} progressMs={progressMs} />
         </div>
 
         {/* Right column */}
@@ -163,7 +197,7 @@ export function MusicSection() {
           <div className={styles.recentLabel}>Recently Played · Top of the Week</div>
           <div className={styles.trackList}>
             {[0, 1, 2, 3].map((i) => (
-              <TrackRow key={i} track={recentTracks[i]} index={i} />
+              <TrackRow key={i} track={listTracks[i]} index={i} />
             ))}
           </div>
         </div>
