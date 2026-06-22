@@ -39,6 +39,12 @@
   align-items: start;
 }
 
+/* Let each column hold its track width so long titles truncate (ellipsis)
+   instead of forcing the column — and the whole card — to grow. */
+.foreground > div {
+  min-width: 0;
+}
+
 /* ----------------------------------------------------------
    Left column
    ---------------------------------------------------------- */
