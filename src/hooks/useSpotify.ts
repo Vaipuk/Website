@@ -14,6 +14,7 @@ export interface SpotifyTrack {
 export interface SpotifyData {
   nowPlaying: SpotifyTrack | null;
   recentTracks: SpotifyTrack[];
+  topTracks: SpotifyTrack[];
   loading: boolean;
   error: string | null;
 }
@@ -34,6 +35,12 @@ const STATIC_FALLBACK: SpotifyData = {
     { id: 'static-2', name: 'Heat Waves', artist: 'Glass Animals', album: 'Dreamland', albumArtUrl: null, durationMs: 238000 },
     { id: 'static-3', name: 'Watermelon Sugar', artist: 'Harry Styles', album: 'Fine Line', albumArtUrl: null, durationMs: 174000 },
     { id: 'static-4', name: 'Midnight City', artist: 'M83', album: "Hurry Up, We're Dreaming", albumArtUrl: null, durationMs: 243000 },
+  ],
+  topTracks: [
+    { id: 'top-1', name: 'Midnight City', artist: 'M83', album: "Hurry Up, We're Dreaming", albumArtUrl: null, durationMs: 243000 },
+    { id: 'top-2', name: 'Instant Crush', artist: 'Daft Punk', album: 'Random Access Memories', albumArtUrl: null, durationMs: 337000 },
+    { id: 'top-3', name: 'The Less I Know the Better', artist: 'Tame Impala', album: 'Currents', albumArtUrl: null, durationMs: 216000 },
+    { id: 'top-4', name: 'Redbone', artist: 'Childish Gambino', album: 'Awaken, My Love!', albumArtUrl: null, durationMs: 327000 },
   ],
   loading: false,
   error: null,
@@ -145,7 +152,8 @@ async function fetchNowPlaying(token: string): Promise<SpotifyTrack | null> {
 }
 
 async function fetchRecentTracks(token: string): Promise<SpotifyTrack[]> {
-  const res = await fetch('https://api.spotify.com/v1/me/player/recently-played?limit=5', {
+  // Only the most-recent track is used (idle fallback for the Now Playing card).
+  const res = await fetch('https://api.spotify.com/v1/me/player/recently-played?limit=1', {
     headers: { Authorization: `Bearer ${token}` },
   });
 
@@ -160,6 +168,40 @@ async function fetchRecentTracks(token: string): Promise<SpotifyTrack[]> {
     album: item.track.album.name,
     albumArtUrl: item.track.album.images[0]?.url ?? null,
     durationMs: item.track.duration_ms,
+  }));
+}
+
+interface SpotifyTopTracksResponse {
+  items: {
+    id: string;
+    name: string;
+    artists: { name: string }[];
+    album: {
+      name: string;
+      images: { url: string }[];
+    };
+    duration_ms: number;
+  }[];
+}
+
+async function fetchTopTracks(token: string): Promise<SpotifyTrack[]> {
+  // short_term ≈ last 4 weeks (Spotify's shortest top-tracks window).
+  const res = await fetch(
+    'https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=4',
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+
+  if (!res.ok) throw new Error(`Top tracks fetch failed: ${res.status}`);
+
+  const data = (await res.json()) as SpotifyTopTracksResponse;
+
+  return data.items.map((track, i) => ({
+    id: track.id || `top-${i}`,
+    name: track.name,
+    artist: track.artists[0]?.name ?? 'Unknown Artist',
+    album: track.album.name,
+    albumArtUrl: track.album.images[0]?.url ?? null,
+    durationMs: track.duration_ms,
   }));
 }
 
@@ -189,13 +231,14 @@ export function useSpotify(): SpotifyData {
         const token = await getAccessToken(clientId, clientSecret, refreshToken);
         if (cancelled) return;
 
-        const [nowPlaying, recentTracks] = await Promise.all([
+        const [nowPlaying, recentTracks, topTracks] = await Promise.all([
           fetchNowPlaying(token),
           fetchRecentTracks(token),
+          fetchTopTracks(token),
         ]);
         if (cancelled) return;
 
-        setData({ nowPlaying, recentTracks, loading: false, error: null });
+        setData({ nowPlaying, recentTracks, topTracks, loading: false, error: null });
       } catch (err) {
         if (cancelled) return;
         console.warn('[useSpotify] Failed to fetch Spotify data:', err);

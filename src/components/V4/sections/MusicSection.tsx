@@ -149,15 +149,14 @@ function TrackRow({ track, index }: TrackRowProps) {
 /* ------------------------------------------------------------------ */
 
 export function MusicSection() {
-  const { nowPlaying, recentTracks } = useSpotify();
+  const { nowPlaying, recentTracks, topTracks } = useSpotify();
   const isLive = nowPlaying != null;
 
   // The card never shows an empty state: fall back to the most recent track.
   const displayTrack = nowPlaying ?? recentTracks[0] ?? null;
 
-  // Avoid showing the most-recent track twice: when idle it occupies the card,
-  // so the right-hand list starts one further down.
-  const listTracks = isLive ? recentTracks.slice(0, 4) : recentTracks.slice(1, 5);
+  // Right-hand list shows the user's top tracks (last ~4 weeks).
+  const listTracks = topTracks.slice(0, 4);
 
   // Local live-ticking progress so the bar advances between 25s polls.
   const [progressMs, setProgressMs] = useState(0);
@@ -194,7 +193,7 @@ export function MusicSection() {
 
         {/* Right column */}
         <div>
-          <div className={styles.recentLabel}>Recently Played · Top of the Week</div>
+          <div className={styles.recentLabel}>Top Tracks · Last 4 Weeks</div>
           <div className={styles.trackList}>
             {[0, 1, 2, 3].map((i) => (
               <TrackRow key={i} track={listTracks[i]} index={i} />

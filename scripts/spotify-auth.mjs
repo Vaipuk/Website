@@ -23,7 +23,7 @@ if (!CLIENT_ID || !CLIENT_SECRET) {
   console.error('PowerShell: $env:SPOTIFY_CLIENT_ID="..."; $env:SPOTIFY_CLIENT_SECRET="..."; node scripts/spotify-auth.mjs');
   process.exit(1);
 }
-const SCOPES        = 'user-read-currently-playing user-read-recently-played';
+const SCOPES        = 'user-read-currently-playing user-read-recently-played user-top-read';
 
 const authUrl =
   'https://accounts.spotify.com/authorize?' +
