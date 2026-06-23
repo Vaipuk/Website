@@ -1,144 +1,333 @@
 .page {
-    padding: var(--spacing-xl);
-    min-height: 100vh;
-    background-color: var(--bg-color);
-    color: var(--text-primary);
-    max-width: 1400px;
-    margin: 0 auto;
+  min-height: 100vh;
+  width: 100%;
+  background: var(--v4-bg);
+  color: var(--v4-ink);
+  padding-bottom: 7rem;
 }
 
+/* ── Header ────────────────────────────────────────────────── */
 .header {
-    margin-bottom: var(--spacing-xl);
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 72px 3rem;
 }
 
-.header h1 {
-    font-size: 3rem;
-    margin: 0;
+.back {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--v4-muted);
+  font-family: var(--v4-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-bottom: 3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color var(--v4-trans);
 }
 
-.backButton {
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    font-family: var(--font-body);
-    font-size: 1rem;
-    padding: 0;
-    cursor: pointer;
-    width: fit-content;
-    transition: color 0.2s;
+.back:hover { color: var(--v4-accent); }
+
+.eyebrow {
+  display: block;
+  font-family: var(--v4-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--v4-accent);
+  margin-bottom: 1.25rem;
 }
 
-.backButton:hover {
-    color: var(--accent-color);
+.pageTitle {
+  font-family: var(--v4-display);
+  font-size: clamp(3.5rem, 9vw, 8rem);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  font-weight: 300;
+  color: var(--v4-ink);
+  margin-bottom: 1rem;
 }
 
-/* Modal Implementation */
-.modalOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.85);
-    /* Dark matte overlay */
-    backdrop-filter: blur(8px);
-    z-index: 1000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: var(--spacing-xl);
-    animation: fadeIn 0.3s ease-out;
+.pageTitle em { font-style: italic; color: var(--v4-accent); }
+
+.subtitle {
+  font-family: var(--v4-display);
+  font-size: 1.15rem;
+  color: var(--v4-ink);
+  opacity: 0.72;
 }
 
-.modalContent {
-    background-color: var(--bg-color);
-    width: 100%;
-    max-width: 1200px;
-    height: 90vh;
-    border-radius: var(--border-radius);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    border: 1px solid var(--tile-border);
+/* ── Trips grid ────────────────────────────────────────────── */
+.tripsSection {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 72px;
 }
 
-.modalHeader {
-    padding: var(--spacing-lg);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--tile-border);
+.tripsLabel {
+  display: block;
+  font-family: var(--v4-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--v4-muted);
+  margin-bottom: 1.5rem;
 }
 
-.modalHeader h2 {
-    margin: 0;
-    font-family: var(--font-heading);
+.locGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
 }
 
-.closeButton {
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    font-size: 2rem;
-    cursor: pointer;
-    line-height: 1;
+.locCard {
+  position: relative;
+  border-radius: var(--v4-radius);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  cursor: pointer;
+  transition: transform var(--v4-trans);
 }
 
-.masonryGrid {
-    padding: var(--spacing-lg);
-    overflow-y: auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: var(--spacing-md);
-    align-items: start;
+.locCard:hover { transform: translateY(-4px); }
+
+.locImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
 }
 
-.masonryItem img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    /* Slightly softer corners inside generic views */
-    display: block;
+.locCard:hover .locImg { transform: scale(1.05); }
+
+.locOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 55%);
 }
 
-.masonryItem.landscape {
-    grid-column: span 2;
+.locContent {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 1.25rem;
 }
 
-.masonryItem.portrait {
-    grid-column: span 1;
+.locName {
+  display: block;
+  font-family: var(--v4-display);
+  font-size: 1.2rem;
+  font-style: italic;
+  color: #fff;
+  margin-bottom: 0.15rem;
 }
 
-.caption {
-    padding-top: 8px;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    font-style: italic;
+.locCount {
+  display: block;
+  font-family: var(--v4-mono);
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.06em;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+/* ── Trip detail backdrop ──────────────────────────────────── */
+.tripBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 40;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+  backdrop-filter: blur(4px);
 }
 
-@keyframes slideUp {
-    from {
-        transform: translateY(20px);
-        opacity: 0;
-    }
+.tripModal {
+  background: var(--v4-bg);
+  width: 100%;
+  max-height: 92vh;
+  border-radius: 20px 20px 0 0;
+  overflow-y: auto;
+  padding: 0 0 3rem;
+}
 
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+.tripModalHeader {
+  position: sticky;
+  top: 0;
+  background: var(--v4-bg);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 1.5rem 1rem;
+  border-bottom: 1px solid var(--v4-line);
+}
+
+.tripModalTitle {
+  font-family: var(--v4-display);
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-style: italic;
+  color: var(--v4-ink);
+}
+
+.modalClose {
+  background: var(--v4-tile);
+  border: 1px solid var(--v4-line);
+  border-radius: 100px;
+  padding: 0.45rem 1rem;
+  color: var(--v4-muted);
+  font-family: var(--v4-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all var(--v4-trans);
+  flex-shrink: 0;
+}
+
+.modalClose:hover { border-color: var(--v4-accent); color: var(--v4-accent); }
+
+/* ── iCloud-style photo grid ───────────────────────────────── */
+.photoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  padding: 3px;
+}
+
+.photoThumb {
+  display: block;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 1;
+}
+
+/* Landscape images span 2 columns for rhythm */
+.photoThumb.landscape:nth-child(4n+1) {
+  grid-column: span 2;
+  aspect-ratio: 2 / 1;
+}
+
+.photoThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.photoThumb:hover img {
+  transform: scale(1.04);
+}
+
+/* ── Lightbox ──────────────────────────────────────────────── */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lbImgWrap {
+  max-width: 90vw;
+  max-height: 88vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lbImg {
+  max-width: 100%;
+  max-height: 88vh;
+  object-fit: contain;
+  display: block;
+  border-radius: 4px;
+  user-select: none;
+}
+
+.lbClose {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.5rem;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: background var(--v4-trans);
+  z-index: 101;
+}
+
+.lbClose:hover { background: rgba(255,255,255,0.2); }
+
+.lbNav {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  font-size: 1.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--v4-trans);
+  z-index: 101;
+  line-height: 1;
+}
+
+.lbNav:hover { background: rgba(255,255,255,0.18); }
+.lbPrev { left: 1.25rem; }
+.lbNext { right: 1.25rem; }
+
+.lbCount {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--v4-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.5);
+  pointer-events: none;
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .header { padding: 32px 28px 2.5rem; }
+  .tripsSection { padding: 0 28px; }
+}
+
+@media (max-width: 768px) {
+  .locGrid { grid-template-columns: repeat(2, 1fr); }
+  .photoGrid { grid-template-columns: repeat(3, 1fr); }
+  .photoThumb.landscape:nth-child(4n+1) { grid-column: span 2; }
+}
+
+@media (max-width: 480px) {
+  .locGrid { grid-template-columns: 1fr; }
+  .lbNav { display: none; }
 }
