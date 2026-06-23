@@ -25,6 +25,14 @@ body {
   /* Override default */
 }
 
+/* Make the app root fill the viewport so pages (and their centered
+   max-width containers) sit centered instead of shrink-wrapping left.
+   App.css used to own this, but it's only imported by the retired bento
+   homepage and no longer loads. */
+#root {
+  width: 100%;
+}
+
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
