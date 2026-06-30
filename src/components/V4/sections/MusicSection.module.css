@@ -1,0 +1,263 @@
+/* =========================================================
+   MusicSection — V4 redesign
+   ========================================================= */
+
+.section {
+  position: relative;
+  padding: 80px 72px 140px;
+  overflow: hidden;
+}
+
+/* ----------------------------------------------------------
+   Backdrop — blurred Frame grid
+   ---------------------------------------------------------- */
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 24px;
+  padding: 24px;
+}
+
+.backdropFrame {
+  filter: blur(40px) saturate(1.4);
+  opacity: 0.18;
+}
+
+/* ----------------------------------------------------------
+   Foreground layout — two columns
+   ---------------------------------------------------------- */
+
+.foreground {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 72px;
+  align-items: start;
+}
+
+/* Let each column hold its track width so long titles truncate (ellipsis)
+   instead of forcing the column — and the whole card — to grow. */
+.foreground > div {
+  min-width: 0;
+}
+
+/* ----------------------------------------------------------
+   Left column
+   ---------------------------------------------------------- */
+
+.headline {
+  font-family: var(--v4-display);
+  font-size: 80px;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  font-weight: 300;
+  color: var(--v4-ink);
+  margin: 20px 0 28px;
+}
+
+.headlineEm {
+  color: var(--v4-accent);
+  font-style: italic;
+}
+
+/* ----------------------------------------------------------
+   Now Playing card
+   ---------------------------------------------------------- */
+
+.nowPlayingCard {
+  margin-top: 32px;
+  padding: 20px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--v4-line);
+  backdrop-filter: blur(12px);
+}
+
+.nowPlayingHeader {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.spotifyDot {
+  width: 26px;
+  height: 26px;
+  border-radius: 99px;
+  background: #1db954;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #000;
+  flex-shrink: 0;
+}
+
+.nowPlayingLabel {
+  font-family: var(--v4-mono);
+  font-size: 10px;
+  color: var(--v4-muted);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.equalizerRight {
+  margin-left: auto;
+}
+
+.nowPlayingBody {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.albumArt {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.trackInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.trackTitle {
+  font-family: var(--v4-display);
+  font-size: 24px;
+  color: var(--v4-ink);
+  font-style: italic;
+  line-height: 1.1;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trackMeta {
+  font-family: var(--v4-mono);
+  font-size: 11px;
+  color: var(--v4-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.progressBar {
+  margin-top: 12px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--v4-accent);
+  border-radius: 99px;
+}
+
+.progressTimes {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-family: var(--v4-mono);
+  font-size: 9px;
+  color: var(--v4-muted);
+  letter-spacing: 0.1em;
+}
+
+/* ----------------------------------------------------------
+   Right column
+   ---------------------------------------------------------- */
+
+.recentLabel {
+  font-family: var(--v4-mono);
+  font-size: 10px;
+  color: var(--v4-muted);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  padding-left: 16px;
+}
+
+.trackList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.trackRow {
+  display: grid;
+  grid-template-columns: 56px 1fr 90px 60px;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  transition: background 0.2s ease;
+}
+
+.trackRow:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.trackRowArt {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.trackRowName {
+  font-family: var(--v4-display);
+  font-size: 19px;
+  color: var(--v4-ink);
+  font-weight: 400;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trackRowMeta {
+  font-family: var(--v4-mono);
+  font-size: 10px;
+  color: var(--v4-muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vibePill {
+  font-family: var(--v4-mono);
+  font-size: 9px;
+  color: var(--v4-accent);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 99px;
+  border: 1px solid var(--v4-line);
+  justify-self: start;
+  white-space: nowrap;
+}
+
+.trackDuration {
+  font-family: var(--v4-mono);
+  font-size: 11px;
+  color: var(--v4-muted);
+  text-align: right;
+}

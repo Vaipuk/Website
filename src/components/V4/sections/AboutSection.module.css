@@ -1,0 +1,75 @@
+.about {
+  padding: 160px 72px 140px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.left {
+  /* no extra styles needed */
+}
+
+.headline {
+  font-family: var(--v4-display);
+  font-size: 104px;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  font-weight: 300;
+  color: var(--v4-ink);
+  margin: 32px 0 0;
+}
+
+.headlineAccent {
+  color: var(--v4-accent);
+  font-style: italic;
+}
+
+.right {
+  padding-top: 80px;
+}
+
+.bio {
+  font-family: var(--v4-display);
+  font-size: 24px;
+  line-height: 1.5;
+  color: var(--v4-ink);
+  opacity: 0.9;
+  max-width: 540px;
+  margin: 0;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 64px;
+  border-top: 1px solid var(--v4-line);
+  padding-top: 28px;
+}
+
+.stat {
+  /* container */
+}
+
+.statNumber {
+  font-family: var(--v4-display);
+  font-size: 36px;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  color: var(--v4-ink);
+  margin: 0;
+}
+
+.statLabel {
+  font-family: var(--v4-mono);
+  font-size: 10px;
+  color: var(--v4-muted);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-top: 8px;
+  display: block;
+}

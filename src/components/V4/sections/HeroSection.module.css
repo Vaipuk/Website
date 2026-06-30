@@ -1,0 +1,204 @@
+/* =========================================================
+   HeroSection — V4 redesign
+   ========================================================= */
+
+.hero {
+  position: relative;
+  height: 900px;
+  overflow: hidden;
+}
+
+/* ----------------------------------------------------------
+   Layer 1 — Backdrop (Frame + gradient overlay)
+   ---------------------------------------------------------- */
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+}
+
+.frameAbsolute {
+  position: absolute !important;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.gradientOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0) 40%,
+    rgba(0, 0, 0, 0.85) 100%
+  );
+  pointer-events: none;
+}
+
+/* ----------------------------------------------------------
+   Layer 2 — TopNav
+   ---------------------------------------------------------- */
+
+.topNav {
+  position: absolute;
+  top: 32px;
+  left: 40px;
+  right: 40px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--v4-mono);
+  font-size: 11px;
+  color: var(--v4-ink);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.navBrand {
+  flex-shrink: 0;
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navLink {
+  text-decoration: none;
+  color: var(--v4-muted);
+  transition: color 0.2s ease;
+}
+
+.navLink:hover {
+  color: var(--v4-ink);
+}
+
+.navLocation {
+  flex-shrink: 0;
+}
+
+/* ----------------------------------------------------------
+   Layer 3 — Corner marks
+   ---------------------------------------------------------- */
+
+.corner {
+  position: absolute;
+  z-index: 2;
+  width: 18px;
+  height: 18px;
+  opacity: 0.5;
+}
+
+.cornerTL {
+  top: 40px;
+  left: 40px;
+  border-top: 1px solid var(--v4-ink);
+  border-left: 1px solid var(--v4-ink);
+}
+
+.cornerTR {
+  top: 40px;
+  right: 40px;
+  border-top: 1px solid var(--v4-ink);
+  border-right: 1px solid var(--v4-ink);
+}
+
+.cornerBL {
+  bottom: 40px;
+  left: 40px;
+  border-bottom: 1px solid var(--v4-ink);
+  border-left: 1px solid var(--v4-ink);
+}
+
+.cornerBR {
+  bottom: 40px;
+  right: 40px;
+  border-bottom: 1px solid var(--v4-ink);
+  border-right: 1px solid var(--v4-ink);
+}
+
+/* ----------------------------------------------------------
+   Layer 4 — Content block
+   ---------------------------------------------------------- */
+
+.content {
+  position: absolute;
+  left: 72px;
+  right: 72px;
+  bottom: 100px;
+  z-index: 2;
+}
+
+.eyebrow {
+  font-family: var(--v4-mono);
+  font-size: 11px;
+  color: var(--v4-accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+
+.headline {
+  font-family: var(--v4-display);
+  font-size: 220px;
+  line-height: 0.86;
+  letter-spacing: -0.045em;
+  font-weight: 300;
+  color: var(--v4-ink);
+  margin: 0;
+}
+
+.headlineEm {
+  color: var(--v4-accent);
+  font-style: italic;
+  font-weight: 300;
+}
+
+.subRow {
+  margin-top: 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.tagline {
+  font-family: var(--v4-display);
+  font-size: 22px;
+  line-height: 1.4;
+  max-width: 440px;
+  color: var(--v4-ink);
+  opacity: 0.92;
+  margin: 0;
+}
+
+/* ----------------------------------------------------------
+   Scroll indicator
+   ---------------------------------------------------------- */
+
+.scrollIndicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--v4-mono);
+  font-size: 10px;
+  color: var(--v4-muted);
+  letter-spacing: 0.2em;
+}
+
+.scrollLine {
+  width: 1px;
+  height: 40px;
+  background: var(--v4-ink);
+  opacity: 0.5;
+}
+
+.scrollLabel {
+  text-transform: uppercase;
+}

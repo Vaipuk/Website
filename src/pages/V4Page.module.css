@@ -1,0 +1,6 @@
+.page {
+  background: var(--v4-bg);
+  color: var(--v4-ink);
+  font-family: var(--v4-display);
+  min-height: 100vh;
+}

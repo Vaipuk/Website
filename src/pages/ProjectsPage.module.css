@@ -1,42 +1,278 @@
 .page {
-    padding: var(--spacing-xl);
-    min-height: 100vh;
-    background-color: var(--bg-color);
-    color: var(--text-primary);
-    max-width: 1400px;
-    margin: 0 auto;
+  min-height: 100vh;
+  width: 100%;
+  background: var(--v4-bg);
+  color: var(--v4-ink);
 }
 
-.header {
-    margin-bottom: var(--spacing-xl);
+.inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 72px 7rem;
+}
+
+.back {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--v4-muted);
+  font-family: var(--v4-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-bottom: 3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color var(--v4-trans);
+}
+
+.back:hover { color: var(--v4-accent); }
+
+.eyebrow {
+  display: block;
+  font-family: var(--v4-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--v4-accent);
+  margin-bottom: 1.25rem;
+}
+
+.pageTitle {
+  font-family: var(--v4-display);
+  font-size: clamp(3.5rem, 9vw, 8rem);
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  font-weight: 300;
+  color: var(--v4-ink);
+  margin-bottom: 1rem;
+}
+
+.pageTitle em { font-style: italic; color: var(--v4-accent); }
+
+.subtitle {
+  font-family: var(--v4-display);
+  font-size: 1.15rem;
+  color: var(--v4-ink);
+  opacity: 0.72;
+  margin-bottom: 4.5rem;
+  max-width: 480px;
+}
+
+/* ── Project rows (echoes homepage WorkSection) ────────────── */
+.projectList {
+  border-top: 1px solid var(--v4-line);
+}
+
+.projectRow {
+  display: grid;
+  grid-template-columns: 60px 1.3fr 1.2fr 110px;
+  gap: 40px;
+  padding: 36px 16px;
+  margin: 0 -16px;
+  border-bottom: 1px solid var(--v4-line);
+  align-items: start;
+  cursor: pointer;
+  border-radius: var(--v4-radius);
+  transition: background var(--v4-trans);
+}
+
+.projectRow:hover { background: rgba(255, 255, 255, 0.025); }
+
+.projectIndex {
+  font-family: var(--v4-mono);
+  font-size: 11px;
+  color: var(--v4-muted);
+  letter-spacing: 0.14em;
+  padding-top: 14px;
+}
+
+.projectKind {
+  font-family: var(--v4-mono);
+  font-size: 10px;
+  color: var(--v4-muted);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.projectName {
+  font-family: var(--v4-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1;
+  letter-spacing: -0.025em;
+  font-weight: 300;
+  color: var(--v4-ink);
+  margin: 0;
+  transition: color var(--v4-trans);
+}
+
+.projectRow:hover .projectName { color: var(--v4-accent); }
+
+.projectBlurb {
+  font-family: var(--v4-display);
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: var(--v4-ink);
+  opacity: 0.78;
+  margin: 0;
+  padding-top: 10px;
+}
+
+.projectActions {
+  font-family: var(--v4-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: right;
+  padding-top: 14px;
+}
+
+.projectYear { color: var(--v4-muted); display: block; }
+
+.projectView {
+  color: var(--v4-accent);
+  display: block;
+  margin-top: 6px;
+  transition: transform var(--v4-trans);
+}
+
+.projectRow:hover .projectView { transform: translateX(3px); }
+
+/* ── Detail panel ──────────────────────────────────────────── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: flex;
+  justify-content: flex-end;
+  opacity: 0;
+  animation: panelFade 0.3s forwards;
+}
+
+@keyframes panelFade { to { opacity: 1; } }
+
+.panel {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  height: 100%;
+  background: var(--v4-bg);
+  border-left: 1px solid var(--v4-line);
+  box-shadow: -20px 0 60px rgba(0, 0, 0, 0.5);
+  overflow-y: auto;
+  transform: translateX(100%);
+  animation: panelSlide 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes panelSlide { to { transform: translateX(0); } }
+
+.panelAccent {
+  height: 4px;
+  width: 100%;
+}
+
+.panelClose {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  background: rgba(244, 236, 224, 0.08);
+  border: 1px solid var(--v4-line);
+  color: var(--v4-ink);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  font-size: 1.3rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--v4-trans);
+}
+
+.panelClose:hover { border-color: var(--v4-accent); color: var(--v4-accent); }
+
+.panelBody {
+  padding: 4rem 3rem 3rem;
+}
+
+.panelKind {
+  display: block;
+  font-family: var(--v4-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--v4-accent);
+  margin-bottom: 1.25rem;
+}
+
+.panelTitle {
+  font-family: var(--v4-display);
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  font-weight: 300;
+  color: var(--v4-ink);
+  margin-bottom: 1.5rem;
+}
+
+.panelDesc {
+  font-family: var(--v4-display);
+  font-size: 1.3rem;
+  line-height: 1.5;
+  color: var(--v4-ink);
+  margin-bottom: 1.5rem;
+}
+
+.panelDetails {
+  font-family: var(--v4-sans);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--v4-ink);
+  opacity: 0.7;
+  margin-bottom: 2.5rem;
+}
+
+.panelTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  font-family: var(--v4-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.06em;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--v4-line);
+  border-radius: 100px;
+  color: var(--v4-muted);
+  background: var(--v4-tile);
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .inner { padding: 32px 28px 5rem; }
+  .projectRow {
+    grid-template-columns: 40px 1fr;
+    gap: 8px 20px;
+  }
+  .projectBlurb { grid-column: 2; padding-top: 14px; }
+  .projectActions {
+    grid-column: 2;
+    text-align: left;
     display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
+    gap: 1.25rem;
+    padding-top: 14px;
+  }
+  .projectYear, .projectView { display: inline; margin-top: 0; }
 }
 
-.header h1 {
-    font-size: 3rem;
-    margin: 0;
-}
-
-.backButton {
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    font-family: var(--font-body);
-    font-size: 1rem;
-    padding: 0;
-    cursor: pointer;
-    width: fit-content;
-    transition: color 0.2s;
-}
-
-.backButton:hover {
-    color: var(--accent-color);
-}
-
-@media (max-width: 768px) {
-    .header h1 {
-        font-size: 2rem;
-    }
+@media (max-width: 560px) {
+  .panelBody { padding: 3.5rem 1.75rem 2.5rem; }
 }

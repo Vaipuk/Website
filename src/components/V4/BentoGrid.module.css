@@ -1,0 +1,87 @@
+/* ─── GRID ─────────────────────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 180px;
+  gap: var(--v4-gap);
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem 4rem;
+}
+
+/* ─── BASE TILE ──────────────────────────────────────── */
+.tile {
+  background: var(--v4-tile);
+  border: 1px solid var(--v4-line);
+  border-radius: var(--v4-radius);
+  overflow: hidden;
+  position: relative;
+  transition:
+    transform var(--v4-trans),
+    box-shadow var(--v4-trans),
+    border-color var(--v4-trans);
+  text-decoration: none;
+  color: inherit;
+  display: block;
+
+  /* staggered entrance */
+  animation: tile-in 0.55s ease both;
+}
+
+.tile:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+  border-color: rgba(240, 133, 90, 0.18);
+}
+
+@keyframes tile-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* stagger delays via nth-child */
+.tile:nth-child(1)  { animation-delay: 0.04s; }
+.tile:nth-child(2)  { animation-delay: 0.09s; }
+.tile:nth-child(3)  { animation-delay: 0.14s; }
+.tile:nth-child(4)  { animation-delay: 0.19s; }
+.tile:nth-child(5)  { animation-delay: 0.24s; }
+.tile:nth-child(6)  { animation-delay: 0.29s; }
+.tile:nth-child(7)  { animation-delay: 0.34s; }
+.tile:nth-child(8)  { animation-delay: 0.39s; }
+.tile:nth-child(9)  { animation-delay: 0.44s; }
+.tile:nth-child(10) { animation-delay: 0.49s; }
+.tile:nth-child(11) { animation-delay: 0.54s; }
+.tile:nth-child(12) { animation-delay: 0.58s; }
+.tile:nth-child(13) { animation-delay: 0.62s; }
+
+/* ─── SPAN HELPERS ───────────────────────────────────── */
+.col2 { grid-column: span 2; }
+.col3 { grid-column: span 3; }
+.col4 { grid-column: span 4; }
+.row2 { grid-row: span 2; }
+.row3 { grid-row: span 3; }
+
+/* ─── RESPONSIVE ─────────────────────────────────────── */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 160px;
+  }
+  .col3, .col4 { grid-column: span 2; }
+}
+
+@media (max-width: 540px) {
+  .grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 150px;
+    padding: 1rem 1rem 3rem;
+  }
+  .col2, .col3, .col4 { grid-column: span 1; }
+  .row2, .row3 { grid-row: span 1; }
+}

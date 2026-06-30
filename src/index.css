@@ -17,12 +17,19 @@
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
   background-color: var(--bg-color);
-  /* Override default */
+}
+
+/* The app root must fill the viewport so pages (and their centered
+   max-width containers) sit centered instead of shrink-wrapping to the
+   left. App.css used to own #root sizing, but it's only imported by the
+   retired bento homepage and no longer loads. The old `body { display:flex;
+   place-items:center }` (a leftover from the Vite starter) was what pulled
+   low-content pages into a left-hugging column — removed above. */
+#root {
+  width: 100%;
 }
 
 h1 {

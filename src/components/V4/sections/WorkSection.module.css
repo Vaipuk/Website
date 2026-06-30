@@ -1,0 +1,119 @@
+.work {
+  padding: 80px 72px 140px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 56px;
+}
+
+.headerLeft {
+  /* container */
+}
+
+.headline {
+  font-family: var(--v4-display);
+  font-size: 88px;
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+  font-weight: 300;
+  color: var(--v4-ink);
+  margin: 20px 0 0;
+}
+
+.headlineAccent {
+  color: var(--v4-accent);
+  font-style: italic;
+}
+
+.indexLink {
+  font-family: var(--v4-mono);
+  font-size: 11px;
+  color: var(--v4-accent);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.projectList {
+  border-top: 1px solid var(--v4-line);
+}
+
+.projectRow {
+  display: grid;
+  grid-template-columns: 60px 1.3fr 1.2fr 100px;
+  gap: 40px;
+  padding: 40px 0;
+  border-bottom: 1px solid var(--v4-line);
+  align-items: start;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.projectRow:hover {
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.projectIndex {
+  font-family: var(--v4-mono);
+  font-size: 11px;
+  color: var(--v4-muted);
+  letter-spacing: 0.14em;
+  padding-top: 16px;
+}
+
+.projectMeta {
+  /* container */
+}
+
+.projectKind {
+  font-family: var(--v4-mono);
+  font-size: 10px;
+  color: var(--v4-muted);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.projectName {
+  font-family: var(--v4-display);
+  font-size: 52px;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  font-weight: 300;
+  color: var(--v4-ink);
+  margin: 0;
+}
+
+.projectBlurb {
+  font-family: var(--v4-display);
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--v4-ink);
+  opacity: 0.78;
+  margin: 0;
+  padding-top: 12px;
+}
+
+.projectActions {
+  font-family: var(--v4-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: right;
+  padding-top: 16px;
+}
+
+.projectYear {
+  color: var(--v4-muted);
+  display: block;
+}
+
+.projectReadLink {
+  color: var(--v4-accent);
+  text-decoration: none;
+  display: block;
+  margin-top: 6px;
+}

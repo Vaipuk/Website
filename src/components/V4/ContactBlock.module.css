@@ -1,0 +1,70 @@
+.contact {
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.heading {
+  font-family: var(--v4-display);
+  font-size: 1.5rem;
+  line-height: 1.15;
+  color: var(--v4-ink);
+  margin: 0;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+}
+
+.heading em {
+  font-style: italic;
+  color: var(--v4-accent);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.input {
+  width: 100%;
+  padding: 0.6rem 0.9rem;
+  border-radius: 9px;
+  border: 1px solid var(--v4-line);
+  background: var(--v4-tile-2);
+  color: var(--v4-ink);
+  font-family: var(--v4-sans);
+  font-size: 0.76rem;
+  font-weight: 300;
+  outline: none;
+  transition: border-color var(--v4-trans), background var(--v4-trans);
+}
+
+.input::placeholder {
+  color: var(--v4-muted);
+}
+
+.input:focus {
+  border-color: rgba(240, 133, 90, 0.45);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.btn {
+  padding: 0.6rem 1.3rem;
+  border-radius: 100px;
+  border: none;
+  background: var(--v4-accent);
+  color: #fff;
+  font-family: var(--v4-sans);
+  font-size: 0.76rem;
+  font-weight: 500;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background var(--v4-trans), transform var(--v4-trans);
+  letter-spacing: 0.01em;
+}
+
+.btn:hover {
+  background: #e06d3e;
+  transform: translateY(-1px);
+}

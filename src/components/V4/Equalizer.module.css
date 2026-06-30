@@ -1,0 +1,20 @@
+.container {
+  display: flex;
+  gap: 3px;
+  align-items: flex-end;
+}
+
+.bar {
+  display: block;
+  width: 3px;
+  border-radius: 1px;
+  animation: v4bar 0.5s alternate infinite;
+  transform-origin: bottom;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar {
+    animation: none;
+    transform: scaleY(0.7);
+  }
+}
