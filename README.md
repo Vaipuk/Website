@@ -12,7 +12,7 @@ The website does not publish a contact email address or direct mail links. The o
 
 The Vite development and preview servers both provide `GET /api/spotify`. Restart the server after changing local environment values. `npm run build` creates the static site in `dist`; `npm run preview` serves that build with the local API middleware.
 
-The homepage has a 2.8-second cinematic opening on the first clean visit in each tab session. Skip or Escape opens the page immediately. Reduced-motion preferences and direct links to other pages or sections bypass the animation. To watch it again, open the homepage in a new tab.
+The website has a 3.6-second cinematic opening on every fresh page load and refresh, including direct links to other pages or sections. It does not use storage or remember previous visits. Skip or Escape opens the page immediately; reduced-motion preferences bypass the animation.
 
 ## Spotify credentials
 

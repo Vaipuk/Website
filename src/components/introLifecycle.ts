@@ -1,14 +1,7 @@
-export const INTRO_DURATION_MS = 2800;
-export const INTRO_SESSION_KEY = 'vaipuk:intro-seen';
+export const INTRO_DURATION_MS = 3600;
 
 export function shouldShowIntro(environment: Window = window): boolean {
-  if (environment.location.pathname !== '/' || environment.location.hash ||
-      environment.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
-  try {
-    return environment.sessionStorage.getItem(INTRO_SESSION_KEY) !== '1';
-  } catch {
-    return true;
-  }
+  return !environment.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
 export function startIntro(onComplete: (focusMain?: boolean) => void, environment: Window = window): () => void {
@@ -16,11 +9,6 @@ export function startIntro(onComplete: (focusMain?: boolean) => void, environmen
   const body = environment.document.body;
   const overflow = body.style.overflow;
   let cleaned = false;
-  try {
-    environment.sessionStorage.setItem(INTRO_SESSION_KEY, '1');
-  } catch {
-    // Blocked storage must never prevent the page from opening.
-  }
   body.style.overflow = 'hidden';
 
   const complete = (focusMain = false) => {

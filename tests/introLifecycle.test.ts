@@ -27,34 +27,35 @@ function setup() {
   };
 }
 
-test('only an unseen clean homepage entry plays the intro and eligibility has no storage side effects', () => {
+test('every fresh load is eligible including refreshes, previously seen sessions, routes and anchors', () => {
   const intro = setup();
   assert.equal(shouldShowIntro(intro.window), true);
   assert.equal(shouldShowIntro(intro.window), true);
   assert.equal(intro.stored.size, 0);
   intro.environment.location.hash = '#contact';
-  assert.equal(shouldShowIntro(intro.window), false);
+  assert.equal(shouldShowIntro(intro.window), true);
   intro.environment.location.hash = '';
   intro.environment.location.pathname = '/projects';
-  assert.equal(shouldShowIntro(intro.window), false);
+  assert.equal(shouldShowIntro(intro.window), true);
   intro.environment.location.pathname = '/';
   intro.motion.matches = true;
   assert.equal(shouldShowIntro(intro.window), false);
   intro.motion.matches = false;
   intro.stored.set('vaipuk:intro-seen', '1');
-  assert.equal(shouldShowIntro(intro.window), false);
+  assert.equal(shouldShowIntro(intro.window), true);
 });
 
 test('the intro completes once within its time budget and restores scrolling', () => {
   const intro = setup();
   let completed = 0;
   const cleanup = startIntro(() => completed++, intro.window);
-  assert.equal(intro.stored.get('vaipuk:intro-seen'), '1');
+  assert.equal(intro.stored.size, 0);
   assert.equal(intro.body.style.overflow, 'hidden');
-  assert.equal([...intro.timers.values()][0]?.delay, 2800);
+  assert.equal([...intro.timers.values()][0]?.delay, 3600);
   intro.complete();
   assert.equal(completed, 1);
   assert.equal(intro.body.style.overflow, 'auto');
+  assert.equal(shouldShowIntro(intro.window), true);
   intro.escape();
   intro.complete();
   assert.equal(completed, 1);

@@ -10,7 +10,7 @@ import { CinematicIntro } from './components/CinematicIntro';
 import { shouldShowIntro, startIntro } from './components/introLifecycle';
 
 export default function Website() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   const [introPlaying, setIntroPlaying] = useState(() => shouldShowIntro());
   const introHadFocus = useRef(false);
   const completeIntro = useCallback((focusMain = false) => {
@@ -22,7 +22,10 @@ export default function Website() {
     if (introPlaying) return startIntro(completeIntro);
     if (introHadFocus.current) {
       introHadFocus.current = false;
-      document.getElementById('main-content')?.focus({ preventScroll: true });
+      const activeDialog = document.querySelector<HTMLDialogElement>('dialog[open]');
+      if (activeDialog) {
+        if (!activeDialog.contains(document.activeElement)) activeDialog.querySelector('button')?.focus({ preventScroll: true });
+      } else document.getElementById('main-content')?.focus({ preventScroll: true });
     }
   }, [introPlaying, completeIntro]);
   useEffect(() => {
@@ -38,8 +41,14 @@ export default function Website() {
       ['meta[property="og:url"]', `${SITE_ORIGIN}${path}`],
     ]) document.querySelector(selector)?.setAttribute('content', content);
     document.querySelector('link[rel="canonical"]')?.setAttribute('href', `${SITE_ORIGIN}${path}`);
-    window.scrollTo({ top: 0, behavior: 'instant' });
   }, [pathname]);
+
+  useEffect(() => {
+    if (introPlaying) return;
+    const target = hash ? document.getElementById(hash.slice(1)) : null;
+    if (target) target.scrollIntoView({ behavior: 'instant' });
+    else window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [pathname, hash, introPlaying]);
 
   return <>
     <div inert={introPlaying} aria-hidden={introPlaying || undefined}>

@@ -1,4 +1,5 @@
 .intro {
+  --intro-duration: 3600ms;
   position: fixed;
   inset: 0;
   width: 100%;
@@ -8,151 +9,273 @@
   margin: 0;
   padding: 0;
   border: 0;
-  background: transparent;
-  z-index: 200;
-  isolation: isolate;
   overflow: hidden;
+  background: transparent;
   color: #f4ece0;
-  animation: release 2800ms linear both;
 }
 
 .intro::backdrop {
   background: transparent;
 }
 
-.shutter {
-  position: absolute;
-  inset-inline: 0;
-  height: calc(50% + 1px);
-  background: #0a0806;
-  will-change: transform;
-  animation: open 700ms 2100ms cubic-bezier(0.76, 0, 0.24, 1) both;
-}
-
-.top {
-  top: 0;
-  --opening: -101%;
-  background-image: radial-gradient(ellipse at 50% 100%, #20140e 0%, #0a0806 66%);
-}
-
-.bottom {
-  bottom: 0;
-  --opening: 101%;
-  background-image: radial-gradient(ellipse at 50% 0%, #20140e 0%, #0a0806 66%);
-}
-
-.film {
+.matte {
   position: absolute;
   inset: 0;
-  display: grid;
-  place-items: center;
+  background:
+    radial-gradient(ellipse at 28% 36%, #332016 0%, transparent 48%),
+    radial-gradient(ellipse at 80% 65%, #1f1712 0%, transparent 44%),
+    #0a0806;
+  animation: matteRelease var(--intro-duration) linear both;
+}
+
+.exposure {
+  position: absolute;
+  inset: -70%;
   pointer-events: none;
-  animation: filmExit 2800ms linear both;
+  background: linear-gradient(115deg, transparent 43%, #f0855a 49%, #f4ece0 50%, transparent 54%);
+  animation: exposurePass var(--intro-duration) linear both;
 }
 
-.film::before,
-.film::after {
-  content: '';
+.particles {
   position: absolute;
-  top: 10%;
-  bottom: 10%;
-  width: 5px;
-  background: repeating-linear-gradient(to bottom, #f0855a 0 7px, transparent 7px 26px);
-  opacity: 0.19;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
-.film::before { left: clamp(12px, 2vw, 28px); }
-.film::after { right: clamp(12px, 2vw, 28px); }
-
-.registration {
+.stage {
   position: absolute;
-  inset: clamp(32px, 6vw, 76px);
-  border: 1px solid rgb(244 236 224 / 7%);
+  inset: 0;
+  perspective: 1100px;
+  perspective-origin: 50% 48%;
+  pointer-events: none;
 }
 
-.registration::before,
-.registration::after {
-  content: '';
+/* Cropping and exposure stay outside this scene so its depth is preserved. */
+.world {
   position: absolute;
-  width: 24px;
-  height: 24px;
-  border-color: rgb(240 133 90 / 55%);
-  border-style: solid;
+  inset: 0;
+  transform-style: preserve-3d;
+  animation: cameraPass var(--intro-duration) linear both;
 }
 
-.registration::before { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
-.registration::after { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
-
-.beam {
+.print {
   position: absolute;
-  inset-inline: 0;
   top: 50%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #f0855a 35%, #eed4b5 50%, #f0855a 65%, transparent);
-  box-shadow: 0 0 35px 8px rgb(240 133 90 / 16%);
-  animation: exposure 2800ms ease-in-out both;
+  left: 50%;
+  width: clamp(130px, 22vw, 340px);
+  margin: 0;
+  padding: clamp(4px, 0.5vw, 7px);
+  padding-bottom: clamp(12px, 1.6vw, 24px);
+  background: #ddd2be;
+  box-shadow: 0 12px 45px rgb(0 0 0 / 35%);
+  backface-visibility: hidden;
+  will-change: transform;
+  animation: printUnfold var(--intro-duration) both;
 }
 
-.title {
+.imageWindow {
   position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: #21170f;
+}
+
+.imageWindow img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: imageDevelop calc(var(--intro-duration) * 0.24) calc(var(--intro-duration) * var(--reveal-delay)) cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.imageWindow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 15%, rgb(255 238 211 / 32%) 48%, transparent 75%);
+  animation: printGlint var(--intro-duration) linear both;
+}
+
+.typography {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 32px 12px;
+  justify-content: center;
+  transform-style: preserve-3d;
   font-family: 'Fraunces', Georgia, serif;
-  font-size: clamp(52px, 11.6vw, 170px);
+  font-size: clamp(52px, 14.4vw, 208px);
   font-weight: 300;
-  line-height: 0.96;
-  letter-spacing: -0.055em;
+  line-height: 0.87;
+  letter-spacing: -0.065em;
   text-align: center;
-  animation: titleReveal 2800ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.surname { color: #f0855a; font-style: italic; }
+.nameLine {
+  position: relative;
+  display: block;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.firstName {
+  margin-left: -10vw;
+  color: #f4ece0;
+  animation: firstNameArrival var(--intro-duration) both;
+}
+
+.surname {
+  margin-right: -8vw;
+  color: #f0855a;
+  font-style: italic;
+  animation: surnameArrival var(--intro-duration) both;
+}
+
+.echo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 1.9em;
+  font-style: italic;
+  color: transparent;
+  -webkit-text-stroke: 1px rgb(240 133 90 / 28%);
+  white-space: nowrap;
+  animation: echoDrift var(--intro-duration) linear both;
+}
 
 .skip {
   position: absolute;
   right: max(24px, env(safe-area-inset-right));
   bottom: max(24px, env(safe-area-inset-bottom));
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
   min-height: 44px;
-  padding: 10px 17px;
-  border: 1px solid rgb(244 236 224 / 28%);
-  border-radius: 2px;
+  padding: 11px 18px;
+  border: 1px solid rgb(244 236 224 / 38%);
+  border-radius: 99px;
   background: #0a0806;
   color: #f4ece0;
   font: 13px/1.4 'DM Sans', system-ui, sans-serif;
-  transition: border-color 150ms ease, background 150ms ease;
+  cursor: pointer;
 }
 
-.skip:hover { border-color: #f0855a; background: #21150f; }
-.skip:focus-visible { outline: 2px solid #f0855a; outline-offset: 5px; }
-
-@keyframes titleReveal {
-  0%, 12% { opacity: 0; filter: blur(12px); transform: scale(1.035); }
-  35%, 69% { opacity: 1; filter: blur(0); transform: scale(1); }
-  81%, 100% { opacity: 0; filter: blur(3px); transform: scale(0.985); }
+.skip:hover {
+  border-color: #f0855a;
+  background: #21150f;
 }
 
-@keyframes exposure {
-  0%, 9% { opacity: 0; transform: scaleX(0.08); }
-  25% { opacity: 0.7; transform: scaleX(0.82); }
-  45%, 67% { opacity: 0.22; transform: scaleX(1); }
-  78%, 100% { opacity: 0; transform: scaleX(1); }
+.skip:focus-visible {
+  outline: 2px solid #f0855a;
+  outline-offset: 5px;
 }
 
-@keyframes filmExit {
-  0%, 70% { opacity: 1; }
-  83%, 100% { opacity: 0; }
+@keyframes printUnfold {
+  0%, 10% {
+    opacity: 0;
+    transform: translate3d(-50%, -50%, -1200px) rotateX(58deg) rotateY(0deg) rotateZ(calc(var(--roll) * -0.5)) scale(0.55);
+    animation-timing-function: cubic-bezier(0.18, 0.72, 0.17, 1);
+  }
+  47%, 75% {
+    opacity: 1;
+    transform: translate3d(calc(-50% + var(--x)), calc(-50% + var(--y)), var(--depth)) rotateX(-5deg) rotateY(var(--yaw)) rotateZ(var(--roll)) scale(1);
+    animation-timing-function: cubic-bezier(0.7, 0, 1, 0.65);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(calc(-50% + var(--x) * 2.2), calc(-50% + var(--y) * 2.2), var(--depth)) rotateX(8deg) rotateY(var(--yaw)) rotateZ(calc(var(--roll) * 1.4)) scale(1.25);
+  }
 }
 
-@keyframes open { to { transform: translateY(var(--opening)); } }
-@keyframes release { 0%, 99.9% { pointer-events: auto; } 100% { pointer-events: none; visibility: hidden; } }
+@keyframes cameraPass {
+  0% { transform: translateZ(-180px) rotateZ(-8deg); animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1); }
+  48% { transform: translateZ(0) rotateZ(-2deg); }
+  75% { transform: translateZ(25px) rotateZ(-1deg); animation-timing-function: cubic-bezier(0.75, 0, 1, 0.7); }
+  100% { transform: translateZ(1500px) rotateZ(7deg); }
+}
 
-@media (max-height: 450px) {
-  .title { font-size: clamp(48px, 16vh, 80px); }
-  .registration { inset-block: 24px; }
+@keyframes imageDevelop {
+  from { clip-path: inset(100% 0 0); transform: scale(1.22) translateY(-8%); }
+  to { clip-path: inset(0); transform: scale(1) translateY(0); }
+}
+
+@keyframes firstNameArrival {
+  0%, 39% {
+    opacity: 0;
+    transform: translate3d(-22vw, 36vh, -500px) rotateX(-64deg) rotateY(20deg) scale(1.35);
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  49%, 75% {
+    opacity: 1;
+    transform: translate3d(0, 0, 65px) rotateX(0) rotateY(0) scale(1);
+    animation-timing-function: cubic-bezier(0.7, 0, 1, 0.65);
+  }
+  100% { opacity: 0; transform: translate3d(-55vw, -60vh, 500px) rotateX(14deg) rotateZ(-8deg) scale(1.4); }
+}
+
+@keyframes surnameArrival {
+  0%, 42% {
+    opacity: 0;
+    transform: translate3d(28vw, -34vh, -600px) rotateX(65deg) rotateY(-20deg) scale(1.4);
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  52%, 75% {
+    opacity: 1;
+    transform: translate3d(0, 0, 90px) rotateX(0) rotateY(0) scale(1);
+    animation-timing-function: cubic-bezier(0.7, 0, 1, 0.65);
+  }
+  100% { opacity: 0; transform: translate3d(60vw, 65vh, 560px) rotateX(-12deg) rotateZ(9deg) scale(1.35); }
+}
+
+@keyframes echoDrift {
+  0%, 45% { opacity: 0; transform: translate3d(-43%, -45%, -280px) rotateZ(-9deg); }
+  53% { opacity: 0.5; }
+  75% { opacity: 0.35; transform: translate3d(-53%, -52%, -180px) rotateZ(-5deg); }
+  100% { opacity: 0; transform: translate3d(-70%, -95%, 250px) rotateZ(6deg); }
+}
+
+@keyframes printGlint {
+  0%, 40% { opacity: 0; transform: translateX(-100%); }
+  49% { opacity: 0.45; }
+  60%, 100% { opacity: 0; transform: translateX(100%); }
+}
+
+@keyframes exposurePass {
+  0%, 37% { opacity: 0; transform: translateX(-55%) rotate(-8deg); }
+  47% { opacity: 0.08; }
+  59% { opacity: 0; transform: translateX(45%) rotate(-8deg); }
+  78% { opacity: 0; transform: translateX(-35%) rotate(10deg); }
+  88% { opacity: 0.1; }
+  100% { opacity: 0; transform: translateX(60%) rotate(10deg); }
+}
+
+@keyframes matteRelease {
+  0%, 79% { opacity: 1; }
+  89% { opacity: 0.94; }
+  100% { opacity: 0; }
+}
+
+@media (max-width: 600px) {
+  .stage { perspective: 800px; }
+  .print { width: clamp(102px, 30vw, 180px); }
+  .print:nth-child(n + 7) { display: none; }
+  .typography { font-size: clamp(47px, 13.8vw, 82px); }
+  .firstName { margin-left: -7vw; }
+  .surname { margin-right: -3vw; }
+  .echo { font-size: 1.7em; }
+  .skip { right: max(20px, env(safe-area-inset-right)); bottom: max(20px, env(safe-area-inset-bottom)); }
+}
+
+@media (max-height: 450px) and (min-width: 601px) {
+  .typography { font-size: clamp(52px, 19vh, 86px); }
+  .print { width: 22vh; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .intro { display: none; }
+  .intro * { animation: none !important; }
 }
