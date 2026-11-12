@@ -5,6 +5,7 @@ import { GalleryPage } from './pages/GalleryPage';
 import BlogPage from './pages/BlogPage';
 import { ProjectsPage } from './pages/ProjectsPage';
 import { PAGE_METADATA, SITE_ORIGIN } from './data/site';
+import { AmbientBackground } from './components/AmbientBackground';
 
 export default function Website() {
   const { pathname } = useLocation();
@@ -35,5 +36,6 @@ export default function Website() {
         <Route path="*" element={<div style={{ padding: '4rem 1.5rem' }}><h1>Page not found.</h1><Link to="/">Return home</Link></div>} />
       </Routes>
     </main>
+    <AmbientBackground />
   </>;
 }
