@@ -4,7 +4,10 @@
 
 .hero {
   position: relative;
-  height: 900px;
+  min-height: clamp(620px, 88svh, 820px);
+  padding: 24px var(--v4-gutter) 64px;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
@@ -41,35 +44,35 @@
    ---------------------------------------------------------- */
 
 .topNav {
-  position: absolute;
-  top: 32px;
-  left: 40px;
-  right: 40px;
+  position: relative;
   z-index: 2;
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-family: var(--v4-mono);
-  font-size: 11px;
+  font-size: 12px;
   color: var(--v4-ink);
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 .navBrand {
-  flex-shrink: 0;
+  min-width: 0;
 }
 
 .navLinks {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: clamp(12px, 2.5vw, 32px);
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
 .navLink {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
   text-decoration: none;
   color: var(--v4-muted);
   transition: color 0.2s ease;
@@ -77,10 +80,6 @@
 
 .navLink:hover {
   color: var(--v4-ink);
-}
-
-.navLocation {
-  flex-shrink: 0;
 }
 
 /* ----------------------------------------------------------
@@ -96,29 +95,29 @@
 }
 
 .cornerTL {
-  top: 40px;
-  left: 40px;
+  top: 12px;
+  left: 12px;
   border-top: 1px solid var(--v4-ink);
   border-left: 1px solid var(--v4-ink);
 }
 
 .cornerTR {
-  top: 40px;
-  right: 40px;
+  top: 12px;
+  right: 12px;
   border-top: 1px solid var(--v4-ink);
   border-right: 1px solid var(--v4-ink);
 }
 
 .cornerBL {
-  bottom: 40px;
-  left: 40px;
+  bottom: 20px;
+  left: 12px;
   border-bottom: 1px solid var(--v4-ink);
   border-left: 1px solid var(--v4-ink);
 }
 
 .cornerBR {
-  bottom: 40px;
-  right: 40px;
+  bottom: 20px;
+  right: 12px;
   border-bottom: 1px solid var(--v4-ink);
   border-right: 1px solid var(--v4-ink);
 }
@@ -128,25 +127,26 @@
    ---------------------------------------------------------- */
 
 .content {
-  position: absolute;
-  left: 72px;
-  right: 72px;
-  bottom: 100px;
+  position: relative;
+  margin-top: auto;
+  padding-top: 80px;
+  min-width: 0;
   z-index: 2;
 }
 
 .eyebrow {
   font-family: var(--v4-mono);
-  font-size: 11px;
+  font-size: 12px;
   color: var(--v4-accent);
-  letter-spacing: 0.2em;
+  letter-spacing: 0.14em;
+  line-height: 1.6;
   text-transform: uppercase;
   margin-bottom: 28px;
 }
 
 .headline {
   font-family: var(--v4-display);
-  font-size: 220px;
+  font-size: clamp(52px, 15vw, 220px);
   line-height: 0.86;
   letter-spacing: -0.045em;
   font-weight: 300;
@@ -161,17 +161,22 @@
 }
 
 .subRow {
-  margin-top: 48px;
+  margin-top: 32px;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  gap: 24px;
+}
+
+.subRow > div {
+  min-width: 0;
 }
 
 .tagline {
   font-family: var(--v4-display);
-  font-size: 22px;
+  font-size: clamp(20px, 2vw, 26px);
   line-height: 1.4;
-  max-width: 440px;
+  max-width: 520px;
   color: var(--v4-ink);
   opacity: 0.92;
   margin: 0;
@@ -187,7 +192,7 @@
   align-items: center;
   gap: 8px;
   font-family: var(--v4-mono);
-  font-size: 10px;
+  font-size: 12px;
   color: var(--v4-muted);
   letter-spacing: 0.2em;
 }
@@ -201,4 +206,69 @@
 
 .scrollLabel {
   text-transform: uppercase;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+  margin-top: 28px;
+}
+
+.primaryAction,
+.secondaryAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 48px;
+  font-family: var(--v4-mono);
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.primaryAction {
+  padding: 12px 20px;
+  border-radius: 99px;
+  background: var(--v4-accent);
+  color: #1a0f08;
+}
+
+.primaryAction:hover {
+  background: #f69c79;
+  color: #1a0f08;
+}
+
+.secondaryAction {
+  color: var(--v4-ink);
+}
+
+.secondaryAction:hover {
+  color: var(--v4-accent);
+}
+
+@media (max-width: 700px) {
+  .topNav {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .navLinks {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .hero {
+    min-height: clamp(620px, 92svh, 780px);
+    padding-bottom: 48px;
+  }
+
+  .content {
+    padding-top: 64px;
+  }
+
+  .scrollIndicator {
+    display: none;
+  }
 }

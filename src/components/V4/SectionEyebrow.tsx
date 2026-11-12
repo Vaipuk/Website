@@ -9,9 +9,9 @@ export function SectionEyebrow({ children, className }: SectionEyebrowProps) {
       className={className}
       style={{
         fontFamily: 'var(--v4-mono)',
-        fontSize: '10px',
+        fontSize: '12px',
         color: 'var(--v4-accent)',
-        letterSpacing: '0.22em',
+        letterSpacing: '0.14em',
         textTransform: 'uppercase',
       }}
     >

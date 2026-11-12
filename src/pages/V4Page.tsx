@@ -12,8 +12,8 @@ export default function V4Page() {
   return (
     <div data-theme="v4" className={styles.page}>
       <HeroSection />
-      <AboutSection />
       <WorkSection />
+      <AboutSection />
       <GallerySection />
       <MusicSection />
       <SocialSection />

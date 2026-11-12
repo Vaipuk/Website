@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { fetchGalleryData, getAllPhotosWithTripName } from '../../../data/gallery';
+import { fetchGalleryData, LOCAL_GALLERY } from '../../../data/gallery';
 import { Frame } from '../Frame';
 import { SectionEyebrow } from '../SectionEyebrow';
 import styles from './GallerySection.module.css';
@@ -8,28 +8,22 @@ import styles from './GallerySection.module.css';
 type GalleryPhoto = { src: string; location: string };
 
 export function GallerySection() {
-  const [photos, setPhotos] = useState<GalleryPhoto[]>([]);
+  const [photos, setPhotos] = useState<GalleryPhoto[]>(() =>
+    LOCAL_GALLERY.map(album => ({ src: album.coverImage, location: album.name })),
+  );
 
   useEffect(() => {
     fetchGalleryData()
       .then((albums) => {
-        const all = getAllPhotosWithTripName(albums);
-        // Fisher-Yates shuffle
-        for (let i = all.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [all[i], all[j]] = [all[j], all[i]];
-        }
-        setPhotos(
-          all.slice(0, 3).map((p) => ({ src: p.src, location: p.location })),
-        );
+        setPhotos(albums.slice(0, 3).map(album => ({ src: album.coverImage, location: album.name })));
       })
-      .catch(() => setPhotos([]));
+      .catch(() => {});
   }, []);
 
   const photoLabel = (photo: GalleryPhoto | undefined): string | undefined => {
     if (!photo) return undefined;
     // "Italy 2024" -> "Italy"
-    return photo.location.split(' ')[0];
+    return photo.location.replace(/\s+\d{4}$/, '');
   };
 
   return (
@@ -43,8 +37,8 @@ export function GallerySection() {
             I <em className={styles.headlineAccent}>take pictures.</em>
           </h2>
           <p className={styles.caption}>
-            Cars, light, and the occasional desert sky. A small journal of
-            things worth stopping for.
+            A few places and moments worth stopping for, from Italy and France
+            to New York.
           </p>
           <Link to="/gallery" className={styles.galleryLink}>
             View the gallery ↗
@@ -56,6 +50,7 @@ export function GallerySection() {
           {/* Frame 1 — spans both rows */}
           <Frame
             src={photos[0]?.src}
+            alt={photos[0] ? `Photograph from ${photos[0].location}` : ''}
             hue={20}
             tag="01"
             label={photoLabel(photos[0])}
@@ -65,6 +60,7 @@ export function GallerySection() {
           {/* Frame 2 — row 1 */}
           <Frame
             src={photos[1]?.src}
+            alt={photos[1] ? `Photograph from ${photos[1].location}` : ''}
             hue={240}
             tag="02"
             label={photoLabel(photos[1])}
@@ -73,6 +69,7 @@ export function GallerySection() {
           {/* Frame 3 — row 2 */}
           <Frame
             src={photos[2]?.src}
+            alt={photos[2] ? `Photograph from ${photos[2].location}` : ''}
             hue={40}
             tag="03"
             label={photoLabel(photos[2])}

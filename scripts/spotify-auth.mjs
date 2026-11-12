@@ -9,7 +9,7 @@
  *      (127.0.0.1, NOT localhost — Spotify requires the loopback IP)
  *   2. Run this script with your credentials as env vars (see above)
  *   3. Script auto-captures the code and prints your refresh_token
- *   4. Copy VITE_SPOTIFY_REFRESH_TOKEN=... into your .env file
+ *   4. Copy SPOTIFY_REFRESH_TOKEN=... into your ignored .env.local file
  */
 
 import http from 'http';
@@ -88,6 +88,6 @@ if (!resp.ok) {
 }
 
 console.log('── Success! ─────────────────────────────────────────────────');
-console.log('\nAdd this line to your .env file:\n');
-console.log(`VITE_SPOTIFY_REFRESH_TOKEN=${data.refresh_token}`);
+console.log('\nAdd this line to your ignored .env.local file:\n');
+console.log(`SPOTIFY_REFRESH_TOKEN=${data.refresh_token}`);
 console.log('\n─────────────────────────────────────────────────────────────\n');

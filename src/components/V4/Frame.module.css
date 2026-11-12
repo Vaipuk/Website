@@ -36,7 +36,7 @@
   top: 16px;
   left: 16px;
   font-family: var(--v4-mono);
-  font-size: 10px;
+  font-size: 12px;
   color: var(--v4-ink);
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -52,7 +52,7 @@
   bottom: 16px;
   right: 16px;
   font-family: var(--v4-mono);
-  font-size: 10px;
+  font-size: 12px;
   color: var(--v4-muted);
   letter-spacing: 0.14em;
 }

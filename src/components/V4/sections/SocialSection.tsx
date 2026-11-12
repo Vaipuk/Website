@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import styles from './SocialSection.module.css';
 import { SectionEyebrow } from '../SectionEyebrow';
 
@@ -32,22 +31,11 @@ function LinkedInIcon() {
   );
 }
 
-function BlogIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M4 19V5a2 2 0 0 1 2-2h10l4 4v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/>
-      <path d="M14 3v4a2 2 0 0 0 2 2h4"/>
-      <path d="M8 13h8M8 17h6"/>
-    </svg>
-  );
-}
-
 /* ------------------------------------------------------------------ */
 /* Card data                                                             */
 /* ------------------------------------------------------------------ */
 
-type ExternalCardData = {
-  kind: 'external';
+type CardData = {
   platform: string;
   handle: string;
   href: string;
@@ -58,23 +46,8 @@ type ExternalCardData = {
   icon: React.ReactNode;
 };
 
-type InternalCardData = {
-  kind: 'internal';
-  platform: string;
-  handle: string;
-  to: string;
-  bg: string;
-  chipBg: string;
-  ink: string;
-  sub: string;
-  icon: React.ReactNode;
-};
-
-type CardData = ExternalCardData | InternalCardData;
-
 const CARDS: CardData[] = [
   {
-    kind: 'external',
     platform: 'Instagram',
     handle: '@memyselfen_i',
     href: 'https://instagram.com/memyselfen_i',
@@ -85,7 +58,6 @@ const CARDS: CardData[] = [
     icon: <InstagramIcon />,
   },
   {
-    kind: 'external',
     platform: 'GitHub',
     handle: '@vaipuk',
     href: 'https://github.com/vaipuk',
@@ -96,7 +68,6 @@ const CARDS: CardData[] = [
     icon: <GitHubIcon />,
   },
   {
-    kind: 'external',
     platform: 'LinkedIn',
     handle: 'vaibhavbharadwaj',
     href: 'https://linkedin.com/in/vaipuk',
@@ -105,17 +76,6 @@ const CARDS: CardData[] = [
     ink: '#fff',
     sub: 'rgba(255,255,255,0.78)',
     icon: <LinkedInIcon />,
-  },
-  {
-    kind: 'internal',
-    platform: 'Blog',
-    handle: 'vb.xyz/writing',
-    to: '/blog',
-    bg: 'linear-gradient(135deg, #f4a261 0%, #c8553d 100%)',
-    chipBg: 'rgba(255,255,255,0.2)',
-    ink: '#fff',
-    sub: 'rgba(255,255,255,0.82)',
-    icon: <BlogIcon />,
   },
 ];
 
@@ -146,18 +106,6 @@ function SocialCard({ card }: { card: CardData }) {
     </>
   );
 
-  if (card.kind === 'internal') {
-    return (
-      <Link
-        to={card.to}
-        className={styles.card}
-        style={{ background: card.bg }}
-      >
-        {inner}
-      </Link>
-    );
-  }
-
   return (
     <a
       href={card.href}
@@ -185,7 +133,7 @@ export function SocialSection() {
             Find me <em className={styles.headlineEm}>on.</em>
           </h2>
         </div>
-        <span className={styles.channelCount}>4 channels — same person</span>
+        <span className={styles.channelCount}>3 places to connect</span>
       </div>
 
       <div className={styles.grid}>

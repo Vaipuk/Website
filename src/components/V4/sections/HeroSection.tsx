@@ -8,7 +8,6 @@ export function HeroSection() {
       <div className={styles.backdrop} aria-hidden="true">
         <Frame
           hue={20}
-          tag="REEL · 01"
           className={styles.frameAbsolute}
         />
         <div className={styles.gradientOverlay} />
@@ -23,7 +22,6 @@ export function HeroSection() {
           <li><a href="#gallery" className={styles.navLink}>Gallery</a></li>
           <li><a href="#contact" className={styles.navLink}>Contact</a></li>
         </ul>
-        <span className={styles.navLocation}>Tempe, AZ · 72°F</span>
       </nav>
 
       {/* Layer 3 — Corner marks */}
@@ -35,7 +33,7 @@ export function HeroSection() {
       {/* Layer 4 — Content block */}
       <div className={styles.content}>
         <div className={styles.eyebrow}>
-          — Computer Science &amp; Data Science · Arizona State University
+          Software · Data · Machine learning
         </div>
 
         <h1 className={styles.headline}>
@@ -44,9 +42,15 @@ export function HeroSection() {
         </h1>
 
         <div className={styles.subRow}>
-          <p className={styles.tagline}>
-            Building things at the intersection of design, data, and machine intelligence.
-          </p>
+          <div>
+            <p className={styles.tagline}>
+              Building software with data, machine learning, and thoughtful interfaces.
+            </p>
+            <div className={styles.actions}>
+              <a href="#work" className={styles.primaryAction}>See selected work <span aria-hidden="true">↓</span></a>
+              <a href="#contact" className={styles.secondaryAction}>Get in touch <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
 
           <div className={styles.scrollIndicator}>
             <div className={styles.scrollLine} aria-hidden="true" />

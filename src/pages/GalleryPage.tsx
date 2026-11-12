@@ -1,176 +1,156 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { fetchGalleryData, type LocationAlbum, type GalleryImage } from '../data/gallery';
+import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ModalDialog } from '../components/ModalDialog';
+import { fetchGalleryData, LOCAL_GALLERY, type LocationAlbum } from '../data/gallery';
 import '../components/V4/v4-tokens.css';
 import styles from './GalleryPage.module.css';
 
-const R2 = 'https://images.vaipuk.com';
+export const GalleryPage = () => {
+  const [locations, setLocations] = useState<LocationAlbum[]>(LOCAL_GALLERY);
+  const [selectedLocation, setSelectedLocation] = useState<LocationAlbum | null>(null);
+  const [photoIndex, setPhotoIndex] = useState<number | null>(null);
+  const thumbnails = useRef<(HTMLButtonElement | null)[]>([]);
+  const backToAlbum = useRef<HTMLButtonElement>(null);
+  const lastPhoto = useRef<number | null>(null);
+  const viewingPhoto = photoIndex !== null;
 
-const FALLBACK_LOCATIONS: LocationAlbum[] = [
-    {
-        id: 'italy-2024',
-        name: 'Italy 2024',
-        folder: 'Italy-2024',
-        coverImage: `${R2}/trips/Italy-2024/cover.JPG`,
-        images: [
-            { id: 'it-1', src: `${R2}/trips/Italy-2024/DSC00458.JPG`, orientation: 'landscape' },
-            { id: 'it-2', src: `${R2}/trips/Italy-2024/DSC00474.JPG`, orientation: 'landscape' },
-            { id: 'it-3', src: `${R2}/trips/Italy-2024/DSC00494.JPG`, orientation: 'landscape' },
-        ]
-    },
-    {
-        id: 'france-2025',
-        name: 'France 2025',
-        folder: 'France-2025',
-        coverImage: `${R2}/trips/France-2025/cover.JPG`,
-        images: [
-            { id: 'fr-1', src: `${R2}/trips/France-2025/DSC00458.JPG`, orientation: 'landscape' },
-            { id: 'fr-2', src: `${R2}/trips/France-2025/DSC00474.JPG`, orientation: 'landscape' },
-            { id: 'fr-3', src: `${R2}/trips/France-2025/DSC00487.JPG`, orientation: 'landscape' },
-        ]
-    },
-    {
-        id: 'new-york-2025',
-        name: 'New York 2025',
-        folder: 'New York-2025',
-        coverImage: `${R2}/trips/New%20York-2025/cover.JPG`,
-        images: [
-            { id: 'ny-1', src: `${R2}/trips/New%20York-2025/DSC00458.JPG`, orientation: 'landscape' },
-            { id: 'ny-2', src: `${R2}/trips/New%20York-2025/DSC00487.JPG`, orientation: 'landscape' },
-            { id: 'ny-3', src: `${R2}/trips/New%20York-2025/DSC00494.JPG`, orientation: 'landscape' },
-        ]
-    },
-];
+  useEffect(() => {
+    let active = true;
+    fetchGalleryData().then(data => { if (active) setLocations(data); });
+    return () => { active = false; };
+  }, []);
 
-interface LightboxState {
-    images: GalleryImage[];
-    index: number;
-}
+  useEffect(() => {
+    if (viewingPhoto) backToAlbum.current?.focus();
+    else if (lastPhoto.current !== null) thumbnails.current[lastPhoto.current]?.focus();
+  }, [viewingPhoto]);
 
-export const GalleryPage: React.FC = () => {
-    const navigate = useNavigate();
-    const [locations, setLocations] = useState<LocationAlbum[]>(FALLBACK_LOCATIONS);
-    const [selectedLocation, setSelectedLocation] = useState<LocationAlbum | null>(null);
-    const [lightbox, setLightbox] = useState<LightboxState | null>(null);
+  const closeGallery = () => {
+    lastPhoto.current = null;
+    setSelectedLocation(null);
+    setPhotoIndex(null);
+  };
 
-    useEffect(() => {
-        fetchGalleryData()
-            .then(data => { if (data.length > 0) setLocations(data); })
-            .catch(() => {});
-    }, []);
+  const showPhoto = (index: number) => {
+    lastPhoto.current = index;
+    setPhotoIndex(index);
+  };
 
-    // Lightbox keyboard navigation
-    const goLightbox = useCallback((dir: number) => {
-        setLightbox(lb => {
-            if (!lb) return null;
-            const next = (lb.index + dir + lb.images.length) % lb.images.length;
-            return { ...lb, index: next };
-        });
-    }, []);
+  const goPhoto = (direction: number) => {
+    const count = selectedLocation?.images.length ?? 0;
+    if (photoIndex === null || count === 0) return;
+    showPhoto((photoIndex + direction + count) % count);
+  };
 
-    useEffect(() => {
-        if (!lightbox) return;
-        const handler = (e: KeyboardEvent) => {
-            if (e.key === 'ArrowRight') goLightbox(1);
-            else if (e.key === 'ArrowLeft') goLightbox(-1);
-            else if (e.key === 'Escape') setLightbox(null);
-        };
-        window.addEventListener('keydown', handler);
-        return () => window.removeEventListener('keydown', handler);
-    }, [lightbox, goLightbox]);
+  return (
+    <div data-theme="v4" className={styles.page}>
+      <div className={styles.header}>
+        <Link className={styles.back} to="/">← Home</Link>
+        <span className={styles.eyebrow}>Gallery · Reel Three</span>
+        <h1 className={styles.pageTitle}>Photo<em>graphy.</em></h1>
+        <p className={styles.subtitle}>Places I've been, moments I've kept.</p>
+      </div>
 
-    // Close trip modal on escape (when no lightbox open)
-    useEffect(() => {
-        if (lightbox || !selectedLocation) return;
-        const handler = (e: KeyboardEvent) => {
-            if (e.key === 'Escape') setSelectedLocation(null);
-        };
-        window.addEventListener('keydown', handler);
-        return () => window.removeEventListener('keydown', handler);
-    }, [selectedLocation, lightbox]);
-
-    const openLightbox = (images: GalleryImage[], index: number) => {
-        setLightbox({ images, index });
-    };
-
-    return (
-        <div data-theme="v4" className={styles.page}>
-            <div className={styles.header}>
-                <button className={styles.back} onClick={() => navigate('/')}>← Home</button>
-                <span className={styles.eyebrow}>Gallery · Reel Three</span>
-                <h1 className={styles.pageTitle}>Photo<em>graphy.</em></h1>
-                <p className={styles.subtitle}>Places I've been, moments I've kept.</p>
-            </div>
-
-            {/* Trips grid */}
-            <div className={styles.tripsSection}>
-                <span className={styles.tripsLabel}>All trips</span>
-                <div className={styles.locGrid}>
-                    {locations.map(loc => (
-                        <div
-                            key={loc.id}
-                            className={styles.locCard}
-                            onClick={() => setSelectedLocation(loc)}
-                        >
-                            <img src={loc.coverImage} alt={loc.name} className={styles.locImg} />
-                            <div className={styles.locOverlay} />
-                            <div className={styles.locContent}>
-                                <span className={styles.locName}>{loc.name}</span>
-                                <span className={styles.locCount}>{loc.images.length} photos</span>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-
-            {/* Trip detail overlay — iCloud-style photo grid */}
-            {selectedLocation && !lightbox && (
-                <div className={styles.tripBackdrop} onClick={() => setSelectedLocation(null)}>
-                    <div className={styles.tripModal} onClick={e => e.stopPropagation()}>
-                        <div className={styles.tripModalHeader}>
-                            <h2 className={styles.tripModalTitle}>{selectedLocation.name}</h2>
-                            <button onClick={() => setSelectedLocation(null)} className={styles.modalClose}>Close</button>
-                        </div>
-                        <div className={styles.photoGrid}>
-                            {selectedLocation.images.map((img, idx) => (
-                                <button
-                                    key={img.id}
-                                    className={`${styles.photoThumb} ${img.orientation === 'landscape' ? styles.landscape : styles.portrait}`}
-                                    onClick={() => openLightbox(selectedLocation.images, idx)}
-                                >
-                                    <img src={img.src} alt={selectedLocation.name} loading="lazy" />
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* Lightbox */}
-            {lightbox && (
-                <div className={styles.lightbox} onClick={() => setLightbox(null)}>
-                    <button className={styles.lbClose} onClick={() => setLightbox(null)}>×</button>
-                    <button
-                        className={`${styles.lbNav} ${styles.lbPrev}`}
-                        onClick={e => { e.stopPropagation(); goLightbox(-1); }}
-                    >‹</button>
-                    <div className={styles.lbImgWrap} onClick={e => e.stopPropagation()}>
-                        <img
-                            key={lightbox.images[lightbox.index].src}
-                            src={lightbox.images[lightbox.index].src}
-                            alt=""
-                            className={styles.lbImg}
-                        />
-                    </div>
-                    <button
-                        className={`${styles.lbNav} ${styles.lbNext}`}
-                        onClick={e => { e.stopPropagation(); goLightbox(1); }}
-                    >›</button>
-                    <div className={styles.lbCount}>
-                        {lightbox.index + 1} / {lightbox.images.length}
-                    </div>
-                </div>
-            )}
+      <div className={styles.tripsSection}>
+        <h2 className={styles.tripsLabel}>All trips</h2>
+        <div className={styles.locGrid}>
+          {locations.map(location => (
+            <button
+              key={location.id}
+              id={`trip-${location.id}`}
+              type="button"
+              className={styles.locCard}
+              aria-label={`Open ${location.name}, ${location.images.length} photos`}
+              aria-haspopup="dialog"
+              disabled={location.images.length === 0}
+              onClick={() => {
+                lastPhoto.current = null;
+                setPhotoIndex(null);
+                setSelectedLocation(location);
+              }}
+            >
+              <img src={location.coverImage} alt="" className={styles.locImg} loading="lazy" />
+              <span className={styles.locOverlay} />
+              <span className={styles.locContent}>
+                <span className={styles.locName}>{location.name}</span>
+                <span className={styles.locCount}>{location.images.length} photos</span>
+              </span>
+            </button>
+          ))}
         </div>
-    );
+      </div>
+
+      {selectedLocation && (
+        <ModalDialog
+          className={`${styles.tripModal} ${viewingPhoto ? styles.photoMode : ''}`}
+          aria-labelledby="gallery-title"
+          fallbackFocusId={`trip-${selectedLocation.id}`}
+          onClose={closeGallery}
+          onCancel={event => {
+            if (viewingPhoto) {
+              event.preventDefault();
+              setPhotoIndex(null);
+            }
+          }}
+          onKeyDown={event => {
+            if (!viewingPhoto) return;
+            if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+              event.preventDefault();
+              goPhoto(event.key === 'ArrowRight' ? 1 : -1);
+            }
+          }}
+        >
+          <div className={styles.tripModalHeader}>
+            <h2 id="gallery-title" className={styles.tripModalTitle}>{selectedLocation.name}</h2>
+            <button type="button" onClick={closeGallery} className={styles.modalClose}>Close gallery</button>
+          </div>
+
+          {photoIndex === null ? (
+            <div className={styles.photoGrid}>
+              {selectedLocation.images.map((image, index) => (
+                <button
+                  key={image.id}
+                  ref={element => { thumbnails.current[index] = element; }}
+                  type="button"
+                  className={`${styles.photoThumb} ${image.orientation === 'landscape' ? styles.landscape : styles.portrait}`}
+                  aria-label={`View photo ${index + 1} of ${selectedLocation.images.length} from ${selectedLocation.name}`}
+                  onClick={() => showPhoto(index)}
+                >
+                  <img src={image.thumbnail ?? image.src} alt="" loading="lazy" />
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className={styles.lightbox}>
+              <button
+                ref={backToAlbum}
+                type="button"
+                className={styles.albumBack}
+                onClick={() => setPhotoIndex(null)}
+              >← All photos</button>
+              <figure className={styles.lbImgWrap}>
+                <img
+                  key={selectedLocation.images[photoIndex].id}
+                  src={selectedLocation.images[photoIndex].src}
+                  alt={`Photo ${photoIndex + 1} from ${selectedLocation.name}`}
+                  className={styles.lbImg}
+                />
+                <figcaption className={styles.lbCount} aria-live="polite">
+                  Photo {photoIndex + 1} of {selectedLocation.images.length}
+                </figcaption>
+              </figure>
+              <div className={styles.lbControls}>
+                <button type="button" className={styles.lbNav} onClick={() => goPhoto(-1)} aria-label="Previous photo">
+                  <span aria-hidden="true">←</span> Previous
+                </button>
+                <button type="button" className={styles.lbNav} onClick={() => goPhoto(1)} aria-label="Next photo">
+                  Next <span aria-hidden="true">→</span>
+                </button>
+              </div>
+            </div>
+          )}
+        </ModalDialog>
+      )}
+    </div>
+  );
 };

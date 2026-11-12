@@ -1,6 +1,9 @@
 # Environment variables (never commit secrets)
 .env
 .env.local
+.env.*
+!.env.example
+.dev.vars*
 
 # Logs
 logs

@@ -3,4 +3,5 @@
   color: var(--v4-ink);
   font-family: var(--v4-display);
   min-height: 100vh;
+  overflow-wrap: break-word;
 }

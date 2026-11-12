@@ -1,21 +1,13 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import './index.css'
-import V4Page from './pages/V4Page.tsx'
-import { GalleryPage } from './pages/GalleryPage.tsx'
-import BlogPage from './pages/BlogPage.tsx'
-import { ProjectsPage } from './pages/ProjectsPage.tsx'
+import Website from './Website.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<V4Page />} />
-        <Route path="/gallery" element={<GalleryPage />} />
-        <Route path="/blog" element={<BlogPage />} />
-        <Route path="/projects" element={<ProjectsPage />} />
-      </Routes>
+      <Website />
     </BrowserRouter>
   </StrictMode>,
 )

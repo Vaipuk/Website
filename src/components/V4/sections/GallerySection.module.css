@@ -1,21 +1,22 @@
 .gallery {
-  padding: 80px 72px 140px;
+  padding: var(--v4-section-space) var(--v4-gutter);
 }
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1.6fr;
-  gap: 72px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+  gap: clamp(32px, 5vw, 72px);
   align-items: start;
 }
 
 .left {
+  min-width: 0;
   padding-top: 40px;
 }
 
 .headline {
   font-family: var(--v4-display);
-  font-size: 80px;
+  font-size: clamp(44px, 5.6vw, 80px);
   line-height: 0.95;
   letter-spacing: -0.035em;
   font-weight: 300;
@@ -42,20 +43,44 @@
   display: inline-block;
   margin-top: 40px;
   font-family: var(--v4-mono);
-  font-size: 11px;
+  font-size: 12px;
   color: var(--v4-accent);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   text-decoration: none;
+  min-height: 44px;
+  padding-block: 12px;
 }
 
 .frameGrid {
   display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  grid-template-rows: 220px 220px;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  grid-template-rows: repeat(2, clamp(160px, 16vw, 260px));
   gap: 12px;
 }
 
 .frameSpan {
   grid-row: span 2;
+}
+
+@media (max-width: 1000px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .left {
+    padding-top: 0;
+  }
+
+  .caption {
+    max-width: 540px;
+  }
+
+  .galleryLink {
+    margin-top: 20px;
+  }
+
+  .frameGrid {
+    grid-template-rows: repeat(2, clamp(140px, 25vw, 240px));
+  }
 }

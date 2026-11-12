@@ -36,7 +36,7 @@ export function Frame({
       className={`${styles.frame}${className ? ` ${className}` : ''}`}
       style={{ background: gradient, ...style }}
     >
-      {src && <img src={src} alt={alt} className={styles.img} />}
+      {src && <img src={src} alt={alt} className={styles.img} loading="lazy" decoding="async" />}
       <div className={styles.vignette} aria-hidden="true" />
       <div className={styles.grain} aria-hidden="true" />
       {tag && <span className={styles.tag}>{tag}</span>}

@@ -2,7 +2,7 @@
 [data-theme="v4"] {
   --v4-bg: #0a0806;
   --v4-ink: #f4ece0;
-  --v4-muted: rgba(244, 236, 224, 0.5);
+  --v4-muted: rgba(244, 236, 224, 0.7);
   --v4-line: rgba(244, 236, 224, 0.1);
   --v4-accent: #f0855a;
   --v4-mono: "JetBrains Mono", ui-monospace, monospace;
@@ -12,8 +12,24 @@
   --v4-tile-2: #1f1b16;
   --v4-radius: 18px;
   --v4-gap: 12px;
+  --v4-gutter: clamp(20px, 5vw, 72px);
+  --v4-section-space: clamp(64px, 8vw, 112px);
   --v4-trans: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  --v4-error: #c8553d;
+  --v4-error: #f3a28d;
+}
+
+[data-theme="v4"],
+[data-theme="v4"] * {
+  box-sizing: border-box;
+}
+
+[data-theme="v4"] :where(a, button, input, textarea, select):focus-visible {
+  outline: 2px solid var(--v4-accent);
+  outline-offset: 5px;
+}
+
+[data-theme="v4"] :where(section[id]) {
+  scroll-margin-top: 24px;
 }
 
 /* Global keyframe used by Equalizer bars and the footer pulse dot */
@@ -25,4 +41,17 @@
 /* Smooth scroll only when V4 is active */
 html:has([data-theme="v4"]) {
   scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:has([data-theme="v4"]) {
+    scroll-behavior: auto;
+  }
+
+  [data-theme="v4"] *,
+  [data-theme="v4"] *::before,
+  [data-theme="v4"] *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }

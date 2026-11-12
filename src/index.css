@@ -1,5 +1,11 @@
 @import './styles/variables.css';
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 :root {
   font-family: var(--font-body);
   line-height: 1.5;
@@ -30,6 +36,26 @@ body {
    low-content pages into a left-hugging column — removed above. */
 #root {
   width: 100%;
+}
+
+.skipLink {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 100;
+  padding: 12px 18px;
+  background: #f4ece0;
+  color: #0a0806;
+  border-radius: 8px;
+  transform: translateY(-150%);
+}
+
+.skipLink:focus {
+  transform: translateY(0);
+}
+
+main:focus {
+  outline: none;
 }
 
 h1 {

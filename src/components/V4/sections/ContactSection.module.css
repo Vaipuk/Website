@@ -9,7 +9,7 @@
 .section {
   position: relative;
   overflow: hidden;
-  padding: 120px 72px;
+  padding: var(--v4-section-space) var(--v4-gutter) 40px;
 }
 
 /* ----------------------------------------------------------
@@ -31,8 +31,8 @@
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: 80px;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 72px);
   align-items: start;
 }
 
@@ -43,11 +43,12 @@
 .left {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .headline {
   font-family: var(--v4-display);
-  font-size: 120px;
+  font-size: clamp(44px, 7.8vw, 112px);
   line-height: 0.88;
   letter-spacing: -0.04em;
   font-weight: 300;
@@ -78,14 +79,14 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 56px;
+  margin-top: 32px;
 }
 
 .pill {
   font-family: var(--v4-mono);
-  font-size: 11px;
+  font-size: 12px;
   color: var(--v4-ink);
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   text-decoration: none;
   padding: 12px 18px;
@@ -97,6 +98,7 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  min-height: 44px;
 }
 
 .pill:hover {
@@ -109,9 +111,10 @@
    ---------------------------------------------------------- */
 
 .formCard {
+  min-width: 0;
   align-self: start;
   background: rgba(0, 0, 0, 0.35);
-  padding: 32px;
+  padding: clamp(18px, 3vw, 32px);
   border-radius: 16px;
   border: 1px solid var(--v4-line);
   backdrop-filter: blur(12px);
@@ -123,6 +126,29 @@
   gap: 16px;
 }
 
+.fieldLabel {
+  font-family: var(--v4-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--v4-ink);
+  margin-bottom: -8px;
+}
+
+.emailLink {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  min-height: 44px;
+  max-width: 100%;
+  margin-top: 16px;
+  font-family: var(--v4-mono);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--v4-accent);
+  text-underline-offset: 5px;
+  overflow-wrap: anywhere;
+}
+
 .input,
 .textarea {
   background: rgba(255, 255, 255, 0.04);
@@ -130,10 +156,10 @@
   border-radius: 10px;
   padding: 14px 16px;
   font-family: var(--v4-mono);
-  font-size: 12px;
+  font-size: 16px;
   color: var(--v4-ink);
   outline: 0;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.01em;
   width: 100%;
   box-sizing: border-box;
   transition: border-color 0.2s;
@@ -150,7 +176,8 @@
 }
 
 .textarea {
-  resize: none;
+  resize: vertical;
+  min-height: 140px;
   line-height: 1.55;
 }
 
@@ -161,8 +188,8 @@
   border-radius: 99px;
   padding: 14px 22px;
   font-family: var(--v4-mono);
-  font-size: 11px;
-  letter-spacing: 0.16em;
+  font-size: 12px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
   align-self: flex-start;
@@ -170,6 +197,7 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
+  min-height: 48px;
   transition: opacity 0.2s, transform 0.2s;
 }
 
@@ -185,7 +213,7 @@
 .footer {
   position: relative;
   z-index: 2;
-  margin-top: 140px;
+  margin-top: var(--v4-section-space);
   padding-top: 40px;
   border-top: 1px solid var(--v4-line);
 }
@@ -193,8 +221,8 @@
 /* Four-column footer grid */
 .footerGrid {
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr 1fr;
-  gap: 40px;
+  grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr));
+  gap: 32px;
   padding-bottom: 48px;
 }
 
@@ -203,7 +231,7 @@
    ---------------------------------------------------------- */
 
 .footerBrand {
-  /* first column */
+  min-width: 0;
 }
 
 .brandName {
@@ -222,9 +250,9 @@
 
 .brandMeta {
   font-family: var(--v4-mono);
-  font-size: 10px;
+  font-size: 12px;
   color: var(--v4-muted);
-  letter-spacing: 0.16em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   margin-top: 16px;
   line-height: 1.8;
@@ -236,9 +264,9 @@
 
 .footerHeading {
   font-family: var(--v4-mono);
-  font-size: 10px;
+  font-size: 12px;
   color: var(--v4-accent);
-  letter-spacing: 0.2em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   margin-bottom: 14px;
 }
@@ -249,14 +277,16 @@
 
 .footerLink {
   font-family: var(--v4-mono);
-  font-size: 11px;
+  font-size: 12px;
   color: var(--v4-ink);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   opacity: 0.85;
   text-decoration: none;
   display: block;
-  line-height: 2.2;
+  line-height: 1.6;
+  padding-block: 10px;
+  min-height: 44px;
   transition: opacity 0.2s, color 0.2s;
 }
 
@@ -271,9 +301,9 @@
 
 .colophon {
   font-family: var(--v4-mono);
-  font-size: 10px;
+  font-size: 12px;
   color: var(--v4-muted);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.04em;
   line-height: 2;
   text-transform: uppercase;
 }
@@ -288,10 +318,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
   font-family: var(--v4-mono);
-  font-size: 10px;
+  font-size: 12px;
   color: var(--v4-muted);
-  letter-spacing: 0.16em;
+  letter-spacing: 0.06em;
+  line-height: 1.6;
   text-transform: uppercase;
 }
 
@@ -303,6 +336,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
 }
 
 /* ----------------------------------------------------------
@@ -326,4 +360,36 @@
 .submitBtn:disabled {
   opacity: 0.55;
   cursor: not-allowed;
+}
+
+@media (max-width: 1000px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .footerGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .headline {
+    font-size: clamp(44px, 10vw, 96px);
+  }
+}
+
+@media (max-width: 600px) {
+  .footerBrand {
+    grid-column: 1 / -1;
+  }
+
+  .footerGrid {
+    gap: 32px 20px;
+  }
+
+  .pills {
+    gap: 8px;
+  }
+
+  .pill {
+    padding-inline: 14px;
+  }
 }

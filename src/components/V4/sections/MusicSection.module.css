@@ -4,7 +4,7 @@
 
 .section {
   position: relative;
-  padding: 80px 72px 140px;
+  padding: var(--v4-section-space) var(--v4-gutter);
   overflow: hidden;
 }
 
@@ -34,8 +34,8 @@
 .foreground {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr 1.4fr;
-  gap: 72px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: clamp(32px, 5vw, 72px);
   align-items: start;
 }
 
@@ -51,7 +51,7 @@
 
 .headline {
   font-family: var(--v4-display);
-  font-size: 80px;
+  font-size: clamp(44px, 5.6vw, 80px);
   line-height: 0.95;
   letter-spacing: -0.035em;
   font-weight: 300;
@@ -100,9 +100,10 @@
 
 .nowPlayingLabel {
   font-family: var(--v4-mono);
-  font-size: 10px;
+  font-size: 12px;
   color: var(--v4-muted);
-  letter-spacing: 0.18em;
+  letter-spacing: 0.08em;
+  line-height: 1.5;
   text-transform: uppercase;
 }
 
@@ -143,9 +144,9 @@
 
 .trackMeta {
   font-family: var(--v4-mono);
-  font-size: 11px;
+  font-size: 12px;
   color: var(--v4-muted);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   margin-top: 4px;
   white-space: nowrap;
@@ -172,7 +173,7 @@
   justify-content: space-between;
   margin-top: 6px;
   font-family: var(--v4-mono);
-  font-size: 9px;
+  font-size: 11px;
   color: var(--v4-muted);
   letter-spacing: 0.1em;
 }
@@ -183,9 +184,9 @@
 
 .recentLabel {
   font-family: var(--v4-mono);
-  font-size: 10px;
+  font-size: 12px;
   color: var(--v4-muted);
-  letter-spacing: 0.18em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   margin-bottom: 8px;
   padding-left: 16px;
@@ -199,7 +200,7 @@
 
 .trackRow {
   display: grid;
-  grid-template-columns: 56px 1fr 90px 60px;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
   align-items: center;
   gap: 16px;
   padding: 14px 16px;
@@ -209,6 +210,10 @@
 
 .trackRow:hover {
   background: rgba(255, 255, 255, 0.04);
+}
+
+.trackRow > div {
+  min-width: 0;
 }
 
 .trackRowArt {
@@ -232,9 +237,9 @@
 
 .trackRowMeta {
   font-family: var(--v4-mono);
-  font-size: 10px;
+  font-size: 12px;
   color: var(--v4-muted);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   margin-top: 2px;
   white-space: nowrap;
@@ -242,22 +247,43 @@
   text-overflow: ellipsis;
 }
 
-.vibePill {
-  font-family: var(--v4-mono);
-  font-size: 9px;
-  color: var(--v4-accent);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  border-radius: 99px;
-  border: 1px solid var(--v4-line);
-  justify-self: start;
-  white-space: nowrap;
-}
-
 .trackDuration {
   font-family: var(--v4-mono);
-  font-size: 11px;
+  font-size: 12px;
   color: var(--v4-muted);
   text-align: right;
+}
+
+@media (max-width: 1100px) {
+  .foreground {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .nowPlayingCard {
+    padding: 16px;
+  }
+
+  .albumArt {
+    width: 56px;
+    height: 56px;
+  }
+
+  .nowPlayingBody {
+    gap: 12px;
+  }
+
+  .trackTitle {
+    font-size: 22px;
+  }
+
+  .trackRow {
+    gap: 12px;
+    padding: 14px 0;
+  }
+
+  .recentLabel {
+    padding-left: 0;
+  }
 }

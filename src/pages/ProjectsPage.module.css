@@ -74,7 +74,6 @@
   margin: 0 -16px;
   border-bottom: 1px solid var(--v4-line);
   align-items: start;
-  cursor: pointer;
   border-radius: var(--v4-radius);
   transition: background var(--v4-trans);
 }
@@ -107,6 +106,7 @@
   color: var(--v4-ink);
   margin: 0;
   transition: color var(--v4-trans);
+  overflow-wrap: anywhere;
 }
 
 .projectRow:hover .projectName { color: var(--v4-accent); }
@@ -133,43 +133,44 @@
 .projectYear { color: var(--v4-muted); display: block; }
 
 .projectView {
+  border: 0;
+  border-radius: 0;
+  padding: 8px 0;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
   color: var(--v4-accent);
   display: block;
   margin-top: 6px;
+  min-height: 44px;
   transition: transform var(--v4-trans);
 }
 
 .projectRow:hover .projectView { transform: translateX(3px); }
 
-/* ── Detail panel ──────────────────────────────────────────── */
-.overlay {
-  position: fixed;
-  inset: 0;
+/* ── Native detail dialog ─────────────────────────────────── */
+.panel::backdrop {
   background: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(4px);
-  z-index: 100;
-  display: flex;
-  justify-content: flex-end;
-  opacity: 0;
-  animation: panelFade 0.3s forwards;
 }
 
-@keyframes panelFade { to { opacity: 1; } }
-
 .panel {
-  position: relative;
+  position: fixed;
+  inset: 0 0 0 auto;
+  margin: 0;
+  padding: 0;
   width: 100%;
   max-width: 560px;
-  height: 100%;
+  height: 100dvh;
+  max-height: 100dvh;
+  border: 0;
   background: var(--v4-bg);
+  color: var(--v4-ink);
   border-left: 1px solid var(--v4-line);
   box-shadow: -20px 0 60px rgba(0, 0, 0, 0.5);
   overflow-y: auto;
-  transform: translateX(100%);
-  animation: panelSlide 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
-
-@keyframes panelSlide { to { transform: translateX(0); } }
 
 .panelAccent {
   height: 4px;
@@ -183,8 +184,9 @@
   background: rgba(244, 236, 224, 0.08);
   border: 1px solid var(--v4-line);
   color: var(--v4-ink);
-  width: 38px;
-  height: 38px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
   border-radius: 50%;
   font-size: 1.3rem;
   line-height: 1;
@@ -242,6 +244,38 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.caseSection {
+  margin-top: 1.75rem;
+  font-family: var(--v4-sans);
+}
+
+.caseSection h3 {
+  margin: 0 0 0.65rem;
+  color: var(--v4-accent);
+  font: 0.75rem var(--v4-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.caseSection p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--v4-ink);
+  opacity: 0.8;
+}
+
+.profileLink {
+  display: inline-block;
+  margin-top: 2rem;
+  color: var(--v4-accent);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font: 0.8rem var(--v4-mono);
+  line-height: 1.6;
 }
 
 .tag {

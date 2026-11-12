@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import styles from './ContactSection.module.css';
 import { Frame } from '../Frame';
 import { SectionEyebrow } from '../SectionEyebrow';
@@ -42,7 +41,7 @@ export function ContactSection() {
           'See .env.example for setup.',
       );
       setStatus('error');
-      setErrorMsg('Form not configured.');
+      setErrorMsg('Please email vaipuk96@gmail.com to get in touch.');
       return;
     }
 
@@ -116,6 +115,8 @@ export function ContactSection() {
             open to a conversation.
           </p>
 
+          <a href="mailto:vaipuk96@gmail.com" className={styles.emailLink}>vaipuk96@gmail.com</a>
+
           <div className={styles.pills}>
             <a
               href="https://instagram.com/memyselfen_i"
@@ -141,18 +142,17 @@ export function ContactSection() {
             >
               LinkedIn <span aria-hidden="true">→</span>
             </a>
-            <Link to="/blog" className={styles.pill}>
-              Blog <span aria-hidden="true">→</span>
-            </Link>
           </div>
         </div>
 
         {/* Right column — glass form card */}
         <div className={styles.formCard}>
-          <form className={styles.form} onSubmit={handleSubmit}>
+          {accessKey ? <form className={styles.form} onSubmit={handleSubmit}>
+            <label htmlFor="contact-name" className={styles.fieldLabel}>Name</label>
             <input
+              id="contact-name"
+              name="name"
               type="text"
-              placeholder="Name"
               className={styles.input}
               autoComplete="name"
               required
@@ -163,9 +163,11 @@ export function ContactSection() {
               }}
               disabled={status === 'sending'}
             />
+            <label htmlFor="contact-email" className={styles.fieldLabel}>Email address</label>
             <input
+              id="contact-email"
+              name="email"
               type="email"
-              placeholder="Email address"
               className={styles.input}
               autoComplete="email"
               required
@@ -176,8 +178,10 @@ export function ContactSection() {
               }}
               disabled={status === 'sending'}
             />
+            <label htmlFor="contact-message" className={styles.fieldLabel}>Message</label>
             <textarea
-              placeholder="What's on your mind?"
+              id="contact-message"
+              name="message"
               rows={5}
               className={styles.textarea}
               required
@@ -226,7 +230,10 @@ export function ContactSection() {
                   ? errorMsg
                   : ''}
             </p>
-          </form>
+          </form> : <div className={styles.form}>
+            <p className={styles.sub}>Email is the best way to reach me. Tell me a little about what you have in mind.</p>
+            <a href="mailto:vaipuk96@gmail.com" className={styles.submitBtn}>Send an email →</a>
+          </div>}
         </div>
       </div>
 
@@ -242,7 +249,7 @@ export function ContactSection() {
             <div className={styles.brandMeta}>
               Designer / Engineer<br />
               Tempe, AZ &mdash; 33.4&deg;N<br />
-              Available Summer 2026
+              Open to a conversation
             </div>
           </div>
 
@@ -286,9 +293,6 @@ export function ContactSection() {
               >
                 Instagram <span aria-hidden="true">↗</span>
               </a>
-              <a href="#" className={styles.footerLink}>
-                Read.cv <span aria-hidden="true">↗</span>
-              </a>
               <a href="mailto:vaipuk96@gmail.com" className={styles.footerLink}>
                 Email <span aria-hidden="true">↗</span>
               </a>
@@ -301,7 +305,6 @@ export function ContactSection() {
             <div className={styles.colophon}>
               Set in Fraunces<br />
               &amp; JetBrains Mono<br />
-              Shot on Fuji X-T5<br />
               Built with React<br />
               Hosted on Cloudflare
             </div>
@@ -315,7 +318,7 @@ export function ContactSection() {
           </span>
           <div className={styles.runningTime}>
             <Equalizer color="var(--v4-accent)" />
-            <span>Running time 00:04:28 &middot; End credits</span>
+            <span>Thanks for stopping by &middot; End credits</span>
           </div>
         </div>
       </footer>

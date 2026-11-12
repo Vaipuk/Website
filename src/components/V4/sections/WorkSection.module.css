@@ -1,21 +1,22 @@
 .work {
-  padding: 80px 72px 140px;
+  padding: var(--v4-section-space) var(--v4-gutter);
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  padding-bottom: 56px;
+  gap: 24px;
+  padding-bottom: 40px;
 }
 
 .headerLeft {
-  /* container */
+  min-width: 0;
 }
 
 .headline {
   font-family: var(--v4-display);
-  font-size: 88px;
+  font-size: clamp(44px, 6.2vw, 88px);
   line-height: 0.9;
   letter-spacing: -0.035em;
   font-weight: 300;
@@ -30,11 +31,15 @@
 
 .indexLink {
   font-family: var(--v4-mono);
-  font-size: 11px;
+  font-size: 12px;
   color: var(--v4-accent);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   text-decoration: none;
+  flex-shrink: 0;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .projectList {
@@ -43,12 +48,11 @@
 
 .projectRow {
   display: grid;
-  grid-template-columns: 60px 1.3fr 1.2fr 100px;
-  gap: 40px;
+  grid-template-columns: 40px minmax(0, 1.3fr) minmax(0, 1.2fr) 80px;
+  gap: 28px;
   padding: 40px 0;
   border-bottom: 1px solid var(--v4-line);
   align-items: start;
-  cursor: pointer;
   transition: background 0.2s ease;
 }
 
@@ -58,28 +62,29 @@
 
 .projectIndex {
   font-family: var(--v4-mono);
-  font-size: 11px;
+  font-size: 12px;
   color: var(--v4-muted);
   letter-spacing: 0.14em;
   padding-top: 16px;
 }
 
 .projectMeta {
-  /* container */
+  min-width: 0;
 }
 
 .projectKind {
   font-family: var(--v4-mono);
-  font-size: 10px;
+  font-size: 12px;
   color: var(--v4-muted);
-  letter-spacing: 0.16em;
+  letter-spacing: 0.1em;
+  line-height: 1.6;
   text-transform: uppercase;
   margin-bottom: 12px;
 }
 
 .projectName {
   font-family: var(--v4-display);
-  font-size: 52px;
+  font-size: clamp(34px, 3.8vw, 52px);
   line-height: 1;
   letter-spacing: -0.025em;
   font-weight: 300;
@@ -99,8 +104,8 @@
 
 .projectActions {
   font-family: var(--v4-mono);
-  font-size: 10px;
-  letter-spacing: 0.14em;
+  font-size: 12px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   text-align: right;
   padding-top: 16px;
@@ -114,6 +119,56 @@
 .projectReadLink {
   color: var(--v4-accent);
   text-decoration: none;
-  display: block;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
   margin-top: 6px;
+}
+
+@media (max-width: 1100px) {
+  .projectRow {
+    grid-template-columns: 32px minmax(0, 1fr) 80px;
+    gap: 16px 24px;
+    padding: 28px 0;
+  }
+
+  .projectBlurb {
+    grid-column: 2 / -1;
+    grid-row: 2;
+    padding-top: 0;
+    max-width: 600px;
+  }
+
+  .projectActions {
+    grid-column: 3;
+    grid-row: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .projectRow {
+    grid-template-columns: minmax(0, 1fr) 72px;
+    gap: 12px;
+  }
+
+  .projectIndex {
+    display: none;
+  }
+
+  .projectBlurb {
+    grid-column: 1 / -1;
+  }
+
+  .projectActions {
+    grid-column: 2;
+    padding-top: 0;
+  }
 }
