@@ -42,7 +42,7 @@ export function ContactSection() {
           'See .env.example for setup.',
       );
       setStatus('error');
-      setErrorMsg('Please email vaipuk96@gmail.com to get in touch.');
+      setErrorMsg('Please use LinkedIn to get in touch.');
       return;
     }
 
@@ -115,8 +115,6 @@ export function ContactSection() {
             Have a project in mind, or just want to connect? I&rsquo;m always
             open to a conversation.
           </p>
-
-          <a href="mailto:vaipuk96@gmail.com" className={styles.emailLink}>vaipuk96@gmail.com</a>
 
           <div className={styles.pills}>
             <a
@@ -235,8 +233,8 @@ export function ContactSection() {
                   : ''}
             </p>
           </form> : <div className={styles.form}>
-            <p className={styles.sub}>Email is the best way to reach me. Tell me a little about what you have in mind.</p>
-            <a href="mailto:vaipuk96@gmail.com" className={styles.submitBtn}>Send an email →</a>
+            <p className={styles.sub}>Send me a message on LinkedIn and tell me a little about what you have in mind.</p>
+            <a href="https://linkedin.com/in/vaipuk" target="_blank" rel="noopener noreferrer" className={styles.submitBtn}>Message on LinkedIn →</a>
           </div>}
         </div>
       </div>
@@ -298,9 +296,6 @@ export function ContactSection() {
                 Instagram <span aria-hidden="true">↗</span>
               </a>
               <Link to="/blog" className={styles.footerLink}>Blog</Link>
-              <a href="mailto:vaipuk96@gmail.com" className={styles.footerLink}>
-                Email <span aria-hidden="true">↗</span>
-              </a>
             </nav>
           </div>
 
