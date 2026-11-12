@@ -39,9 +39,21 @@
 .particles {
   position: absolute;
   inset: 0;
+  z-index: 1;
   width: 100%;
   height: 100%;
   pointer-events: none;
+  animation: identityRelease var(--intro-duration) linear both;
+}
+
+.particles canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.particles canvas[data-ready='true'] + .typography {
+  display: none;
 }
 
 .stage {
@@ -100,50 +112,27 @@
 
 .typography {
   position: absolute;
-  inset: 0;
+  inset: 0 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transform-style: preserve-3d;
-  font-family: 'Fraunces', Georgia, serif;
-  font-size: clamp(52px, 14.4vw, 208px);
-  font-weight: 300;
-  line-height: 0.87;
-  letter-spacing: -0.065em;
+  font-family: Georgia, serif;
+  font-size: min(14.4vw, 19vh, 208px);
+  font-weight: 400;
+  line-height: 0.98;
   text-align: center;
+  animation: nameResolve var(--intro-duration) linear both;
 }
 
-.nameLine {
-  position: relative;
+.typography span,
+.typography em {
   display: block;
   white-space: nowrap;
-  will-change: transform;
 }
 
-.firstName {
-  margin-left: -10vw;
-  color: #f4ece0;
-  animation: firstNameArrival var(--intro-duration) both;
-}
-
-.surname {
-  margin-right: -8vw;
+.typography em {
   color: #f0855a;
-  font-style: italic;
-  animation: surnameArrival var(--intro-duration) both;
-}
-
-.echo {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  font-size: 1.9em;
-  font-style: italic;
-  color: transparent;
-  -webkit-text-stroke: 1px rgb(240 133 90 / 28%);
-  white-space: nowrap;
-  animation: echoDrift var(--intro-duration) linear both;
 }
 
 .skip {
@@ -203,39 +192,14 @@
   to { clip-path: inset(0); transform: scale(1) translateY(0); }
 }
 
-@keyframes firstNameArrival {
-  0%, 39% {
-    opacity: 0;
-    transform: translate3d(-22vw, 36vh, -500px) rotateX(-64deg) rotateY(20deg) scale(1.35);
-    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  49%, 75% {
-    opacity: 1;
-    transform: translate3d(0, 0, 65px) rotateX(0) rotateY(0) scale(1);
-    animation-timing-function: cubic-bezier(0.7, 0, 1, 0.65);
-  }
-  100% { opacity: 0; transform: translate3d(-55vw, -60vh, 500px) rotateX(14deg) rotateZ(-8deg) scale(1.4); }
+@keyframes nameResolve {
+  0%, 58.333% { opacity: 0; }
+  63.889%, 100% { opacity: 1; }
 }
 
-@keyframes surnameArrival {
-  0%, 42% {
-    opacity: 0;
-    transform: translate3d(28vw, -34vh, -600px) rotateX(65deg) rotateY(-20deg) scale(1.4);
-    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  52%, 75% {
-    opacity: 1;
-    transform: translate3d(0, 0, 90px) rotateX(0) rotateY(0) scale(1);
-    animation-timing-function: cubic-bezier(0.7, 0, 1, 0.65);
-  }
-  100% { opacity: 0; transform: translate3d(60vw, 65vh, 560px) rotateX(-12deg) rotateZ(9deg) scale(1.35); }
-}
-
-@keyframes echoDrift {
-  0%, 45% { opacity: 0; transform: translate3d(-43%, -45%, -280px) rotateZ(-9deg); }
-  53% { opacity: 0.5; }
-  75% { opacity: 0.35; transform: translate3d(-53%, -52%, -180px) rotateZ(-5deg); }
-  100% { opacity: 0; transform: translate3d(-70%, -95%, 250px) rotateZ(6deg); }
+@keyframes identityRelease {
+  0%, 75% { opacity: 1; }
+  100% { opacity: 0; }
 }
 
 @keyframes printGlint {
@@ -263,15 +227,10 @@
   .stage { perspective: 800px; }
   .print { width: clamp(102px, 30vw, 180px); }
   .print:nth-child(n + 7) { display: none; }
-  .typography { font-size: clamp(47px, 13.8vw, 82px); }
-  .firstName { margin-left: -7vw; }
-  .surname { margin-right: -3vw; }
-  .echo { font-size: 1.7em; }
   .skip { right: max(20px, env(safe-area-inset-right)); bottom: max(20px, env(safe-area-inset-bottom)); }
 }
 
 @media (max-height: 450px) and (min-width: 601px) {
-  .typography { font-size: clamp(52px, 19vh, 86px); }
   .print { width: 22vh; }
 }
 

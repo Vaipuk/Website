@@ -32,7 +32,6 @@ export function CinematicIntro({ onSkip }: { onSkip: () => void }) {
     >
       <div className={styles.matte} aria-hidden="true" />
       <div className={styles.exposure} aria-hidden="true" />
-      <IntroParticles className={styles.particles} />
 
       <div className={styles.stage} aria-hidden="true">
         <div className={styles.world}>
@@ -61,14 +60,9 @@ export function CinematicIntro({ onSkip }: { onSkip: () => void }) {
               </div>
             </figure>
           ))}
-
-          <div className={styles.typography}>
-            <span className={styles.echo}>Bharadwaj</span>
-            <span className={`${styles.nameLine} ${styles.firstName}`}>Vaibhav</span>
-            <span className={`${styles.nameLine} ${styles.surname}`}>Bharadwaj</span>
-          </div>
         </div>
       </div>
+      <IntroParticles className={styles.particles} />
 
       <button className={styles.skip} type="button" onClick={onSkip} autoFocus>
         Skip intro <span aria-hidden="true">↗</span>

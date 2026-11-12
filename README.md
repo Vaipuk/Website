@@ -14,6 +14,8 @@ The Vite development and preview servers both provide `GET /api/spotify`. Restar
 
 The website has a 3.6-second cinematic opening on every fresh page load and refresh, including direct links to other pages or sections. It does not use storage or remember previous visits. Skip or Escape opens the page immediately; reduced-motion preferences bypass the animation.
 
+Copper particles gather into VB, then become the two-line full name before crisp lettering resolves in place. The particles and lettering share one Canvas and a fixed local Georgia font so late web-font loads cannot move the handoff. A centered HTML name remains available if Canvas or text sampling is unavailable.
+
 ## Spotify credentials
 
 Set these **server-only** variables in `.env.local` for local development and as encrypted environment variables for the Cloudflare Pages Functions runtime:
