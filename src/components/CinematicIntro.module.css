@@ -1,0 +1,158 @@
+.intro {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  z-index: 200;
+  isolation: isolate;
+  overflow: hidden;
+  color: #f4ece0;
+  animation: release 2800ms linear both;
+}
+
+.intro::backdrop {
+  background: transparent;
+}
+
+.shutter {
+  position: absolute;
+  inset-inline: 0;
+  height: calc(50% + 1px);
+  background: #0a0806;
+  will-change: transform;
+  animation: open 700ms 2100ms cubic-bezier(0.76, 0, 0.24, 1) both;
+}
+
+.top {
+  top: 0;
+  --opening: -101%;
+  background-image: radial-gradient(ellipse at 50% 100%, #20140e 0%, #0a0806 66%);
+}
+
+.bottom {
+  bottom: 0;
+  --opening: 101%;
+  background-image: radial-gradient(ellipse at 50% 0%, #20140e 0%, #0a0806 66%);
+}
+
+.film {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  animation: filmExit 2800ms linear both;
+}
+
+.film::before,
+.film::after {
+  content: '';
+  position: absolute;
+  top: 10%;
+  bottom: 10%;
+  width: 5px;
+  background: repeating-linear-gradient(to bottom, #f0855a 0 7px, transparent 7px 26px);
+  opacity: 0.19;
+}
+
+.film::before { left: clamp(12px, 2vw, 28px); }
+.film::after { right: clamp(12px, 2vw, 28px); }
+
+.registration {
+  position: absolute;
+  inset: clamp(32px, 6vw, 76px);
+  border: 1px solid rgb(244 236 224 / 7%);
+}
+
+.registration::before,
+.registration::after {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-color: rgb(240 133 90 / 55%);
+  border-style: solid;
+}
+
+.registration::before { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
+.registration::after { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
+
+.beam {
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #f0855a 35%, #eed4b5 50%, #f0855a 65%, transparent);
+  box-shadow: 0 0 35px 8px rgb(240 133 90 / 16%);
+  animation: exposure 2800ms ease-in-out both;
+}
+
+.title {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 32px 12px;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(52px, 11.6vw, 170px);
+  font-weight: 300;
+  line-height: 0.96;
+  letter-spacing: -0.055em;
+  text-align: center;
+  animation: titleReveal 2800ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.surname { color: #f0855a; font-style: italic; }
+
+.skip {
+  position: absolute;
+  right: max(24px, env(safe-area-inset-right));
+  bottom: max(24px, env(safe-area-inset-bottom));
+  min-height: 44px;
+  padding: 10px 17px;
+  border: 1px solid rgb(244 236 224 / 28%);
+  border-radius: 2px;
+  background: #0a0806;
+  color: #f4ece0;
+  font: 13px/1.4 'DM Sans', system-ui, sans-serif;
+  transition: border-color 150ms ease, background 150ms ease;
+}
+
+.skip:hover { border-color: #f0855a; background: #21150f; }
+.skip:focus-visible { outline: 2px solid #f0855a; outline-offset: 5px; }
+
+@keyframes titleReveal {
+  0%, 12% { opacity: 0; filter: blur(12px); transform: scale(1.035); }
+  35%, 69% { opacity: 1; filter: blur(0); transform: scale(1); }
+  81%, 100% { opacity: 0; filter: blur(3px); transform: scale(0.985); }
+}
+
+@keyframes exposure {
+  0%, 9% { opacity: 0; transform: scaleX(0.08); }
+  25% { opacity: 0.7; transform: scaleX(0.82); }
+  45%, 67% { opacity: 0.22; transform: scaleX(1); }
+  78%, 100% { opacity: 0; transform: scaleX(1); }
+}
+
+@keyframes filmExit {
+  0%, 70% { opacity: 1; }
+  83%, 100% { opacity: 0; }
+}
+
+@keyframes open { to { transform: translateY(var(--opening)); } }
+@keyframes release { 0%, 99.9% { pointer-events: auto; } 100% { pointer-events: none; visibility: hidden; } }
+
+@media (max-height: 450px) {
+  .title { font-size: clamp(48px, 16vh, 80px); }
+  .registration { inset-block: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro { display: none; }
+}
