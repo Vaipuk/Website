@@ -42,7 +42,7 @@ export function ContactSection() {
           'See .env.example for setup.',
       );
       setStatus('error');
-      setErrorMsg('Please use LinkedIn to get in touch.');
+      setErrorMsg('This form isn’t connected yet. You can reach me on LinkedIn.');
       return;
     }
 
@@ -149,7 +149,7 @@ export function ContactSection() {
 
         {/* Right column — glass form card */}
         <div className={styles.formCard}>
-          {accessKey ? <form className={styles.form} onSubmit={handleSubmit}>
+          <form className={styles.form} onSubmit={handleSubmit}>
             <label htmlFor="contact-name" className={styles.fieldLabel}>Name</label>
             <input
               id="contact-name"
@@ -232,10 +232,7 @@ export function ContactSection() {
                   ? errorMsg
                   : ''}
             </p>
-          </form> : <div className={styles.form}>
-            <p className={styles.sub}>Send me a message on LinkedIn and tell me a little about what you have in mind.</p>
-            <a href="https://linkedin.com/in/vaipuk" target="_blank" rel="noopener noreferrer" className={styles.submitBtn}>Message on LinkedIn →</a>
-          </div>}
+          </form>
         </div>
       </div>
 

@@ -8,7 +8,7 @@ Use Node.js 24 or newer. Install the locked dependencies with `npm ci`, then run
 
 Copy `.env.example` to the ignored `.env.local` file. The contact form uses `VITE_WEB3FORMS_ACCESS_KEY`, a public form access key. Spotify is optional: without its server credentials, the music section says that Spotify is unavailable instead of showing sample songs.
 
-The website does not publish a contact email address or direct mail links. A configured contact form delivers through Web3Forms without exposing its destination address; when no form key is configured, visitors can message through LinkedIn.
+The website does not publish a contact email address or direct mail links. The original contact form stays visible even without a form key. Without configuration it sends nothing and explains that it is not connected yet; social links remain available. Once configured, Web3Forms delivers without exposing the destination address.
 
 The Vite development and preview servers both provide `GET /api/spotify`. Restart the server after changing local environment values. `npm run build` creates the static site in `dist`; `npm run preview` serves that build with the local API middleware.
 
