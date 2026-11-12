@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => {
   }
   return {
     // Keep disposable dependencies outside the synced project to avoid Windows directory locks.
-    cacheDir: join(tmpdir(), 'vaipuk-website-vite'),
+    cacheDir: join(tmpdir(), 'vaipuk-website-vite', 'node_modules', '.vite'),
     plugins: [react(), {
       name: 'spotify-api',
       configureServer(server) { server.middlewares.use(spotifyMiddleware) },
