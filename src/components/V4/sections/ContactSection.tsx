@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styles from './ContactSection.module.css';
 import { Frame } from '../Frame';
 import { SectionEyebrow } from '../SectionEyebrow';
@@ -142,6 +143,9 @@ export function ContactSection() {
             >
               LinkedIn <span aria-hidden="true">→</span>
             </a>
+            <Link to="/blog" className={styles.pill}>
+              Blog <span aria-hidden="true">→</span>
+            </Link>
           </div>
         </div>
 
@@ -293,6 +297,7 @@ export function ContactSection() {
               >
                 Instagram <span aria-hidden="true">↗</span>
               </a>
+              <Link to="/blog" className={styles.footerLink}>Blog</Link>
               <a href="mailto:vaipuk96@gmail.com" className={styles.footerLink}>
                 Email <span aria-hidden="true">↗</span>
               </a>

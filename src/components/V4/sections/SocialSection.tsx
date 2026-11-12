@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styles from './SocialSection.module.css';
 import { SectionEyebrow } from '../SectionEyebrow';
 
@@ -27,6 +28,15 @@ function LinkedInIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
       <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45C23.2 24 24 23.23 24 22.28V1.72C24 .77 23.2 0 22.22 0z"/>
+    </svg>
+  );
+}
+
+function BlogIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M4 19V5a2 2 0 0 1 2-2h10l4 4v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/>
+      <path d="M14 3v4a2 2 0 0 0 2 2h4M8 13h8M8 17h6"/>
     </svg>
   );
 }
@@ -77,6 +87,16 @@ const CARDS: CardData[] = [
     sub: 'rgba(255,255,255,0.78)',
     icon: <LinkedInIcon />,
   },
+  {
+    platform: 'Blog',
+    handle: 'Still thinking',
+    href: '/blog',
+    bg: 'linear-gradient(135deg, #f4a261 0%, #c8553d 100%)',
+    chipBg: 'rgba(255,255,255,0.2)',
+    ink: '#fff',
+    sub: 'rgba(255,255,255,0.82)',
+    icon: <BlogIcon />,
+  },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -106,6 +126,10 @@ function SocialCard({ card }: { card: CardData }) {
     </>
   );
 
+  if (card.href.startsWith('/')) {
+    return <Link to={card.href} className={styles.card} style={{ background: card.bg }}>{inner}</Link>;
+  }
+
   return (
     <a
       href={card.href}
@@ -133,7 +157,7 @@ export function SocialSection() {
             Find me <em className={styles.headlineEm}>on.</em>
           </h2>
         </div>
-        <span className={styles.channelCount}>3 places to connect</span>
+        <span className={styles.channelCount}>{CARDS.length} places to connect</span>
       </div>
 
       <div className={styles.grid}>
