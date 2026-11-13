@@ -162,6 +162,7 @@ test('HTTP rate limits fail safely and honor the upstream retry window', async (
   const handle = createSpotifyHandler(env, fetcher, () => time);
   const response = await handle();
   assert.equal(response.status, 503);
+  assert.equal(response.headers.get('x-spotify-failure'), '/api/token 429');
   assert.ok(!(await response.text()).includes('private upstream error'));
   time += 31000;
   await handle();

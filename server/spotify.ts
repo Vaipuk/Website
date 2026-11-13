@@ -47,13 +47,15 @@ function displayTrack(value: unknown): DisplayTrack | null {
 
 export function createSpotifyHandler(env: SpotifyEnv, fetcher: typeof fetch = fetch, now = Date.now) {
   let token: { value: string; expiresAt: number } | null = null;
-  let cached: { data: DisplayData; status: number; expiresAt: number } | null = null;
+  let cached: { data: DisplayData; status: number; expiresAt: number; failure?: string } | null = null;
   let pending: Promise<void> | null = null;
   let recent: DisplayTrack[] | null = null;
   let top: { tracks: DisplayTrack[]; expiresAt: number } | null = null;
 
   async function load() {
     let retryMs = 15000;
+    // Which step failed, for the X-Spotify-Failure header: path, status and Spotify's error code only, never a secret.
+    let failure = 'network';
     async function request(url: string, init: RequestInit = {}, allowIdle = false): Promise<unknown> {
       const response = await fetcher(url, { ...init, signal: AbortSignal.timeout(5000) });
       if (allowIdle && (response.status === 204 || response.status === 404)) return null;
@@ -63,6 +65,8 @@ export function createSpotifyHandler(env: SpotifyEnv, fetcher: typeof fetch = fe
           const seconds = Number(response.headers.get('retry-after'));
           if (Number.isFinite(seconds)) retryMs = Math.min(300000, Math.max(15000, seconds * 1000));
         }
+        const code = record(await response.json().catch(() => null))?.error;
+        failure = `${new URL(url).pathname} ${response.status}${typeof code === 'string' && /^[a-z_]+$/.test(code) ? ` ${code}` : ''}`;
         throw new Error('Spotify request failed');
       }
       return response.json();
@@ -117,14 +121,14 @@ export function createSpotifyHandler(env: SpotifyEnv, fetcher: typeof fetch = fe
         },
       };
     } catch {
-      cached = { data: UNAVAILABLE, status: 503, expiresAt: now() + retryMs };
+      cached = { data: UNAVAILABLE, status: 503, expiresAt: now() + retryMs, failure };
     }
   }
 
   // shortcut: cache is per worker instance; add shared storage only if real traffic needs it.
   return async (): Promise<Response> => {
     if (!env.SPOTIFY_CLIENT_ID?.trim() || !env.SPOTIFY_CLIENT_SECRET?.trim() || !env.SPOTIFY_REFRESH_TOKEN?.trim()) {
-      return Response.json(UNAVAILABLE, { status: 503, headers: { 'Cache-Control': 'no-store' } });
+      return Response.json(UNAVAILABLE, { status: 503, headers: { 'Cache-Control': 'no-store', 'X-Spotify-Failure': 'config' } });
     }
     if (!cached || cached.expiresAt <= now()) {
       pending ??= load().finally(() => { pending = null; });
@@ -132,7 +136,9 @@ export function createSpotifyHandler(env: SpotifyEnv, fetcher: typeof fetch = fe
     }
     return Response.json(cached!.data, {
       status: cached!.status,
-      headers: { 'Cache-Control': cached!.status === 200 ? 'public, max-age=15, s-maxage=30' : 'no-store' },
+      headers: cached!.status === 200
+        ? { 'Cache-Control': 'public, max-age=15, s-maxage=30' }
+        : { 'Cache-Control': 'no-store', 'X-Spotify-Failure': cached!.failure ?? 'unknown' },
     });
   };
 }
