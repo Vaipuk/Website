@@ -41,7 +41,7 @@ export function useSpotify(): SpotifyData {
           || (result.nowPlaying !== null && typeof result.nowPlaying !== 'object')) {
           throw new Error('Invalid Spotify response');
         }
-        if (!controller.signal.aborted) setData({ ...result, loading: false, error: null });
+        if (!controller.signal.aborted) setData({ ...result, loading: false, error: typeof result.error === 'string' ? result.error : null });
       } catch {
         if (!controller.signal.aborted) {
           setData({ ...EMPTY, loading: false, error: 'Spotify is unavailable right now.' });

@@ -94,8 +94,11 @@ test('API errors are sanitized and briefly cached before a new attempt', async (
 test('malformed provider responses fail safely rather than claiming an empty listening history', async () => {
   const { fetcher } = upstream({ malformed: true });
   const response = await createSpotifyHandler(env, fetcher)();
-  assert.equal(response.status, 503);
-  assert.equal((await response.json()).nowPlaying, null);
+  assert.equal(response.status, 200);
+  const data = await response.json();
+  assert.equal(data.nowPlaying.name, 'Real song');
+  assert.deepEqual(data.topTracks, []);
+  assert.equal(typeof data.error, 'string');
 });
 
 test('simultaneous visitors share one request and fresh display data reuse the token', async () => {
@@ -109,8 +112,44 @@ test('simultaneous visitors share one request and fresh display data reuse the t
   assert.equal(requests.length, 4);
   time += 31000;
   await handle();
-  assert.equal(requests.length, 7);
+  assert.equal(requests.length, 6); // top tracks are reused for an hour
   assert.equal(requests.filter(url => url.includes('/api/token')).length, 1);
+});
+
+test('a rate-limited endpoint does not blank the others, and the last good list is kept', async () => {
+  let time = 1000;
+  let limited = true;
+  const { fetcher, requests } = upstream();
+  const limiting: typeof fetch = async (input, init) => {
+    const url = String(input);
+    if (!limited || url.includes('/api/token') || url.includes('/currently-playing')) return fetcher(input, init);
+    requests.push(url);
+    return new Response('private upstream error', { status: 429, headers: { 'retry-after': '60' } });
+  };
+  const handle = createSpotifyHandler(env, limiting, () => time);
+
+  const cold = await handle();
+  assert.equal(cold.status, 200);
+  const partial = await cold.json();
+  assert.equal(partial.nowPlaying.name, 'Real song');
+  assert.deepEqual(partial.topTracks, []);
+  assert.equal(typeof partial.error, 'string'); // missing lists are reported, not shown as empty history
+  time += 31000;
+  await handle();
+  assert.equal(requests.length, 4); // retry-after is honored
+
+  limited = false;
+  time += 31000;
+  const healthy = await (await handle()).json();
+  assert.equal(healthy.topTracks.length, 1);
+  assert.equal(healthy.error, null);
+
+  limited = true;
+  time += 31000;
+  const stale = await (await handle()).json();
+  assert.equal(stale.recentTracks[0].name, 'Real song');
+  assert.equal(stale.topTracks.length, 1);
+  assert.equal(stale.error, null);
 });
 
 test('HTTP rate limits fail safely and honor the upstream retry window', async () => {

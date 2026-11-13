@@ -49,6 +49,8 @@ export function createSpotifyHandler(env: SpotifyEnv, fetcher: typeof fetch = fe
   let token: { value: string; expiresAt: number } | null = null;
   let cached: { data: DisplayData; status: number; expiresAt: number } | null = null;
   let pending: Promise<void> | null = null;
+  let recent: DisplayTrack[] | null = null;
+  let top: { tracks: DisplayTrack[]; expiresAt: number } | null = null;
 
   async function load() {
     let retryMs = 15000;
@@ -81,26 +83,37 @@ export function createSpotifyHandler(env: SpotifyEnv, fetcher: typeof fetch = fe
         token = { value: result.access_token, expiresAt: now() + result.expires_in * 1000 };
       }
       const headers = { Authorization: `Bearer ${token.value}` };
-      const [playingValue, recentValue, topValue] = await Promise.all([
+      // Spotify rate-limits endpoints separately, so one failure must not blank the others:
+      // each list keeps its last good value, and top tracks (a 4-week window) refresh hourly.
+      const topFresh = top !== null && top.expiresAt > now();
+      const [playingResult, recentResult, topResult] = await Promise.allSettled([
         request('https://api.spotify.com/v1/me/player/currently-playing', { headers }, true),
         request('https://api.spotify.com/v1/me/player/recently-played?limit=1', { headers }),
-        request('https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=4', { headers }),
+        topFresh ? null : request('https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=4', { headers }),
       ]);
-      const playing = record(playingValue);
-      const recent = record(recentValue);
-      const top = record(topValue);
-      if (!Array.isArray(recent?.items) || !Array.isArray(top?.items)
-        || (playingValue !== null && !playing)) throw new Error('Invalid listening response');
+      const playing = playingResult.status === 'fulfilled' ? record(playingResult.value) : null;
+      const playingOk = playingResult.status === 'fulfilled' && (playingResult.value === null || playing !== null);
+      const recentItems = recentResult.status === 'fulfilled' ? record(recentResult.value)?.items : null;
+      const topItems = topResult.status === 'fulfilled' ? record(topResult.value)?.items : null;
+      if (Array.isArray(recentItems)) {
+        recent = recentItems.map(item => displayTrack(record(item)?.track)).filter(track => track !== null).slice(0, 1);
+      }
+      if (Array.isArray(topItems)) {
+        top = { tracks: topItems.map(displayTrack).filter(track => track !== null).slice(0, 4), expiresAt: now() + 3600000 };
+      }
+      if (!playingOk && !recent && !top) throw new Error('Spotify unavailable');
+      const failed = !playingOk || !Array.isArray(recentItems) || (!topFresh && !Array.isArray(topItems));
       const current = playing?.is_playing === true ? displayTrack(playing.item) : null;
       const progress = typeof playing?.progress_ms === 'number' && Number.isFinite(playing.progress_ms)
         ? Math.max(0, Math.min(playing.progress_ms, current?.durationMs ?? 0)) : 0;
       cached = {
-        status: 200, expiresAt: now() + 30000,
+        status: 200, expiresAt: now() + (failed ? Math.max(30000, retryMs) : 30000),
         data: {
           nowPlaying: current ? { ...current, progressMs: progress, isPlaying: true } : null,
-          recentTracks: recent.items.map(item => displayTrack(record(item)?.track)).filter(track => track !== null).slice(0, 1),
-          topTracks: top.items.map(displayTrack).filter(track => track !== null).slice(0, 4),
-          error: null,
+          recentTracks: recent ?? [],
+          topTracks: top?.tracks ?? [],
+          // A part with no data at all is reported, so the page never shows it as an empty history.
+          error: !playingOk || !recent || !top ? UNAVAILABLE.error : null,
         },
       };
     } catch {
